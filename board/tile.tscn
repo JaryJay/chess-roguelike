@@ -15,7 +15,6 @@ script = ExtResource("1_mk64a")
 [node name="Dot" type="Sprite3D" parent="."]
 transform = Transform3D(0.8, 0, 0, 0, -3.49691e-08, 0.8, 0, -0.8, -3.49691e-08, 0, 0.01, 0)
 visible = false
-modulate = Color(0.513233, 0.513233, 0.513233, 1)
 double_sided = false
 texture = ExtResource("3_dh854")
 

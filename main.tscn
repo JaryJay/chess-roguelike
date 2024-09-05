@@ -13,7 +13,7 @@ script = ExtResource("1_fdhfs")
 [node name="Board" parent="." instance=ExtResource("2_3l42p")]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.285688, 0.958323, 0, -0.958323, 0.285688, 7.5, 9.722, 10.343)
+transform = Transform3D(1, 0, 0, 0, 0.252103, 0.9677, 0, -0.9677, 0.252103, 7.5, 12.7907, 10.3027)
 projection = 1
 size = 19.902
 

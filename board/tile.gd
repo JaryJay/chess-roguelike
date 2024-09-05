@@ -23,12 +23,9 @@ func init(_pos: Vector2i) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("primary") && hovered:
-		pressed = true
+		mouse_selected.emit()
 	elif event.is_action_released("primary"):
-		if pressed:
-			mouse_selected.emit()
 		pressed = false
-		
 
 func _on_area_3d_mouse_entered() -> void:
 	set_hovered(true)

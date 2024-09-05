@@ -15,3 +15,6 @@ func set_pos(new_pos: Vector2i) -> void:
 
 func team() -> Team.s:
 	return _team
+
+func set_team(new_team: Team.s) -> void:
+	_team = new_team

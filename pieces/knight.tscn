@@ -7,4 +7,4 @@
 script = ExtResource("1_08q1y")
 
 [node name="KnightModel" parent="." instance=ExtResource("1_hto52")]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)
+transform = Transform3D(-8.74228e-07, 0, 20, 0, 20, 0, -20, 0, -8.74228e-07, 0, 0, 0)
