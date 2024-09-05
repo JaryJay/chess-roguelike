@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://if7u65hrkq2t"]
+
+[ext_resource type="PackedScene" uid="uid://cgu3y888v5fpv" path="res://assets/pieces/knight.blend" id="1_hto52"]
+
+[node name="Knight" type="Node3D"]
+
+[node name="KnightModel" parent="." instance=ExtResource("1_hto52")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)

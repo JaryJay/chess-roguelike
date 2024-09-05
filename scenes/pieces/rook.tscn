@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b50io8epatatj"]
+
+[ext_resource type="PackedScene" uid="uid://m6xjfaw08kfi" path="res://assets/pieces/rook.blend" id="1_27i58"]
+
+[node name="Rook" type="Node3D"]
+
+[node name="RookModel" parent="." instance=ExtResource("1_27i58")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)

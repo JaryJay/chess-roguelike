@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dy73aqqndy0su"]
+
+[ext_resource type="PackedScene" uid="uid://1b88fx3q26u1" path="res://assets/pieces/pawn.blend" id="1_lhf6v"]
+
+[node name="Pawn" type="Node3D"]
+
+[node name="PawnModel" parent="." instance=ExtResource("1_lhf6v")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)

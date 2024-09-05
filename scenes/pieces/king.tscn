@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://d4kw3hqcryakr"]
+
+[ext_resource type="PackedScene" uid="uid://cpcoskxkoayl8" path="res://assets/pieces/king.blend" id="1_rt8kf"]
+
+[node name="King" type="Node3D"]
+
+[node name="KingModel" parent="." instance=ExtResource("1_rt8kf")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)

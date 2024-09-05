@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://bb0qxkgwbx5xc"]
+
+[ext_resource type="Script" path="res://scenes/main.gd" id="1_fdhfs"]
+[ext_resource type="PackedScene" uid="uid://cudgpunnqtp3e" path="res://board/board.tscn" id="2_3l42p"]
+
+[sub_resource type="Environment" id="Environment_xnp5u"]
+background_mode = 1
+background_color = Color(0.337754, 0.288089, 0.552513, 1)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_fdhfs")
+
+[node name="SubVpContainer" type="SubViewportContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubVp" type="SubViewport" parent="SubVpContainer"]
+size = Vector2i(1152, 648)
+
+[node name="Board" parent="SubVpContainer/SubVp" instance=ExtResource("2_3l42p")]
+
+[node name="Camera3D" type="Camera3D" parent="SubVpContainer/SubVp"]
+transform = Transform3D(1, 0, 0, 0, 0.285688, 0.958323, 0, -0.958323, 0.285688, 7.5, 9.722, 10.343)
+projection = 1
+size = 19.902
+
+[node name="OmniLight3D" type="OmniLight3D" parent="SubVpContainer/SubVp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.93542, 3.22734, 4.7961)
+omni_range = 13.094
+
+[node name="OmniLight3D" type="OmniLight3D" parent="SubVpContainer/SubVp/OmniLight3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.803016, -0.515882, 12.9243)
+light_color = Color(0.522205, 0.744479, 0.815593, 1)
+omni_range = 13.094
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubVpContainer/SubVp"]
+environment = SubResource("Environment_xnp5u")

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://3a7o2ixjone3"]
+
+[ext_resource type="Script" path="res://board/tile.gd" id="1_mk64a"]
+[ext_resource type="PackedScene" uid="uid://b6atc7dwaboyh" path="res://assets/tile.blend" id="2_js4rc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mkkda"]
+size = Vector3(1, 0.211914, 1)
+
+[node name="Tile" type="Node3D"]
+script = ExtResource("1_mk64a")
+
+[node name="TileModel" parent="." instance=ExtResource("2_js4rc")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0943827, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_mkkda")
+
+[editable path="TileModel"]
