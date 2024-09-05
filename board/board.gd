@@ -1,5 +1,7 @@
 class_name Board extends Node3D
 
+signal tile_selected(tile: Tile)
+
 # The board can only be up to 16x16 in size, max.
 # The tile positions can be anywhere from (0, 0) to (15, 15)
 const MAX_X: = 16
@@ -39,7 +41,26 @@ func generate_tiles() -> void:
 		var tile: = tile_scene.instantiate()
 		tile.name = "Tile_%v" % tile_pos
 		add_child(tile)
+		tile.mouse_selected.connect(on_tile_selected.bind(tile))
 		tile.position = Vector3(tile_pos.x, 0, tile_pos.y)
 		tile.init(tile_pos)
 
 		tiles[tile_pos] = tile
+
+func generate_pieces() -> void:
+	var tile: = tiles.values()[0] as Tile
+	var piece: Queen = preload("res://pieces/queen.tscn").instantiate()
+	add_child(piece)
+	piece.set_pos(tile.pos)
+	piece.position = tile.position
+	pieces[piece.pos()] = piece
+
+func on_tile_selected(tile: Tile) -> void:
+	print("Selected tile")
+	tile_selected.emit(tile)
+
+func has_tile(pos: Vector2i) -> bool:
+	return tiles.has(pos)
+
+func get_piece(pos: Vector2i) -> Piece:
+	return pieces.get(pos)

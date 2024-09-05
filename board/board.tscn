@@ -1,12 +1,12 @@
 [gd_scene load_steps=8 format=3 uid="uid://cudgpunnqtp3e"]
 
 [ext_resource type="Script" path="res://board/board.gd" id="1_gq4b1"]
-[ext_resource type="PackedScene" uid="uid://dv7s8yd1t8te6" path="res://scenes/pieces/bishop.tscn" id="2_pk4am"]
-[ext_resource type="PackedScene" uid="uid://d4kw3hqcryakr" path="res://scenes/pieces/king.tscn" id="3_fjvs0"]
-[ext_resource type="PackedScene" uid="uid://if7u65hrkq2t" path="res://scenes/pieces/knight.tscn" id="4_l4kkd"]
-[ext_resource type="PackedScene" uid="uid://dy73aqqndy0su" path="res://scenes/pieces/pawn.tscn" id="5_colco"]
-[ext_resource type="PackedScene" uid="uid://chm168jlmppv8" path="res://scenes/pieces/queen.tscn" id="6_0wo3k"]
-[ext_resource type="PackedScene" uid="uid://b50io8epatatj" path="res://scenes/pieces/rook.tscn" id="7_u1b20"]
+[ext_resource type="PackedScene" uid="uid://dv7s8yd1t8te6" path="res://pieces/bishop.tscn" id="2_pk4am"]
+[ext_resource type="PackedScene" uid="uid://d4kw3hqcryakr" path="res://pieces/king.tscn" id="3_fjvs0"]
+[ext_resource type="PackedScene" uid="uid://if7u65hrkq2t" path="res://pieces/knight.tscn" id="4_l4kkd"]
+[ext_resource type="PackedScene" uid="uid://dy73aqqndy0su" path="res://pieces/pawn.tscn" id="5_colco"]
+[ext_resource type="PackedScene" uid="uid://chm168jlmppv8" path="res://pieces/queen.tscn" id="6_0wo3k"]
+[ext_resource type="PackedScene" uid="uid://b50io8epatatj" path="res://pieces/rook.tscn" id="7_u1b20"]
 
 [node name="Board" type="Node3D"]
 script = ExtResource("1_gq4b1")
