@@ -48,29 +48,25 @@ func generate_tiles() -> void:
 		tiles[tile_pos] = tile
 
 func generate_pieces() -> void:
-	var tile: = tiles.values()[0] as Tile
 	var queen: Queen = preload("res://pieces/queen.tscn").instantiate()
-	add_child(queen)
-	queen.set_team(Team.s.ALLY_PLAYER)
-	queen.set_pos(tile.pos)
-	queen.position = tile.position
-	pieces[queen.pos()] = queen
+	spawn_piece(queen, tiles.values()[0].pos)
 
-	var king_tile: = tiles.values()[1] as Tile
 	var king: King = preload("res://pieces/king.tscn").instantiate()
-	add_child(king)
-	king.set_team(Team.s.ALLY_PLAYER)
-	king.set_pos(king_tile.pos)
-	king.position = king_tile.position
-	pieces[king.pos()] = king
+	spawn_piece(king, tiles.values()[1].pos)
 
-	var knight_tile:= tiles.values()[2] as Tile
 	var knight: Knight = preload("res://pieces/knight.tscn").instantiate()
-	add_child(knight)
-	knight.set_team(Team.s.ALLY_PLAYER)
-	knight.set_pos(knight_tile.pos)
-	knight.position = knight_tile.position
-	pieces[knight.pos()] = knight
+	spawn_piece(knight, tiles.values()[2].pos)
+
+func spawn_piece(piece: Piece, dest: Vector2i) -> void:
+	assert(not pieces.values().has(piece))
+	assert(not get_piece(dest))
+	assert(get_tile(dest))
+
+	add_child(piece)
+	piece.set_team(Team.s.ALLY_PLAYER)
+	piece.set_pos(dest)
+	piece.position = get_tile(dest).position
+	pieces[piece.pos()] = piece
 
 func move_piece(piece: Piece, dest: Vector2i) -> void:
 	assert(pieces.values().has(piece))
@@ -90,7 +86,6 @@ func move_piece(piece: Piece, dest: Vector2i) -> void:
 
 
 func on_tile_selected(tile: Tile) -> void:
-	print("Selected tile")
 	tile_selected.emit(tile)
 
 func has_tile(pos: Vector2i) -> bool:
