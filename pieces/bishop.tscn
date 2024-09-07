@@ -3,8 +3,11 @@
 [ext_resource type="Script" path="res://pieces/bishop.gd" id="1_6lggj"]
 [ext_resource type="PackedScene" uid="uid://ctjah5lfyyb3i" path="res://assets/pieces/bishop.blend" id="1_p8mt8"]
 
-[node name="Bishop" type="Node3D"]
+[node name="Bishop" type="Node3D" node_paths=PackedStringArray("mesh")]
 script = ExtResource("1_6lggj")
+mesh = NodePath("BishopModel/Bishop")
 
 [node name="BishopModel" parent="." instance=ExtResource("1_p8mt8")]
 transform = Transform3D(14.1421, 0, 14.1421, 0, 20, 0, -14.1421, 0, 14.1421, 0, 0, 0)
+
+[editable path="BishopModel"]

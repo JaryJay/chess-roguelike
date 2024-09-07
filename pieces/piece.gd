@@ -1,5 +1,9 @@
 class_name Piece extends Node
 
+const black_material: = preload("res://materials/black_piece_material.tres")
+const white_material: = preload("res://materials/white_piece_material.tres")
+
+@export var mesh: MeshInstance3D
 var _pos: Vector2i
 var _team: Team.s
 
@@ -18,3 +22,8 @@ func team() -> Team.s:
 
 func set_team(new_team: Team.s) -> void:
 	_team = new_team
+	assert(mesh)
+	if new_team == Team.s.ALLY_PLAYER:
+		mesh.material_override = white_material
+	else:
+		mesh.material_override = black_material

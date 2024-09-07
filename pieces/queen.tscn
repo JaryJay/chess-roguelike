@@ -3,8 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://ds2lg666it0r1" path="res://assets/pieces/queen.blend" id="1_jw0tx"]
 [ext_resource type="Script" path="res://pieces/queen.gd" id="1_yonmk"]
 
-[node name="Queen" type="Node3D"]
+[node name="Queen" type="Node3D" node_paths=PackedStringArray("mesh")]
 script = ExtResource("1_yonmk")
+mesh = NodePath("QueenModel/Queen")
 
 [node name="QueenModel" parent="." instance=ExtResource("1_jw0tx")]
 transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)
+
+[editable path="QueenModel"]

@@ -3,8 +3,11 @@
 [ext_resource type="Script" path="res://pieces/knight.gd" id="1_08q1y"]
 [ext_resource type="PackedScene" uid="uid://cgu3y888v5fpv" path="res://assets/pieces/knight.blend" id="1_hto52"]
 
-[node name="Knight" type="Node3D"]
+[node name="Knight" type="Node3D" node_paths=PackedStringArray("mesh")]
 script = ExtResource("1_08q1y")
+mesh = NodePath("KnightModel/Knight")
 
 [node name="KnightModel" parent="." instance=ExtResource("1_hto52")]
 transform = Transform3D(-8.74228e-07, 0, 20, 0, 20, 0, -20, 0, -8.74228e-07, 0, 0, 0)
+
+[editable path="KnightModel"]
