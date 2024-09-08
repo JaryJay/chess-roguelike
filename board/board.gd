@@ -57,6 +57,15 @@ func generate_pieces() -> void:
 	var knight: Knight = preload("res://pieces/knight.tscn").instantiate()
 	spawn_piece(knight, tiles.values()[2].pos)
 
+	var bishop: Bishop = preload("res://pieces/bishop.tscn").instantiate()
+	spawn_piece(bishop, tiles.values()[3].pos)
+
+	var rook: Rook = preload("res://pieces/rook.tscn").instantiate()
+	spawn_piece(rook, tiles.values()[4].pos)
+
+	var pawn: Pawn = preload("res://pieces/pawn.tscn").instantiate()
+	spawn_piece(pawn, tiles.values()[-1].pos)
+
 func spawn_piece(piece: Piece, dest: Vector2i) -> void:
 	assert(not pieces.values().has(piece))
 	assert(not get_piece(dest))
@@ -90,6 +99,9 @@ func on_tile_selected(tile: Tile) -> void:
 
 func has_tile(pos: Vector2i) -> bool:
 	return tiles.has(pos)
+
+func has_piece(pos: Vector2i) -> bool:
+	return pieces.has(pos)
 
 func get_piece(pos: Vector2i) -> Piece:
 	return pieces.get(pos)
