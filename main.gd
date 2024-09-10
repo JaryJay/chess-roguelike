@@ -2,6 +2,7 @@ extends Node3D
 
 @onready var board: Board = $Board
 
+var turn: Team.s = Team.s.ALLY_PLAYER
 var selected_piece: Piece
 
 func _ready() -> void:
@@ -9,6 +10,9 @@ func _ready() -> void:
 	board.generate_pieces()
 
 func _on_board_tile_selected(tile: Tile) -> void:
+	if not turn == Team.s.ALLY_PLAYER:
+		return
+	
 	assert(tile, "Tile cannot be null")
 	assert(board.has_tile(tile.pos()), "Board must have this tile")
 	#assert(board.get_piece(tile.pos), "Cannot select tile without piece")
@@ -41,6 +45,8 @@ func move_piece(piece: Piece, pos: Vector2i) -> void:
 		board.get_tile(square_pos).set_show_dot(false)
 	board.move_piece(selected_piece, pos)
 	
+	turn = Team.s.ENEMY_AI_0
+
 func select_piece(piece: Piece) -> void:
 	selected_piece = piece
 	for square_pos: Vector2i in piece.get_available_squares(board):
