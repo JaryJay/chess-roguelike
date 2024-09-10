@@ -50,6 +50,7 @@ func generate_tiles() -> void:
 func generate_pieces() -> void:
 	var queen: Queen = preload("res://pieces/queen.tscn").instantiate()
 	spawn_piece(queen, tiles.values()[0].pos())
+	queen.set_team(Team.s.ENEMY_AI_0)
 
 	var king: King = preload("res://pieces/king.tscn").instantiate()
 	spawn_piece(king, tiles.values()[1].pos())

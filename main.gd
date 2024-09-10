@@ -29,9 +29,9 @@ func _on_board_tile_selected(tile: Tile) -> void:
 				return
 			move_piece(piece, tile.pos())
 		elif Team.hostile_to_each_other(piece.team(), selected_piece.team()):
-			board.move_piece(selected_piece, tile.pos())
+			move_piece(selected_piece, tile.pos())
 		else:
-			unselect_previous_piece()
+			unselect_previous_piece() 
 			select_piece(piece)
 	else:
 		if piece:
