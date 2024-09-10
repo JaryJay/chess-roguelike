@@ -49,22 +49,22 @@ func generate_tiles() -> void:
 
 func generate_pieces() -> void:
 	var queen: Queen = preload("res://pieces/queen.tscn").instantiate()
-	spawn_piece(queen, tiles.values()[0].pos)
+	spawn_piece(queen, tiles.values()[0].pos())
 
 	var king: King = preload("res://pieces/king.tscn").instantiate()
-	spawn_piece(king, tiles.values()[1].pos)
+	spawn_piece(king, tiles.values()[1].pos())
 
 	var knight: Knight = preload("res://pieces/knight.tscn").instantiate()
-	spawn_piece(knight, tiles.values()[2].pos)
+	spawn_piece(knight, tiles.values()[2].pos())
 
 	var bishop: Bishop = preload("res://pieces/bishop.tscn").instantiate()
-	spawn_piece(bishop, tiles.values()[3].pos)
+	spawn_piece(bishop, tiles.values()[3].pos())
 
 	var rook: Rook = preload("res://pieces/rook.tscn").instantiate()
-	spawn_piece(rook, tiles.values()[4].pos)
+	spawn_piece(rook, tiles.values()[4].pos())
 
 	var pawn: Pawn = preload("res://pieces/pawn.tscn").instantiate()
-	spawn_piece(pawn, tiles.values()[-1].pos)
+	spawn_piece(pawn, tiles.values()[-1].pos())
 
 func spawn_piece(piece: Piece, dest: Vector2i) -> void:
 	assert(not pieces.values().has(piece))

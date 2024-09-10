@@ -5,7 +5,7 @@ signal mouse_selected
 const white_tile_material: = preload("res://materials/white_tile_material.tres")
 const black_tile_material: = preload("res://materials/black_tile_material.tres")
 
-var pos: Vector2i
+var _pos: Vector2i
 var hovered: bool = false
 var pressed: bool = false
 var selected: bool = false
@@ -14,9 +14,9 @@ var selected: bool = false
 @onready var tile: MeshInstance3D = $TileModel/Tile
 @onready var dot: Sprite3D = $Dot
 
-func init(_pos: Vector2i) -> void:
-	pos = _pos
-	if (pos.x + pos.y) % 2 == 0:
+func init(new_pos: Vector2i) -> void:
+	_pos = new_pos
+	if (_pos.x + _pos.y) % 2 == 0:
 		tile.material_override = black_tile_material
 	else:
 		tile.material_override = white_tile_material
@@ -32,6 +32,9 @@ func _on_area_3d_mouse_entered() -> void:
 
 func _on_area_3d_mouse_exited() -> void:
 	set_hovered(false)
+
+func pos() -> Vector2i:
+	return _pos
 
 func set_hovered(new_hovered: bool) -> void:
 	hovered = new_hovered

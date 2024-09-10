@@ -10,30 +10,22 @@ func _ready() -> void:
 
 func _on_board_tile_selected(tile: Tile) -> void:
 	assert(tile, "Tile cannot be null")
-	assert(board.has_tile(tile.pos), "Board must have this tile")
+	assert(board.has_tile(tile.pos()), "Board must have this tile")
 	#assert(board.get_piece(tile.pos), "Cannot select tile without piece")
 	
 	#unselect_previous_piece()
 	
-	var piece: = board.get_piece(tile.pos)
+	var piece: = board.get_piece(tile.pos())
 
 	if selected_piece:
 		if not piece:
 			# Check if valid
-			if not selected_piece.get_available_squares(board).has(tile.pos):
+			if not selected_piece.get_available_squares(board).has(tile.pos()):
 				unselect_previous_piece()
 				return
-			for square_pos: Vector2i in selected_piece.get_available_squares(board):
-				board.get_tile(square_pos).set_show_dot(false)
-			board.move_piece(selected_piece, tile.pos)
-			for square_pos: Vector2i in selected_piece.get_available_squares(board):
-				board.get_tile(square_pos).set_show_dot(true)
+			move_piece(piece, tile.pos())
 		elif Team.hostile_to_each_other(piece.team(), selected_piece.team()):
-			for square_pos: Vector2i in selected_piece.get_available_squares(board):
-				board.get_tile(square_pos).set_show_dot(false)
-			board.move_piece(selected_piece, tile.pos)
-			for square_pos: Vector2i in selected_piece.get_available_squares(board):
-				board.get_tile(square_pos).set_show_dot(true)
+			board.move_piece(selected_piece, tile.pos())
 		else:
 			unselect_previous_piece()
 			select_piece(piece)
@@ -44,6 +36,11 @@ func _on_board_tile_selected(tile: Tile) -> void:
 		else:
 			unselect_previous_piece()
 
+func move_piece(piece: Piece, pos: Vector2i) -> void:
+	for square_pos: Vector2i in selected_piece.get_available_squares(board):
+		board.get_tile(square_pos).set_show_dot(false)
+	board.move_piece(selected_piece, pos)
+	
 func select_piece(piece: Piece) -> void:
 	selected_piece = piece
 	for square_pos: Vector2i in piece.get_available_squares(board):
