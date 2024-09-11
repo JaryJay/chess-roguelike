@@ -16,7 +16,7 @@ const PAWN_COST: = 100
 const COSTS: = [QUEEN_COST, ROOK_COST, BISHOP_COST, KNIGHT_COST, PAWN_COST]
 const PIECES: = [queen_scene, rook_scene, bishop_scene, knight_scene, pawn_scene]
 
-static func generate_army(credits: int, state: BoardState, team: Team.s) -> Array[Piece]:
+static func generate_army(credits: int, state: BoardState, team: Team) -> Array[Piece]:
 	var army: Array[Piece] = []
 	
 	army.append(king_scene.instantiate())
@@ -36,7 +36,7 @@ static func generate_army(credits: int, state: BoardState, team: Team.s) -> Arra
 	var tiles: = state.tiles.values()
 	tiles.shuffle()
 	tiles.sort_custom(sort_tiles_by_y)
-	var first_few_tiles: = tiles.slice(0, army_size) if team == Team.s.ENEMY_AI_0 else tiles.slice(-army_size)
+	var first_few_tiles: = tiles.slice(0, army_size) if team.is_enemy() else tiles.slice(-army_size)
 	for i: int in army_size:
 		army[i].set_team(team)
 		army[i].set_pos(first_few_tiles[i].pos())

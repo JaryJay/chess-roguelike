@@ -1,34 +1,23 @@
-class_name Team extends Node
+class_name Team extends Resource
 
-## Team types
-enum s {
-	ALLY_PLAYER = 15,
-	
-	ENEMY_AI_0 = 20,
-	#ENEMY_AI_1 = 22,
-	#ENEMY_AI_2 = 24,
-	#ENEMY_AI_3 = 26,
-	#ENEMY_AI_4 = 28,
-	
-	## Reserved for future
-	SPECIAL_ENEMY_AI = 50,
-	RESERVED = 100,
-}
+static var PLAYER = Team.new(15)
+static var ENEMY_AI = Team.new(20)
 
-static func is_ai(team: s) -> bool:
-	return is_enemy(team)
+var _key: int
 
-static func is_player(team: s) -> bool:
-	return team == s.ALLY_PLAYER
+func _init(key: int) -> void:
+	_key = key
 
-static func is_ally(team: s) -> bool:
-	return 10 <= team and team <= 19
+func is_player() -> bool:
+	return self == PLAYER
 
-static func is_enemy(team: s) -> bool:
-	return 20 <= team and team <= 30
+func is_enemy() -> bool:
+	return self == ENEMY_AI
 
-static func hostile_to_each_other(t1: s, t2: s) -> bool:
-	return (is_ally(t1) and is_enemy(t2)) or (is_enemy(t1) && is_ally(t2))
+func is_hostile_to(t: Team) -> bool:
+	assert(t != null)
+	return (is_player() and t.is_enemy()) or (is_enemy() && t.is_player())
 
-static func on_same_team(t1: s, t2: s) -> bool:
-	return (is_ally(t1) and is_ally(t2)) or (is_enemy(t1) and is_enemy(t2))
+func is_friendly_to(t: Team) -> bool:
+	assert(t != null)
+	return (is_player() and t.is_player()) or (is_enemy() and t.is_enemy())

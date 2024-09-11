@@ -10,7 +10,7 @@ func get_available_squares(s: BoardState) -> Array[Vector2i]:
 		available_squares.append(forwards)
 	for diagonal: Vector2i in DIAGONALS:
 		var square: = pos() + diagonal
-		if s.has_tile(square) and s.has_piece(square) and Team.hostile_to_each_other(s.get_piece(square).team(), team()):
+		if s.has_tile(square) and s.has_piece(square) and s.get_piece(square).team().is_hostile_to(team()):
 			available_squares.append(square)
 	
 	return available_squares

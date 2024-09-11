@@ -2,7 +2,7 @@ class_name BoardState
 
 var tiles: Dictionary
 var pieces: Dictionary
-var current_turn: Team.s = Team.s.ALLY_PLAYER
+var current_turn: Team = Team.PLAYER
 
 func is_end_state() -> bool:
 	return false
@@ -11,18 +11,21 @@ func simulate_move(move: Move) -> BoardState:
 	var new_state: = BoardState.new()
 	new_state.tiles = tiles.duplicate()
 	new_state.pieces = pieces.duplicate()
-	new_state.current_turn = Team.s.ALLY_PLAYER if current_turn == Team.s.ENEMY_AI_0 else Team.s.ENEMY_AI_0
+	new_state.current_turn = current_turn
 	
+	assert(new_state.has_piece(move.piece.pos()))
 	assert(new_state.get_piece(move.piece.pos()) == move.piece)
-	assert(move.piece.get_available_squares(self).has(move.new_pos))
+	assert(move.piece.get_available_squares(self).has(move.to))
 	
 	# If is a capture, delete piece that gets captured
-	if new_state.has_piece(move.new_pos):
-		assert(Team.hostile_to_each_other(new_state.get_piece(move.new_pos).team(), move.piece.team()))
-		new_state.pieces.erase(move.new_pos)
+	if new_state.has_piece(move.to):
+		assert(new_state.get_piece(move.to).team().is_hostile_to(move.piece.team()))
+		new_state.pieces.erase(move.to)
 	
 	new_state.pieces.erase(move.piece.pos())
-	new_state.pieces[move.new_pos] = move.piece
+	new_state.pieces[move.to] = move.piece
+	
+	new_state.current_turn = Team.PLAYER if current_turn == Team.ENEMY_AI else Team.ENEMY_AI
 	
 	return new_state
 

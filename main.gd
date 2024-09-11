@@ -10,7 +10,7 @@ func _ready() -> void:
 	board.generate_pieces()
 
 func _on_board_tile_selected(tile: Tile) -> void:
-	if not board.state.current_turn == Team.s.ALLY_PLAYER:
+	if not board.state.current_turn.is_player():
 		return
 	
 	assert(tile, "Tile cannot be null")
@@ -25,16 +25,18 @@ func _on_board_tile_selected(tile: Tile) -> void:
 				unselect_previous_piece()
 				return
 			move_piece(Move.new(selected_piece, tile.pos()))
+			unselect_previous_piece() 
 			do_enemy_turn()
-		elif Team.hostile_to_each_other(piece.team(), selected_piece.team()):
+		elif piece.team().is_hostile_to(selected_piece.team()):
 			move_piece(Move.new(selected_piece, tile.pos()))
+			unselect_previous_piece() 
 			do_enemy_turn()
 		else:
 			unselect_previous_piece() 
 			select_piece(piece)
 	else:
 		if piece:
-			if Team.is_ally(piece.team()):
+			if piece.team().is_player():
 				select_piece(piece)
 		else:
 			unselect_previous_piece()
@@ -43,15 +45,14 @@ func move_piece(move: Move) -> void:
 	for square_pos: Vector2i in selected_piece.get_available_squares(board.state):
 		board.state.get_tile(square_pos).set_show_dot(false)
 	board.perform_move(move)
-	
-	board.state.current_turn = Team.s.ENEMY_AI_0
 
 func do_enemy_turn() -> void:
 	print("Doing enemy turn")
-	var best_result: = ai.get_best_result(board.state, 1, -INF, INF, Team.s.ENEMY_AI_0)
+	board.state.current_turn = Team.ENEMY_AI
+	var best_result: = ai.get_best_result(board.state, 3, -INF, INF)
 	board.perform_move(best_result.move)
 	print("Performed move, eval = %s" % best_result.evaluation)
-	board.state.current_turn = Team.s.ALLY_PLAYER
+	board.state.current_turn = Team.PLAYER
 
 func select_piece(piece: Piece) -> void:
 	selected_piece = piece

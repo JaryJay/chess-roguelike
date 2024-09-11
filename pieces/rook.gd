@@ -12,7 +12,7 @@ func get_available_squares(s: BoardState) -> Array[Vector2i]:
 			var piece: = s.get_piece(currently_checking)
 
 			if piece:
-				if Team.hostile_to_each_other(piece.team(), team()):
+				if piece.team().is_hostile_to(team()):
 					available_squares.append(currently_checking)
 				break
 

@@ -3,9 +3,19 @@ class_name Piece extends Node
 const black_material: = preload("res://materials/black_piece_material.tres")
 const white_material: = preload("res://materials/white_piece_material.tres")
 
+enum Type {
+	UNSET,
+	KING,
+	QUEEN,
+	ROOK,
+	BISHOP,
+	KNIGHT,
+	PAWN,
+}
+
 @export var mesh: MeshInstance3D
 var _pos: Vector2i
-var _team: Team.s
+var _team: Team
 
 func _ready() -> void:
 	set_team(team())
@@ -24,13 +34,13 @@ func pos() -> Vector2i:
 func set_pos(new_pos: Vector2i) -> void:
 	_pos = new_pos
 
-func team() -> Team.s:
+func team() -> Team:
 	return _team
 
-func set_team(new_team: Team.s) -> void:
+func set_team(new_team: Team) -> void:
 	_team = new_team
 	assert(mesh)
-	if new_team == Team.s.ALLY_PLAYER:
+	if new_team.is_player():
 		mesh.material_override = white_material
 	else:
 		mesh.material_override = black_material

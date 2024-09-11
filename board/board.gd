@@ -58,18 +58,14 @@ func generate_tiles() -> void:
 		state.tiles[tile_pos] = tile
 
 func generate_pieces() -> void:
-	var enemy_army: = ArmyGenerator.generate_army(1680, state, Team.s.ENEMY_AI_0)
+	var enemy_army: = ArmyGenerator.generate_army(1680, state, Team.ENEMY_AI)
 	for piece: Piece in enemy_army:
 		spawn_piece(piece, piece.pos())
 	
-	var army: = ArmyGenerator.generate_army(1680, state, Team.s.ALLY_PLAYER)
+	var army: = ArmyGenerator.generate_army(1680, state, Team.PLAYER)
 	for piece: Piece in army:
 		spawn_piece(piece, piece.pos())
 	
-	#var queen: Queen = preload("res://pieces/queen.tscn").instantiate()
-	#spawn_piece(queen, tiles.values()[0].pos())
-	#queen.set_team(Team.s.ENEMY_AI_0)
-#
 	#var king: King = preload("res://pieces/king.tscn").instantiate()
 	#spawn_piece(king, tiles.values()[1].pos())
 #
@@ -98,18 +94,18 @@ func spawn_piece(piece: Piece, dest: Vector2i) -> void:
 func perform_move(move: Move) -> void:
 	var piece: = move.piece
 	assert(state.pieces.values().has(piece))
-	assert(piece.get_available_squares(state).has(move.new_pos))
+	assert(piece.get_available_squares(state).has(move.to))
 
 	state.pieces.erase(piece.pos())
 
-	var existing_piece: = state.get_piece(move.new_pos)
+	var existing_piece: = state.get_piece(move.to)
 	if existing_piece:
-		assert(Team.hostile_to_each_other(piece.team(), existing_piece.team()))
+		assert(piece.team().is_hostile_to(existing_piece.team()))
 		existing_piece.queue_free()
 		state.pieces.erase(existing_piece)
 
-	piece.set_pos(move.new_pos)
-	create_tween().tween_property(piece, "position", Vector3(move.new_pos.x, 0, move.new_pos.y), 0.1)
+	piece.set_pos(move.to)
+	create_tween().tween_property(piece, "position", Vector3(move.to.x, 0, move.to.y), 0.1)
 	state.pieces[piece.pos()] = piece
 
 func on_tile_selected(tile: Tile) -> void:
