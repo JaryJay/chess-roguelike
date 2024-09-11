@@ -23,3 +23,6 @@ func get_available_squares(s: BoardState) -> Array[Vector2i]:
 			available_squares.append(currently_checking)
 
 	return available_squares
+
+func get_worth() -> float:
+	return 2.9

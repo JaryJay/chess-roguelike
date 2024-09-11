@@ -14,3 +14,6 @@ func get_available_squares(s: BoardState) -> Array[Vector2i]:
 			available_squares.append(square)
 	
 	return available_squares
+
+func get_worth() -> float:
+	return 1

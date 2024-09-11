@@ -2,15 +2,15 @@ extends Node3D
 
 @onready var board: Board = $Board
 
-var turn: Team.s = Team.s.ALLY_PLAYER
 var selected_piece: Piece
+var ai: = AI.new()
 
 func _ready() -> void:
 	board.generate_tiles()
 	board.generate_pieces()
 
 func _on_board_tile_selected(tile: Tile) -> void:
-	if not turn == Team.s.ALLY_PLAYER:
+	if not board.state.current_turn == Team.s.ALLY_PLAYER:
 		return
 	
 	assert(tile, "Tile cannot be null")
@@ -25,8 +25,10 @@ func _on_board_tile_selected(tile: Tile) -> void:
 				unselect_previous_piece()
 				return
 			move_piece(Move.new(selected_piece, tile.pos()))
+			do_enemy_turn()
 		elif Team.hostile_to_each_other(piece.team(), selected_piece.team()):
 			move_piece(Move.new(selected_piece, tile.pos()))
+			do_enemy_turn()
 		else:
 			unselect_previous_piece() 
 			select_piece(piece)
@@ -42,7 +44,14 @@ func move_piece(move: Move) -> void:
 		board.state.get_tile(square_pos).set_show_dot(false)
 	board.perform_move(move)
 	
-	turn = Team.s.ENEMY_AI_0
+	board.state.current_turn = Team.s.ENEMY_AI_0
+
+func do_enemy_turn() -> void:
+	print("Doing enemy turn")
+	var best_result: = ai.get_best_result(board.state, 1, -INF, INF, Team.s.ENEMY_AI_0)
+	board.perform_move(best_result.move)
+	print("Performed move, eval = %s" % best_result.evaluation)
+	board.state.current_turn = Team.s.ALLY_PLAYER
 
 func select_piece(piece: Piece) -> void:
 	selected_piece = piece

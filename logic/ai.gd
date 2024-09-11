@@ -12,25 +12,41 @@ func get_best_result(s: BoardState, depth: int, alpha: float, beta: float, team:
 	if depth == 0 or s.is_end_state():
 		return Result.new(evaluate(s), null)
 	if team == Team.s.ALLY_PLAYER:
-		var max_eval: = -INF
+		var best_result: = Result.new(-INF, null)
 		for move: Move in s.get_legal_moves():
-			var eval: = get_best_result(s., depth - 1, alpha, beta, Team.s.ENEMY_AI_0)
-			max_eval = max(max_eval, eval)
-			alpha = max(alpha, eval)
+			var new_board_state: = s.simulate_move(move)
+			var result: = get_best_result(new_board_state, depth - 1, alpha, beta, Team.s.ENEMY_AI_0)
+			if result.evaluation >= best_result.evaluation:
+				best_result = Result.new(result.evaluation, move)
+				alpha = result.evaluation
 			if beta <= alpha:
 				break  # beta cut-off
-		return max_eval
+		return best_result
 	else:
-		var min_eval: = +infinity
+		var worst_result: = Result.new(INF, null)
 		for move: Move in s.get_legal_moves():
-			var eval: = get_best_result(child, depth - 1, alpha, beta, Team.s.ALLY_PLAYER)
-			min_eval = min(min_eval, eval)
-			beta = min(beta, eval)
+			var new_board_state: = s.simulate_move(move)
+			var result: = get_best_result(new_board_state, depth - 1, alpha, beta, Team.s.ALLY_PLAYER)
+			if result.evaluation <= worst_result.evaluation:
+				worst_result = Result.new(result.evaluation, move)
+				beta = result.evaluation
 			if beta <= alpha:
 				break  # alpha cut-off
-		return min_eval
+		return worst_result
 
 
 func evaluate(board_state: BoardState) -> float:
-	var pieces: = board_state.pieces.values() as Array[Piece]
-	return pieces.size()
+	# Player pieces: positive
+	# Enemy pieces: negative
+	var pieces: = board_state.pieces.values()
+	
+	var eval: = 0.0
+	for piece: Piece in pieces:
+		assert(piece.team() == Team.s.ALLY_PLAYER or piece.team() == Team.s.ENEMY_AI_0)
+		
+		if piece.team() == Team.s.ALLY_PLAYER:
+			eval += piece.get_worth()
+		else:
+			eval -= piece.get_worth()
+	
+	return eval

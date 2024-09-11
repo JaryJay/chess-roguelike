@@ -30,3 +30,7 @@ func get_available_squares(s: BoardState) -> Array[Vector2i]:
 	# TODO
 
 	return available_squares
+
+func get_worth() -> float:
+	# Effectively infinity
+	return 99999999999

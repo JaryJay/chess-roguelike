@@ -14,6 +14,10 @@ func get_available_squares(_s: BoardState) -> Array[Vector2i]:
 	printerr("get_available_squares not implemented")
 	return []
 
+func get_worth() -> float:
+	printerr("get_worth not implemented")
+	return 0
+
 func pos() -> Vector2i:
 	return _pos
 
