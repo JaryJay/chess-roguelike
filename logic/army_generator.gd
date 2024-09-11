@@ -1,4 +1,4 @@
-class_name EnemyArmyGenerator
+class_name ArmyGenerator
 
 const king_scene: = preload("res://pieces/king.tscn")
 const queen_scene: = preload("res://pieces/queen.tscn")
@@ -16,7 +16,7 @@ const PAWN_COST: = 100
 const COSTS: = [QUEEN_COST, ROOK_COST, BISHOP_COST, KNIGHT_COST, PAWN_COST]
 const PIECES: = [queen_scene, rook_scene, bishop_scene, knight_scene, pawn_scene]
 
-func generate_enemy_army(credits: int, board: Board) -> Array[Piece]:
+static func generate_army(credits: int, board: Board, team: Team.s) -> Array[Piece]:
 	var army: Array[Piece] = []
 	
 	army.append(king_scene.instantiate())
@@ -36,13 +36,14 @@ func generate_enemy_army(credits: int, board: Board) -> Array[Piece]:
 	var tiles: = board.tiles.values()
 	tiles.shuffle()
 	tiles.sort_custom(sort_tiles_by_y)
-	var first_few_tiles: = tiles.slice(0, army_size)
+	var first_few_tiles: = tiles.slice(0, army_size) if team == Team.s.ENEMY_AI_0 else tiles.slice(-army_size)
 	for i: int in army_size:
+		army[i].set_team(team)
 		army[i].set_pos(first_few_tiles[i].pos())
 	
 	return army
 
-func generate_piece_type_index(credits: int) -> int:
+static func generate_piece_type_index(credits: int) -> int:
 	if credits < COSTS[-1]: return -1
 	
 	var affordable_indices: = []
@@ -53,5 +54,5 @@ func generate_piece_type_index(credits: int) -> int:
 	
 	return affordable_indices.pick_random()
 
-func sort_tiles_by_y(a: Tile, b: Tile) -> int:
-	return a.pos().y - b.pos().y
+static func sort_tiles_by_y(a: Tile, b: Tile) -> bool:
+	return a.pos().y < b.pos().y

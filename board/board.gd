@@ -28,7 +28,6 @@ func generate_tiles() -> void:
 		for x: int in MAX_X:
 			var val: = noise.get_noise_2d(x * NOISE_SCALE, y * NOISE_SCALE)
 			val = (val + 1) / 2
-			print(val)
 			# val should be boosted depending on how close it is to the center
 			var dist: = Vector2(x, y).distance_to(CENTER)
 			var normalized_dist: = dist / (MAX_X * sqrt(2) / 2)
@@ -48,24 +47,34 @@ func generate_tiles() -> void:
 		tiles[tile_pos] = tile
 
 func generate_pieces() -> void:
-	var queen: Queen = preload("res://pieces/queen.tscn").instantiate()
-	spawn_piece(queen, tiles.values()[0].pos())
-	queen.set_team(Team.s.ENEMY_AI_0)
-
-	var king: King = preload("res://pieces/king.tscn").instantiate()
-	spawn_piece(king, tiles.values()[1].pos())
-
-	var knight: Knight = preload("res://pieces/knight.tscn").instantiate()
-	spawn_piece(knight, tiles.values()[2].pos())
-
-	var bishop: Bishop = preload("res://pieces/bishop.tscn").instantiate()
-	spawn_piece(bishop, tiles.values()[3].pos())
-
-	var rook: Rook = preload("res://pieces/rook.tscn").instantiate()
-	spawn_piece(rook, tiles.values()[4].pos())
-
-	var pawn: Pawn = preload("res://pieces/pawn.tscn").instantiate()
-	spawn_piece(pawn, tiles.values()[-1].pos())
+	var enemy_army: = ArmyGenerator.generate_army(1680, self, Team.s.ENEMY_AI_0)
+	for piece: Piece in enemy_army:
+		spawn_piece(piece, piece.pos())
+	
+	var army: = ArmyGenerator.generate_army(1680, self, Team.s.ALLY_PLAYER)
+	for piece: Piece in army:
+		print(piece.team())
+		spawn_piece(piece, piece.pos())
+		print(piece.team())
+	
+	#var queen: Queen = preload("res://pieces/queen.tscn").instantiate()
+	#spawn_piece(queen, tiles.values()[0].pos())
+	#queen.set_team(Team.s.ENEMY_AI_0)
+#
+	#var king: King = preload("res://pieces/king.tscn").instantiate()
+	#spawn_piece(king, tiles.values()[1].pos())
+#
+	#var knight: Knight = preload("res://pieces/knight.tscn").instantiate()
+	#spawn_piece(knight, tiles.values()[2].pos())
+#
+	#var bishop: Bishop = preload("res://pieces/bishop.tscn").instantiate()
+	#spawn_piece(bishop, tiles.values()[3].pos())
+#
+	#var rook: Rook = preload("res://pieces/rook.tscn").instantiate()
+	#spawn_piece(rook, tiles.values()[4].pos())
+#
+	#var pawn: Pawn = preload("res://pieces/pawn.tscn").instantiate()
+	#spawn_piece(pawn, tiles.values()[-1].pos())
 
 func spawn_piece(piece: Piece, dest: Vector2i) -> void:
 	assert(not pieces.values().has(piece))
@@ -73,7 +82,6 @@ func spawn_piece(piece: Piece, dest: Vector2i) -> void:
 	assert(get_tile(dest))
 
 	add_child(piece)
-	piece.set_team(Team.s.ALLY_PLAYER)
 	piece.set_pos(dest)
 	piece.position = get_tile(dest).position
 	pieces[piece.pos()] = piece
@@ -93,7 +101,6 @@ func move_piece(piece: Piece, dest: Vector2i) -> void:
 	piece.set_pos(dest)
 	create_tween().tween_property(piece, "position", Vector3(dest.x, 0, dest.y), 0.1)
 	pieces[piece.pos()] = piece
-
 
 func on_tile_selected(tile: Tile) -> void:
 	tile_selected.emit(tile)

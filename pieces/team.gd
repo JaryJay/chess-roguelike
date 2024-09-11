@@ -2,15 +2,13 @@ class_name Team extends Node
 
 ## Team types
 enum s {
-	## Always hostile towards enemies
 	ALLY_PLAYER = 15,
 	
-	## Always hostile towards allies
 	ENEMY_AI_0 = 20,
-	ENEMY_AI_1 = 22,
-	ENEMY_AI_2 = 24,
-	ENEMY_AI_3 = 26,
-	ENEMY_AI_4 = 28,
+	#ENEMY_AI_1 = 22,
+	#ENEMY_AI_2 = 24,
+	#ENEMY_AI_3 = 26,
+	#ENEMY_AI_4 = 28,
 	
 	## Reserved for future
 	SPECIAL_ENEMY_AI = 50,

@@ -8,6 +8,9 @@ script = ExtResource("1_6lggj")
 mesh = NodePath("BishopModel/Bishop")
 
 [node name="BishopModel" parent="." instance=ExtResource("1_p8mt8")]
-transform = Transform3D(14.1421, 0, 14.1421, 0, 20, 0, -14.1421, 0, 14.1421, 0, 0, 0)
+transform = Transform3D(14.1421, 0, -14.1421, 0, 20, 0, 14.1421, 0, 14.1421, 0, 0, 0)
+
+[node name="Bishop" parent="BishopModel" index="0"]
+transform = Transform3D(-0.019796, 0, -1.86265e-09, 0, 0.0138572, 0, 1.86265e-09, 0, -0.019796, 0, 0, 0)
 
 [editable path="BishopModel"]

@@ -1,12 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://cudgpunnqtp3e"]
+[gd_scene load_steps=2 format=3 uid="uid://cudgpunnqtp3e"]
 
 [ext_resource type="Script" path="res://board/board.gd" id="1_gq4b1"]
-[ext_resource type="PackedScene" uid="uid://dv7s8yd1t8te6" path="res://pieces/bishop.tscn" id="2_pk4am"]
-[ext_resource type="PackedScene" uid="uid://d4kw3hqcryakr" path="res://pieces/king.tscn" id="3_fjvs0"]
-[ext_resource type="PackedScene" uid="uid://if7u65hrkq2t" path="res://pieces/knight.tscn" id="4_l4kkd"]
-[ext_resource type="PackedScene" uid="uid://dy73aqqndy0su" path="res://pieces/pawn.tscn" id="5_colco"]
-[ext_resource type="PackedScene" uid="uid://chm168jlmppv8" path="res://pieces/queen.tscn" id="6_0wo3k"]
-[ext_resource type="PackedScene" uid="uid://b50io8epatatj" path="res://pieces/rook.tscn" id="7_u1b20"]
 
 [node name="Board" type="Node3D"]
 script = ExtResource("1_gq4b1")
@@ -14,20 +8,3 @@ script = ExtResource("1_gq4b1")
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.25, 0, 0, 0, 1, 7.5, -0.25, 7.5)
 size = Vector3(17, 1, 17)
-
-[node name="Bishop" parent="." instance=ExtResource("2_pk4am")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
-
-[node name="King" parent="." instance=ExtResource("3_fjvs0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
-
-[node name="Knight" parent="." instance=ExtResource("4_l4kkd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
-
-[node name="Pawn" parent="." instance=ExtResource("5_colco")]
-
-[node name="Queen" parent="." instance=ExtResource("6_0wo3k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
-
-[node name="Rook" parent="." instance=ExtResource("7_u1b20")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)

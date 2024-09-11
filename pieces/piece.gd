@@ -7,6 +7,9 @@ const white_material: = preload("res://materials/white_piece_material.tres")
 var _pos: Vector2i
 var _team: Team.s
 
+func _ready() -> void:
+	set_team(team())
+
 func get_available_squares(_board: Board) -> Array[Vector2i]:
 	printerr("get_available_squares not implemented")
 	return []
