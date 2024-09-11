@@ -35,8 +35,22 @@ func generate_tiles() -> void:
 
 			if absf(val) > 0.3:
 				tentative_tile_positions.append(Vector2i(x, y))
-
+	
+	# Prune tentative_tile_positions that are not cardinally adjacent to another tile
+	var pruned_tile_positions: Array[Vector2i] = []
+	const cardinal_directions = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 	for tile_pos: Vector2i in tentative_tile_positions:
+		var good_tile: = false
+		for cardinal_dir: Vector2i in cardinal_directions:
+			if tentative_tile_positions.has(tile_pos + cardinal_dir):
+				good_tile = true
+				break
+		if good_tile:
+			pruned_tile_positions.append(tile_pos)
+		else:
+			print("pruned position %v" % tile_pos)
+
+	for tile_pos: Vector2i in pruned_tile_positions:
 		var tile: = tile_scene.instantiate()
 		tile.name = "Tile_%v" % tile_pos
 		add_child(tile)
@@ -53,9 +67,7 @@ func generate_pieces() -> void:
 	
 	var army: = ArmyGenerator.generate_army(1680, self, Team.s.ALLY_PLAYER)
 	for piece: Piece in army:
-		print(piece.team())
 		spawn_piece(piece, piece.pos())
-		print(piece.team())
 	
 	#var queen: Queen = preload("res://pieces/queen.tscn").instantiate()
 	#spawn_piece(queen, tiles.values()[0].pos())
