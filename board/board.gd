@@ -1,5 +1,6 @@
 class_name Board extends Node3D
 
+
 signal tile_selected(tile: Tile)
 
 # The board can only be up to 16x16 in size, max.
@@ -12,11 +13,7 @@ const CENTER: = Vector2((MAX_X - 1) * 0.5, (MAX_Y - 1) * 0.5)
 
 const tile_scene: = preload("res://board/tile.tscn")
 
-var tiles: Dictionary
-var pieces: Dictionary
-
-func get_tile(pos: Vector2i) -> Tile:
-	return tiles[pos] as Tile
+var state: BoardState = BoardState.new()
 
 func generate_tiles() -> void:
 	var tentative_tile_positions: Array[Vector2i] = []
@@ -58,14 +55,14 @@ func generate_tiles() -> void:
 		tile.position = Vector3(tile_pos.x, 0, tile_pos.y)
 		tile.init(tile_pos)
 
-		tiles[tile_pos] = tile
+		state.tiles[tile_pos] = tile
 
 func generate_pieces() -> void:
-	var enemy_army: = ArmyGenerator.generate_army(1680, self, Team.s.ENEMY_AI_0)
+	var enemy_army: = ArmyGenerator.generate_army(1680, state, Team.s.ENEMY_AI_0)
 	for piece: Piece in enemy_army:
 		spawn_piece(piece, piece.pos())
 	
-	var army: = ArmyGenerator.generate_army(1680, self, Team.s.ALLY_PLAYER)
+	var army: = ArmyGenerator.generate_army(1680, state, Team.s.ALLY_PLAYER)
 	for piece: Piece in army:
 		spawn_piece(piece, piece.pos())
 	
@@ -89,39 +86,31 @@ func generate_pieces() -> void:
 	#spawn_piece(pawn, tiles.values()[-1].pos())
 
 func spawn_piece(piece: Piece, dest: Vector2i) -> void:
-	assert(not pieces.values().has(piece))
-	assert(not get_piece(dest))
-	assert(get_tile(dest))
+	assert(not state.pieces.values().has(piece))
+	assert(not state.get_piece(dest))
+	assert(state.get_tile(dest))
 
 	add_child(piece)
 	piece.set_pos(dest)
-	piece.position = get_tile(dest).position
-	pieces[piece.pos()] = piece
+	piece.position = state.get_tile(dest).position
+	state.pieces[piece.pos()] = piece
 
-func move_piece(piece: Piece, dest: Vector2i) -> void:
-	assert(pieces.values().has(piece))
-	assert(piece.get_available_squares(self).has(dest))
+func perform_move(move: Move) -> void:
+	var piece: = move.piece
+	assert(state.pieces.values().has(piece))
+	assert(piece.get_available_squares(state).has(move.new_pos))
 
-	pieces.erase(piece.pos())
+	state.pieces.erase(piece.pos())
 
-	var existing_piece: = get_piece(dest)
+	var existing_piece: = state.get_piece(move.new_pos)
 	if existing_piece:
 		assert(Team.hostile_to_each_other(piece.team(), existing_piece.team()))
 		existing_piece.queue_free()
-		pieces.erase(existing_piece)
+		state.pieces.erase(existing_piece)
 
-	piece.set_pos(dest)
-	create_tween().tween_property(piece, "position", Vector3(dest.x, 0, dest.y), 0.1)
-	pieces[piece.pos()] = piece
+	piece.set_pos(move.new_pos)
+	create_tween().tween_property(piece, "position", Vector3(move.new_pos.x, 0, move.new_pos.y), 0.1)
+	state.pieces[piece.pos()] = piece
 
 func on_tile_selected(tile: Tile) -> void:
 	tile_selected.emit(tile)
-
-func has_tile(pos: Vector2i) -> bool:
-	return tiles.has(pos)
-
-func has_piece(pos: Vector2i) -> bool:
-	return pieces.has(pos)
-
-func get_piece(pos: Vector2i) -> Piece:
-	return pieces.get(pos)

@@ -10,7 +10,7 @@ var _team: Team.s
 func _ready() -> void:
 	set_team(team())
 
-func get_available_squares(_board: Board) -> Array[Vector2i]:
+func get_available_squares(_s: BoardState) -> Array[Vector2i]:
 	printerr("get_available_squares not implemented")
 	return []
 
