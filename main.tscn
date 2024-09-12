@@ -11,10 +11,10 @@ background_color = Color(0.337754, 0.288089, 0.552513, 1)
 script = ExtResource("1_fdhfs")
 
 [node name="Board" parent="." instance=ExtResource("2_3l42p")]
-position = Vector2(-1440, -1440)
+position = Vector2(-128, -128)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.26, 0.26)
+zoom = Vector2(2.82, 2.82)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_xnp5u")

@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://chm168jlmppv8"]
+[gd_scene load_steps=3 format=3 uid="uid://chm168jlmppv8"]
 
 [ext_resource type="Script" path="res://pieces/queen.gd" id="1_yonmk"]
-[ext_resource type="Texture2D" uid="uid://cjij0tyg3gqdy" path="res://assets/pieces/queen_w.svg" id="2_3yv4j"]
-[ext_resource type="Texture2D" uid="uid://du28hqv6tjx61" path="res://assets/pieces/queen_b.svg" id="3_g20at"]
+[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="2_1eo7f"]
 
 [node name="Queen" type="Node2D" node_paths=PackedStringArray("black_sprite", "white_sprite")]
 script = ExtResource("1_yonmk")
@@ -10,7 +9,15 @@ black_sprite = NodePath("QueenB")
 white_sprite = NodePath("QueenW")
 
 [node name="QueenB" type="Sprite2D" parent="."]
-texture = ExtResource("3_g20at")
+texture = ExtResource("2_1eo7f")
+centered = false
+offset = Vector2(-6.5, -14)
+region_enabled = true
+region_rect = Rect2(62, 83, 13, 21)
 
 [node name="QueenW" type="Sprite2D" parent="."]
-texture = ExtResource("2_3yv4j")
+texture = ExtResource("2_1eo7f")
+centered = false
+offset = Vector2(-6.5, -14)
+region_enabled = true
+region_rect = Rect2(48, 83, 13, 21)

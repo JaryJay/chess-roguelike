@@ -1,10 +1,10 @@
 [gd_scene load_steps=4 format=3 uid="uid://3a7o2ixjone3"]
 
 [ext_resource type="Script" path="res://board/tile.gd" id="1_mk64a"]
-[ext_resource type="Texture2D" uid="uid://8hdes0k4j61f" path="res://assets/textures/dot.png" id="3_dh854"]
+[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="2_vo7sc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u3elo"]
-size = Vector2(180, 180)
+size = Vector2(16, 16)
 
 [node name="Tile" type="Node2D"]
 script = ExtResource("1_mk64a")
@@ -16,13 +16,14 @@ shape = SubResource("RectangleShape2D_u3elo")
 debug_color = Color(0, 0.6, 0.701961, 0.211765)
 
 [node name="Square" type="Polygon2D" parent="."]
-color = Color(0.839216, 0.670588, 0.592157, 1)
-polygon = PackedVector2Array(90, -90, 90, 90, -90, 90, -90, -90)
+color = Color(0.184314, 0.2, 0.313726, 1)
+polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
 
 [node name="Dot" type="Sprite2D" parent="."]
 visible = false
-self_modulate = Color(0.4, 0.317647, 0.282353, 1)
-texture = ExtResource("3_dh854")
+texture = ExtResource("2_vo7sc")
+region_enabled = true
+region_rect = Rect2(40, 41, 4, 4)
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

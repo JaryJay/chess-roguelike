@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dy73aqqndy0su"]
+[gd_scene load_steps=3 format=3 uid="uid://dy73aqqndy0su"]
 
 [ext_resource type="Script" path="res://pieces/pawn.gd" id="1_h6l1k"]
-[ext_resource type="Texture2D" uid="uid://vxgtikutnqa2" path="res://assets/pieces/pawn_b.svg" id="2_1dqqo"]
-[ext_resource type="Texture2D" uid="uid://c1lct2bctitp3" path="res://assets/pieces/pawn_w.svg" id="3_ojv0d"]
+[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="2_n4oyv"]
 
 [node name="Pawn" type="Node2D" node_paths=PackedStringArray("black_sprite", "white_sprite")]
 script = ExtResource("1_h6l1k")
@@ -10,7 +9,13 @@ black_sprite = NodePath("PawnB")
 white_sprite = NodePath("PawnW")
 
 [node name="PawnB" type="Sprite2D" parent="."]
-texture = ExtResource("2_1dqqo")
+texture = ExtResource("2_n4oyv")
+offset = Vector2(0, -1)
+region_enabled = true
+region_rect = Rect2(62, 40, 13, 16)
 
 [node name="PawnW" type="Sprite2D" parent="."]
-texture = ExtResource("3_ojv0d")
+texture = ExtResource("2_n4oyv")
+offset = Vector2(0, -1)
+region_enabled = true
+region_rect = Rect2(48, 40, 13, 16)

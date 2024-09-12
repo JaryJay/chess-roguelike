@@ -9,14 +9,15 @@ var selected: bool = false
 #var show_dot: bool = false
 
 @onready var square: Polygon2D = $Square
+
 @onready var dot: Sprite2D = $Dot
 
 func init(new_pos: Vector2i) -> void:
 	_pos = new_pos
 	if (_pos.x + _pos.y) % 2 == 0:
-		square.color = Color("d6ab97")
+		square.color = Color("c7c5c3")
 	else:
-		square.color = Color("8b604b")
+		square.color = Color("2f3350")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("primary") && hovered:

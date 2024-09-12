@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ccmg6vpkp87ih"
-path="res://.godot/imported/knight_b.svg-ef5aa8cffae92cf87754d032c7eb0dc7.ctex"
+uid="uid://c0acfhkxqh76w"
+path="res://.godot/imported/pieces_sprite_sheet.png-b320056e40fecbe295f2b805f7ade72e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/pieces/knight_b.svg"
-dest_files=["res://.godot/imported/knight_b.svg-ef5aa8cffae92cf87754d032c7eb0dc7.ctex"]
+source_file="res://assets/pieces_sprite_sheet.png"
+dest_files=["res://.godot/imported/pieces_sprite_sheet.png-b320056e40fecbe295f2b805f7ade72e.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=4.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

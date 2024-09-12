@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://b50io8epatatj"]
+[gd_scene load_steps=3 format=3 uid="uid://b50io8epatatj"]
 
 [ext_resource type="Script" path="res://pieces/rook.gd" id="1_a4mhh"]
-[ext_resource type="Texture2D" uid="uid://nd4c0yaxtstu" path="res://assets/pieces/rook_b.svg" id="2_0agbw"]
-[ext_resource type="Texture2D" uid="uid://btwjd55ihrlkx" path="res://assets/pieces/rook_w.svg" id="3_1cvd8"]
+[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="2_j0d2d"]
 
 [node name="Rook" type="Node2D" node_paths=PackedStringArray("black_sprite", "white_sprite")]
 script = ExtResource("1_a4mhh")
@@ -10,7 +9,13 @@ black_sprite = NodePath("RookB")
 white_sprite = NodePath("RookW")
 
 [node name="RookB" type="Sprite2D" parent="."]
-texture = ExtResource("2_0agbw")
+texture = ExtResource("2_j0d2d")
+offset = Vector2(0, -2)
+region_enabled = true
+region_rect = Rect2(91, 39, 13, 17)
 
 [node name="RookW" type="Sprite2D" parent="."]
-texture = ExtResource("3_1cvd8")
+texture = ExtResource("2_j0d2d")
+offset = Vector2(0, -2)
+region_enabled = true
+region_rect = Rect2(77, 39, 13, 17)

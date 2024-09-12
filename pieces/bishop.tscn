@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dv7s8yd1t8te6"]
+[gd_scene load_steps=3 format=3 uid="uid://dv7s8yd1t8te6"]
 
 [ext_resource type="Script" path="res://pieces/bishop.gd" id="1_6lggj"]
-[ext_resource type="Texture2D" uid="uid://ba5nssn3ccw72" path="res://assets/pieces/bishop_b.svg" id="2_6ch1a"]
-[ext_resource type="Texture2D" uid="uid://5dfi36qlnwx2" path="res://assets/pieces/bishop_w.svg" id="2_k7ae2"]
+[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="2_fui3i"]
 
 [node name="Bishop" type="Node2D" node_paths=PackedStringArray("black_sprite", "white_sprite")]
 script = ExtResource("1_6lggj")
@@ -10,7 +9,15 @@ black_sprite = NodePath("BishopB")
 white_sprite = NodePath("BishopW")
 
 [node name="BishopB" type="Sprite2D" parent="."]
-texture = ExtResource("2_6ch1a")
+texture = ExtResource("2_fui3i")
+centered = false
+offset = Vector2(-6.5, -12)
+region_enabled = true
+region_rect = Rect2(81, 61, 13, 19)
 
 [node name="BishopW" type="Sprite2D" parent="."]
-texture = ExtResource("2_k7ae2")
+texture = ExtResource("2_fui3i")
+centered = false
+offset = Vector2(-6.5, -12)
+region_enabled = true
+region_rect = Rect2(95, 61, 13, 19)

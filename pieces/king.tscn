@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://d4kw3hqcryakr"]
+[gd_scene load_steps=3 format=3 uid="uid://d4kw3hqcryakr"]
 
 [ext_resource type="Script" path="res://pieces/king.gd" id="1_hrk33"]
-[ext_resource type="Texture2D" uid="uid://csca2x85lscf0" path="res://assets/pieces/king_b.svg" id="2_rivlr"]
-[ext_resource type="Texture2D" uid="uid://b6j1pc4ukqmrh" path="res://assets/pieces/king_w.svg" id="3_e86b7"]
+[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="2_e7k26"]
 
 [node name="King" type="Node2D" node_paths=PackedStringArray("black_sprite", "white_sprite")]
 script = ExtResource("1_hrk33")
@@ -10,7 +9,15 @@ black_sprite = NodePath("KingB")
 white_sprite = NodePath("KingW")
 
 [node name="KingB" type="Sprite2D" parent="."]
-texture = ExtResource("2_rivlr")
+texture = ExtResource("2_e7k26")
+centered = false
+offset = Vector2(-6.5, -16)
+region_enabled = true
+region_rect = Rect2(92, 81, 13, 23)
 
 [node name="KingW" type="Sprite2D" parent="."]
-texture = ExtResource("3_e86b7")
+texture = ExtResource("2_e7k26")
+centered = false
+offset = Vector2(-6.5, -16)
+region_enabled = true
+region_rect = Rect2(78, 81, 13, 23)

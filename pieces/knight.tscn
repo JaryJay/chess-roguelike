@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://if7u65hrkq2t"]
+[gd_scene load_steps=3 format=3 uid="uid://if7u65hrkq2t"]
 
 [ext_resource type="Script" path="res://pieces/knight.gd" id="1_08q1y"]
-[ext_resource type="Texture2D" uid="uid://ccmg6vpkp87ih" path="res://assets/pieces/knight_b.svg" id="2_tgoyi"]
-[ext_resource type="Texture2D" uid="uid://cplls5ukswsh0" path="res://assets/pieces/knight_w.svg" id="3_6xyh4"]
+[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="2_4mrcl"]
 
 [node name="Knight" type="Node2D" node_paths=PackedStringArray("black_sprite", "white_sprite")]
 script = ExtResource("1_08q1y")
@@ -10,7 +9,13 @@ black_sprite = NodePath("KnightB")
 white_sprite = NodePath("KnightW")
 
 [node name="KnightB" type="Sprite2D" parent="."]
-texture = ExtResource("2_tgoyi")
+texture = ExtResource("2_4mrcl")
+offset = Vector2(-1, -2)
+region_enabled = true
+region_rect = Rect2(63, 63, 17, 17)
 
 [node name="KnightW" type="Sprite2D" parent="."]
-texture = ExtResource("3_6xyh4")
+texture = ExtResource("2_4mrcl")
+offset = Vector2(-1, -2)
+region_enabled = true
+region_rect = Rect2(45, 63, 17, 17)
