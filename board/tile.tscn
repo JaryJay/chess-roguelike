@@ -25,5 +25,12 @@ texture = ExtResource("2_vo7sc")
 region_enabled = true
 region_rect = Rect2(40, 41, 4, 4)
 
+[node name="Label" type="Label" parent="."]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 4.0
+theme_override_font_sizes/font_size = 8
+
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

@@ -18,6 +18,7 @@ func init(new_pos: Vector2i) -> void:
 		square.color = Color("c7c5c3")
 	else:
 		square.color = Color("2f3350")
+	$Label.text = "%s,%s" % [new_pos.x, new_pos.y]
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("primary") && hovered:

@@ -1,4 +1,4 @@
-class_name PieceState extends Resource
+class_name PieceState
 
 var id: int
 var pos: Vector2i
@@ -49,10 +49,10 @@ func king_get_available_squares(s: BoardState) -> Array[Vector2i]:
 	for dir: Vector2i in EIGHT_DIRECTIONS:
 		var currently_checking: = pos + dir
 		if not s.has_tile(currently_checking): continue
-		var piece: = s.get_piece(currently_checking)
+		var piece_state: = s.get_piece_state(currently_checking)
 
-		if piece:
-			if piece.state().team.is_hostile_to(team):
+		if piece_state:
+			if piece_state.team.is_hostile_to(team):
 				available_squares.append(currently_checking)
 			continue
 
@@ -70,10 +70,10 @@ func queen_get_available_squares(s: BoardState) -> Array[Vector2i]:
 		var currently_checking: = pos + dir
 		while true:
 			if not s.has_tile(currently_checking): break
-			var piece: = s.get_piece(currently_checking)
+			var piece_state: = s.get_piece_state(currently_checking)
 	
-			if piece:
-				if piece.state().team.is_hostile_to(team):
+			if piece_state:
+				if piece_state.team.is_hostile_to(team):
 					available_squares.append(currently_checking)
 				break
 	
@@ -92,10 +92,10 @@ func rook_get_available_squares(s: BoardState) -> Array[Vector2i]:
 		var currently_checking: = pos + dir
 		while true:
 			if not s.has_tile(currently_checking): break
-			var piece: = s.get_piece(currently_checking)
+			var piece_state: = s.get_piece_state(currently_checking)
 
-			if piece:
-				if piece.state().team.is_hostile_to(team):
+			if piece_state:
+				if piece_state.team.is_hostile_to(team):
 					available_squares.append(currently_checking)
 				break
 
@@ -114,10 +114,10 @@ func bishop_get_available_squares(s: BoardState) -> Array[Vector2i]:
 		var currently_checking: = pos + dir
 		while true:
 			if not s.has_tile(currently_checking): break
-			var piece: = s.get_piece(currently_checking)
+			var piece_state: = s.get_piece_state(currently_checking)
 
-			if piece:
-				if piece.state().team.is_hostile_to(team):
+			if piece_state:
+				if piece_state.team.is_hostile_to(team):
 					available_squares.append(currently_checking)
 				break
 
@@ -144,9 +144,9 @@ func knight_get_available_squares(s: BoardState) -> Array[Vector2i]:
 	for dir: Vector2i in KNIGHT_DIRECTIONS:
 		var currently_checking: = pos + dir
 		if not s.has_tile(currently_checking): continue
-		var piece: = s.get_piece(currently_checking)
+		var piece_state: = s.get_piece_state(currently_checking)
 
-		if not piece or piece.state().team.is_hostile_to(team):
+		if not piece_state or piece_state.team.is_hostile_to(team):
 			available_squares.append(currently_checking)
 
 	return available_squares
@@ -162,7 +162,7 @@ func pawn_get_available_squares(s: BoardState) -> Array[Vector2i]:
 		available_squares.append(forwards)
 	for diagonal: Vector2i in (DIAGONALS_PLAYER if team.is_player() else DIAGONALS_ENEMY):
 		var square: = pos + diagonal
-		if s.has_piece(square) and s.get_piece(square).state().team.is_hostile_to(team):
+		if s.has_piece(square) and s.get_piece_state(square).team.is_hostile_to(team):
 			available_squares.append(square)
 	
 	return available_squares
@@ -186,6 +186,11 @@ func get_worth() -> float:
 			return 1
 	assert(false, "Impossible!!!")
 	return 0
+
+func duplicate() -> PieceState:
+	var new_piece_state: = PieceState.new(pos, type, team)
+	new_piece_state.id = id
+	return new_piece_state
 
 # Generating ids
 static var _next_id: = 1

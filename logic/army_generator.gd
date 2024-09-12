@@ -36,11 +36,11 @@ static func generate_army(credits: int, state: BoardState, team: Team) -> Array[
 	
 	# Generate pieces
 	while credits > 0:
-		var piece_type_index: = generate_piece_type_index(credits)
-		if piece_type_index == -1: break
+		var piece_type: = generate_piece_type(credits)
+		if piece_type == Piece.Type.UNSET: break
 		
-		credits -= COSTS[piece_type_index]
-		army.append(PIECES[piece_type_index].instantiate())
+		credits -= COSTS[piece_type]
+		army.append(SCENES[piece_type].instantiate())
 	
 	# Arrange pieces
 	var army_size: = army.size()
@@ -51,22 +51,21 @@ static func generate_army(credits: int, state: BoardState, team: Team) -> Array[
 	tiles.sort_custom(sort_tiles_by_y)
 	var first_few_tiles: = tiles.slice(0, army_size) if team.is_enemy() else tiles.slice(-army_size)
 	for i: int in army_size:
-		var piece_state: = PieceState.new(first_few_tiles[i].pos(), Piece.Type.)
-		army[i].state().set_team(team)
-		army[i].set_pos(first_few_tiles[i].pos())
+		var piece_state: = PieceState.new(first_few_tiles[i].pos(), army[i].type, team)
+		army[i].set_state(piece_state)
 	
 	return army
 
-static func generate_piece_type_index(credits: int) -> int:
-	if credits < COSTS[-1]: return -1
+static func generate_piece_type(credits: int) -> Piece.Type:
+	if credits < COSTS[Piece.Type.PAWN]: return Piece.Type.UNSET
 	
-	var affordable_indices: = []
-	for i: int in COSTS.size():
-		if COSTS[i] <= credits: affordable_indices.append(i)
+	var affordable_types: Array[Piece.Type] = []
+	for type: Piece.Type in COSTS.keys():
+		if COSTS[type] <= credits: affordable_types.append(type)
 	
-	assert(affordable_indices.size() >= 1)
+	assert(affordable_types.size() >= 1)
 	
-	return affordable_indices.pick_random()
+	return affordable_types.pick_random()
 
 static func sort_tiles_by_y(a: Tile, b: Tile) -> bool:
 	return a.pos().y < b.pos().y

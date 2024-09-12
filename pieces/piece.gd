@@ -21,10 +21,6 @@ func _ready() -> void:
 	assert(white_sprite)
 	init_team_color()
 
-func get_worth() -> float:
-	printerr("get_worth not implemented")
-	return 0
-
 func state() -> PieceState:
 	return _state
 

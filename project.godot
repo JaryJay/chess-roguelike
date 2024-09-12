@@ -34,6 +34,13 @@ secondary={
 ]
 }
 
+[network]
+
+limits/debugger/max_chars_per_second=98304
+limits/debugger/max_queued_messages=32768
+limits/debugger/max_errors_per_second=1600
+limits/debugger/max_warnings_per_second=1600
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
