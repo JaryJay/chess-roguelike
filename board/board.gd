@@ -1,4 +1,4 @@
-class_name Board extends Node3D
+class_name Board extends Node2D
 
 
 signal tile_selected(tile: Tile)
@@ -52,7 +52,7 @@ func generate_tiles() -> void:
 		tile.name = "Tile_%v" % tile_pos
 		add_child(tile)
 		tile.mouse_selected.connect(on_tile_selected.bind(tile))
-		tile.position = Vector3(tile_pos.x, 0, tile_pos.y)
+		tile.position = Vector2(tile_pos.x * 180, tile_pos.y * 180)
 		tile.init(tile_pos)
 
 		state.tiles[tile_pos] = tile
@@ -105,7 +105,7 @@ func perform_move(move: Move) -> void:
 		state.pieces.erase(existing_piece)
 
 	piece.set_pos(move.to)
-	create_tween().tween_property(piece, "position", Vector3(move.to.x, 0, move.to.y), 0.1)
+	create_tween().tween_property(piece, "position", Vector2(move.to.x, move.to.y) * 180, 0.1)
 	state.pieces[piece.pos()] = piece
 
 func on_tile_selected(tile: Tile) -> void:

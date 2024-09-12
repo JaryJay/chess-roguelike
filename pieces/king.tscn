@@ -1,13 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://d4kw3hqcryakr"]
+[gd_scene load_steps=4 format=3 uid="uid://d4kw3hqcryakr"]
 
 [ext_resource type="Script" path="res://pieces/king.gd" id="1_hrk33"]
-[ext_resource type="PackedScene" uid="uid://cpcoskxkoayl8" path="res://assets/pieces/king.blend" id="1_rt8kf"]
+[ext_resource type="Texture2D" uid="uid://csca2x85lscf0" path="res://assets/pieces/king_b.svg" id="2_rivlr"]
+[ext_resource type="Texture2D" uid="uid://b6j1pc4ukqmrh" path="res://assets/pieces/king_w.svg" id="3_e86b7"]
 
-[node name="King" type="Node3D" node_paths=PackedStringArray("mesh")]
+[node name="King" type="Node2D" node_paths=PackedStringArray("black_sprite", "white_sprite")]
 script = ExtResource("1_hrk33")
-mesh = NodePath("KingModel/King")
+black_sprite = NodePath("KingB")
+white_sprite = NodePath("KingW")
 
-[node name="KingModel" parent="." instance=ExtResource("1_rt8kf")]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)
+[node name="KingB" type="Sprite2D" parent="."]
+texture = ExtResource("2_rivlr")
 
-[editable path="KingModel"]
+[node name="KingW" type="Sprite2D" parent="."]
+texture = ExtResource("3_e86b7")

@@ -7,39 +7,14 @@
 background_mode = 1
 background_color = Color(0.337754, 0.288089, 0.552513, 1)
 
-[node name="Main" type="Node3D"]
+[node name="Main" type="Node2D"]
 script = ExtResource("1_fdhfs")
 
 [node name="Board" parent="." instance=ExtResource("2_3l42p")]
+position = Vector2(-1440, -1440)
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.195946, 0.980614, 0, -0.980614, 0.195946, 7.5, 10.606, 10.988)
-current = true
-size = 19.902
-
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.93542, 7.04985, 4.7961)
-omni_range = 15.0846
-
-[node name="OmniLight3D3" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.69034, 5.64858, 1.95342)
-omni_range = 22.6526
-
-[node name="OmniLight3D4" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.4863, 5.64858, 14.5826)
-light_color = Color(0.744326, 0.704679, 0.621997, 1)
-omni_range = 22.6526
-
-[node name="OmniLight3D2" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.73844, 2.71146, 17.7204)
-light_color = Color(0.522205, 0.744479, 0.815593, 1)
-omni_range = 13.094
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.856736, -0.436352, -0.274956, 0, -0.533113, 0.846044, -0.515756, -0.724836, -0.456737, 0, 17.385, 0)
-visible = false
-shadow_enabled = true
-sky_mode = 1
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.26, 0.26)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_xnp5u")

@@ -1,7 +1,4 @@
-class_name Piece extends Node
-
-const black_material: = preload("res://materials/black_piece_material.tres")
-const white_material: = preload("res://materials/white_piece_material.tres")
+class_name Piece extends Node2D
 
 enum Type {
 	UNSET,
@@ -13,11 +10,14 @@ enum Type {
 	PAWN,
 }
 
-@export var mesh: MeshInstance3D
+@export var black_sprite: Sprite2D
+@export var white_sprite: Sprite2D
 var _pos: Vector2i
 var _team: Team
 
 func _ready() -> void:
+	assert(black_sprite)
+	assert(white_sprite)
 	set_team(team())
 
 func get_available_squares(_s: BoardState) -> Array[Vector2i]:
@@ -39,8 +39,12 @@ func team() -> Team:
 
 func set_team(new_team: Team) -> void:
 	_team = new_team
-	assert(mesh)
-	if new_team.is_player():
-		mesh.material_override = white_material
+	
+	if not is_node_ready(): return
+	
+	if team().is_player():
+		black_sprite.queue_free()
+	elif team().is_enemy():
+		white_sprite.queue_free()
 	else:
-		mesh.material_override = black_material
+		assert(false, "Unknown team %s" % team()._key)

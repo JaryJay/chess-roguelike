@@ -1,13 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://if7u65hrkq2t"]
+[gd_scene load_steps=4 format=3 uid="uid://if7u65hrkq2t"]
 
 [ext_resource type="Script" path="res://pieces/knight.gd" id="1_08q1y"]
-[ext_resource type="PackedScene" uid="uid://cgu3y888v5fpv" path="res://assets/pieces/knight.blend" id="1_hto52"]
+[ext_resource type="Texture2D" uid="uid://ccmg6vpkp87ih" path="res://assets/pieces/knight_b.svg" id="2_tgoyi"]
+[ext_resource type="Texture2D" uid="uid://cplls5ukswsh0" path="res://assets/pieces/knight_w.svg" id="3_6xyh4"]
 
-[node name="Knight" type="Node3D" node_paths=PackedStringArray("mesh")]
+[node name="Knight" type="Node2D" node_paths=PackedStringArray("black_sprite", "white_sprite")]
 script = ExtResource("1_08q1y")
-mesh = NodePath("KnightModel/Knight")
+black_sprite = NodePath("KnightB")
+white_sprite = NodePath("KnightW")
 
-[node name="KnightModel" parent="." instance=ExtResource("1_hto52")]
-transform = Transform3D(-8.74228e-07, 0, 20, 0, 20, 0, -20, 0, -8.74228e-07, 0, 0, 0)
+[node name="KnightB" type="Sprite2D" parent="."]
+texture = ExtResource("2_tgoyi")
 
-[editable path="KnightModel"]
+[node name="KnightW" type="Sprite2D" parent="."]
+texture = ExtResource("3_6xyh4")

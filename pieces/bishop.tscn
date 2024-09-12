@@ -1,16 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://dv7s8yd1t8te6"]
+[gd_scene load_steps=4 format=3 uid="uid://dv7s8yd1t8te6"]
 
 [ext_resource type="Script" path="res://pieces/bishop.gd" id="1_6lggj"]
-[ext_resource type="PackedScene" uid="uid://ctjah5lfyyb3i" path="res://assets/pieces/bishop.blend" id="1_p8mt8"]
+[ext_resource type="Texture2D" uid="uid://ba5nssn3ccw72" path="res://assets/pieces/bishop_b.svg" id="2_6ch1a"]
+[ext_resource type="Texture2D" uid="uid://5dfi36qlnwx2" path="res://assets/pieces/bishop_w.svg" id="2_k7ae2"]
 
-[node name="Bishop" type="Node3D" node_paths=PackedStringArray("mesh")]
+[node name="Bishop" type="Node2D" node_paths=PackedStringArray("black_sprite", "white_sprite")]
 script = ExtResource("1_6lggj")
-mesh = NodePath("BishopModel/Bishop")
+black_sprite = NodePath("BishopB")
+white_sprite = NodePath("BishopW")
 
-[node name="BishopModel" parent="." instance=ExtResource("1_p8mt8")]
-transform = Transform3D(14.1421, 0, -14.1421, 0, 20, 0, 14.1421, 0, 14.1421, 0, 0, 0)
+[node name="BishopB" type="Sprite2D" parent="."]
+texture = ExtResource("2_6ch1a")
 
-[node name="Bishop" parent="BishopModel" index="0"]
-transform = Transform3D(-0.019796, 0, -1.86265e-09, 0, 0.0138572, 0, 1.86265e-09, 0, -0.019796, 0, 0, 0)
-
-[editable path="BishopModel"]
+[node name="BishopW" type="Sprite2D" parent="."]
+texture = ExtResource("2_k7ae2")

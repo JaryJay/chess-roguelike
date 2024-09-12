@@ -1,13 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://chm168jlmppv8"]
+[gd_scene load_steps=4 format=3 uid="uid://chm168jlmppv8"]
 
-[ext_resource type="PackedScene" uid="uid://ds2lg666it0r1" path="res://assets/pieces/queen.blend" id="1_jw0tx"]
 [ext_resource type="Script" path="res://pieces/queen.gd" id="1_yonmk"]
+[ext_resource type="Texture2D" uid="uid://cjij0tyg3gqdy" path="res://assets/pieces/queen_w.svg" id="2_3yv4j"]
+[ext_resource type="Texture2D" uid="uid://du28hqv6tjx61" path="res://assets/pieces/queen_b.svg" id="3_g20at"]
 
-[node name="Queen" type="Node3D" node_paths=PackedStringArray("mesh")]
+[node name="Queen" type="Node2D" node_paths=PackedStringArray("black_sprite", "white_sprite")]
 script = ExtResource("1_yonmk")
-mesh = NodePath("QueenModel/Queen")
+black_sprite = NodePath("QueenB")
+white_sprite = NodePath("QueenW")
 
-[node name="QueenModel" parent="." instance=ExtResource("1_jw0tx")]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)
+[node name="QueenB" type="Sprite2D" parent="."]
+texture = ExtResource("3_g20at")
 
-[editable path="QueenModel"]
+[node name="QueenW" type="Sprite2D" parent="."]
+texture = ExtResource("2_3yv4j")

@@ -1,4 +1,4 @@
-extends Node3D
+extends Node2D
 
 @onready var board: Board = $Board
 
@@ -49,7 +49,7 @@ func move_piece(move: Move) -> void:
 func do_enemy_turn() -> void:
 	print("Doing enemy turn")
 	board.state.current_turn = Team.ENEMY_AI
-	var best_result: = ai.get_best_result(board.state, 3, -INF, INF)
+	var best_result: = ai.get_best_result(board.state, 1, -INF, INF)
 	board.perform_move(best_result.move)
 	print("Performed move, eval = %s" % best_result.evaluation)
 	board.state.current_turn = Team.PLAYER
