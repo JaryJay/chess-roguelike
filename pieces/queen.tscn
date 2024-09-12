@@ -1,10 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://chm168jlmppv8"]
 
-[ext_resource type="Script" path="res://pieces/queen.gd" id="1_yonmk"]
+[ext_resource type="Script" path="res://pieces/piece.gd" id="1_bo46n"]
 [ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="2_1eo7f"]
 
 [node name="Queen" type="Node2D" node_paths=PackedStringArray("black_sprite", "white_sprite")]
-script = ExtResource("1_yonmk")
+script = ExtResource("1_bo46n")
+type = 2
 black_sprite = NodePath("QueenB")
 white_sprite = NodePath("QueenW")
 

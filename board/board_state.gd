@@ -1,7 +1,7 @@
 class_name BoardState
 
 var tiles: Dictionary
-var pieces: Dictionary
+var pieces: Dictionary # Map from 
 var current_turn: Team = Team.PLAYER
 
 func is_end_state() -> bool:

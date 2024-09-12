@@ -10,41 +10,31 @@ enum Type {
 	PAWN,
 }
 
+@export var type: Type
 @export var black_sprite: Sprite2D
 @export var white_sprite: Sprite2D
-var _pos: Vector2i
-var _team: Team
+
+var _state: PieceState
 
 func _ready() -> void:
 	assert(black_sprite)
 	assert(white_sprite)
-	set_team(team())
-
-func get_available_squares(_s: BoardState) -> Array[Vector2i]:
-	printerr("get_available_squares not implemented")
-	return []
+	init_team_color()
 
 func get_worth() -> float:
 	printerr("get_worth not implemented")
 	return 0
 
-func pos() -> Vector2i:
-	return _pos
+func state() -> PieceState:
+	return _state
 
-func set_pos(new_pos: Vector2i) -> void:
-	_pos = new_pos
+func set_state(new_state: PieceState) -> void:
+	_state = new_state
 
-func team() -> Team:
-	return _team
-
-func set_team(new_team: Team) -> void:
-	_team = new_team
-	
-	if not is_node_ready(): return
-	
-	if team().is_player():
+func init_team_color() -> void:
+	if state().team.is_player():
 		black_sprite.queue_free()
-	elif team().is_enemy():
+	elif state().team.is_enemy():
 		white_sprite.queue_free()
 	else:
-		assert(false, "Unknown team %s" % team()._key)
+		assert(false, "Unknown team %s" % state().team._key)
