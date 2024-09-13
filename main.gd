@@ -5,9 +5,32 @@ extends Node2D
 var selected_piece: Piece
 var ai: = AI.new()
 
+var ai_thread: Thread
+var semaphore: Semaphore
+var mutex: Mutex
+var exit_thread: = false
+
+var ai_move_queue: Array[Move] = []
+
 func _ready() -> void:
 	board.generate_tiles()
 	board.generate_pieces()
+	
+	mutex = Mutex.new()
+	semaphore = Semaphore.new()
+	ai_thread = Thread.new()
+	ai_thread.start(ai_thread_func)
+
+func _process(_delta: float) -> void:
+	mutex.lock()
+	if ai_move_queue.is_empty():
+		mutex.unlock()
+		return
+	var move: Move = ai_move_queue.pop_front()
+	assert(board.state.current_turn.is_enemy())
+	mutex.unlock()
+	
+	board.perform_move(move)
 
 func _on_board_tile_selected(tile: Tile) -> void:
 	#if not board.state.current_turn.is_player():
@@ -48,11 +71,27 @@ func move_piece(move: Move) -> void:
 
 func do_enemy_turn() -> void:
 	print("Doing enemy turn")
-	board.state.current_turn = Team.ENEMY_AI
-	var best_result: = ai.get_best_result(board.state, 3, -INF, INF)
-	board.perform_move(best_result.move)
-	print("Performed move, eval = %s" % best_result.evaluation)
-	board.state.current_turn = Team.PLAYER
+	assert(board.state.current_turn == Team.ENEMY_AI)
+	semaphore.post()
+
+func ai_thread_func() -> void:
+	print("AI Thread started")
+	while true:
+		semaphore.wait()
+		mutex.lock()
+		var should_exit: = exit_thread
+		var board_state: = board.state
+		mutex.unlock()
+		if should_exit:
+			break
+		
+		print("AI thinking...")
+		var best_result: = ai.get_best_result(board_state, 2, -INF, INF)
+		print("Result: %s" % best_result)
+		
+		mutex.lock()
+		ai_move_queue.append(best_result.move)
+		mutex.unlock()
 
 func select_piece(piece: Piece) -> void:
 	selected_piece = piece
@@ -64,3 +103,14 @@ func unselect_previous_piece() -> void:
 	for square_pos: Vector2i in selected_piece.state().get_available_squares(board.state):
 		board.state.get_tile(square_pos).set_show_dot(false)
 	selected_piece = null
+
+func _exit_tree() -> void:
+	mutex.lock()
+	exit_thread = true # Protect with Mutex.
+	mutex.unlock()
+
+	# Unblock by posting.
+	semaphore.post()
+
+	# Wait until it exits.
+	ai_thread.wait_to_finish()

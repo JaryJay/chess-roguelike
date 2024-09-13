@@ -1,12 +1,15 @@
 class_name AI
 
-class Result:
+class Result extends Resource:
 	var evaluation: float
 	var move: Move
 	
 	func _init(_evaluation: float, _move: Move) -> void:
 		evaluation = _evaluation
 		move = _move
+	
+	func _to_string() -> String:
+		return "Move %s, Eval %.1f" % [move, evaluation]
 
 func get_best_result(s: BoardState, depth: int, alpha: float, beta: float) -> Result:
 	if depth == 0 or s.is_end_state():
