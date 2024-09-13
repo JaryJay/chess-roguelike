@@ -61,11 +61,11 @@ func generate_tiles() -> void:
 		tiles[tile_pos] = tile
 
 func generate_pieces() -> void:
-	var enemy_army: = ArmyGenerator.generate_army(2100, state, Team.ENEMY_AI)
+	var enemy_army: = ArmyGenerator.generate_army(1000, state, Team.ENEMY_AI)
 	for piece: Piece in enemy_army:
 		spawn_piece(piece, piece.state().pos)
 	
-	var army: = ArmyGenerator.generate_army(1600, state, Team.PLAYER)
+	var army: = ArmyGenerator.generate_army(1000, state, Team.PLAYER)
 	for piece: Piece in army:
 		spawn_piece(piece, piece.state().pos)
 	

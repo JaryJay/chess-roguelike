@@ -157,11 +157,15 @@ const DIAGONALS_ENEMY: = [Vector2i(1, 1), Vector2i(1, 1)]
 func pawn_get_available_squares(s: BoardState) -> Array[Vector2i]:
 	var available_squares: Array[Vector2i] = []
 	
-	var forwards: = pos + (Vector2i.UP if team.is_player() else Vector2i.DOWN)
+	var y_modifier: = -1 if team.is_player() else 1
+	
+	var forwards: = pos + Vector2i(0, y_modifier)
 	if s.has_tile(forwards) and not s.has_piece(forwards):
 		available_squares.append(forwards)
-	for diagonal: Vector2i in (DIAGONALS_PLAYER if team.is_player() else DIAGONALS_ENEMY):
-		var square: = pos + diagonal
+	
+	var sides: = [Vector2i.LEFT, Vector2i.RIGHT]
+	for side: Vector2i in sides:
+		var square: = pos + side + Vector2i(0, y_modifier)
 		if s.has_piece(square) and s.get_piece_state(square).team.is_hostile_to(team):
 			available_squares.append(square)
 	
@@ -190,7 +194,11 @@ func get_worth() -> float:
 func duplicate() -> PieceState:
 	var new_piece_state: = PieceState.new(pos, type, team)
 	new_piece_state.id = id
+	assert(self.equals(new_piece_state))
 	return new_piece_state
+
+func equals(p: PieceState) -> bool:
+	return id == p.id and pos == p.pos and type == p.type and team == p.team
 
 # Generating ids
 static var _next_id: = 1

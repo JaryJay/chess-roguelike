@@ -21,3 +21,6 @@ func is_hostile_to(t: Team) -> bool:
 func is_friendly_to(t: Team) -> bool:
 	assert(t != null)
 	return (is_player() and t.is_player()) or (is_enemy() and t.is_enemy())
+
+func _to_string() -> String:
+	return "Player" if is_player() else "Enemy AI"

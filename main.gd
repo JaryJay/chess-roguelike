@@ -19,11 +19,11 @@ func _on_board_tile_selected(tile: Tile) -> void:
 	var piece: = board.get_piece(board.state.get_piece_state(tile.pos()).id) if board.state.has_piece(tile.pos()) else null
 
 	if selected_piece:
+		# Check if valid
+		if not selected_piece.state().get_available_squares(board.state).has(tile.pos()):
+			unselect_previous_piece()
+			return
 		if not piece:
-			# Check if valid
-			if not selected_piece.state().get_available_squares(board.state).has(tile.pos()):
-				unselect_previous_piece()
-				return
 			move_piece(Move.new(selected_piece.state().id, selected_piece.state().pos, tile.pos()))
 			unselect_previous_piece() 
 			do_enemy_turn()
@@ -49,7 +49,7 @@ func move_piece(move: Move) -> void:
 func do_enemy_turn() -> void:
 	print("Doing enemy turn")
 	board.state.current_turn = Team.ENEMY_AI
-	var best_result: = ai.get_best_result(board.state, 6, -INF, INF)
+	var best_result: = ai.get_best_result(board.state, 3, -INF, INF)
 	board.perform_move(best_result.move)
 	print("Performed move, eval = %s" % best_result.evaluation)
 	board.state.current_turn = Team.PLAYER
