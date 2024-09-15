@@ -86,7 +86,10 @@ func ai_thread_func() -> void:
 			break
 		
 		print("AI thinking...")
-		var best_result: = ai.get_best_result(board_state, 2, -INF, INF)
+		var start_time: = Time.get_ticks_msec()
+		var best_result: = ai.get_best_result(board_state, 3, -INF, INF)
+		var end_time: = Time.get_ticks_msec()
+		print("Found move after %s ms" % (end_time - start_time))
 		print("Result: %s" % best_result)
 		
 		mutex.lock()
