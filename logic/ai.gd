@@ -1,5 +1,7 @@
 class_name AI
 
+const MAX_MOVES_TO_CONSIDER: = 10
+
 class Result extends Resource:
 	var evaluation: float
 	var move: Move
@@ -11,39 +13,59 @@ class Result extends Resource:
 	func _to_string() -> String:
 		return "Move %s, Eval %.1f" % [move, evaluation]
 
-func get_best_result(s: BoardState, depth: int, alpha: float, beta: float) -> Result:
+func get_best_result(s: BoardState, depth: int) -> Result:
+	var best_result: = _get_best_result(s, depth, -INF, INF)
+	print("Best result is")
+	print(best_result)
+	
+	# Show thought process
+	var current_result: = best_result
+	var board_state: = s
+	for d in range(depth - 1, -1, -1):
+		board_state = board_state.simulate_move(current_result.move)
+		current_result = _get_best_result(board_state, d, -INF, INF)
+		print("Continuation")
+		print(current_result)
+	
+	return best_result
+
+func _get_best_result(s: BoardState, depth: int, alpha: float, beta: float) -> Result:
 	if depth == 0 or s.is_end_state():
 		return Result.new(evaluate(s), null)
 	if s.current_turn == Team.PLAYER:
 		var best_result: = Result.new(-INF, null)
 		var legal_moves: = s.get_legal_moves()
 		sort_moves_by_strength_desc(legal_moves, s)
-		for move: Move in legal_moves:
+		for i in mini(legal_moves.size(), MAX_MOVES_TO_CONSIDER):
+			var move: = legal_moves[i]
 			#print("%s: player move from %v to %v" % [depth, move.from, move.to])
 			var new_board_state: = s.simulate_move(move)
-			var result: = get_best_result(new_board_state, depth - 1, alpha, beta)
+			var result: = _get_best_result(new_board_state, depth - 1, alpha, beta)
 			#print("%s: eval if player move from %v to %v: %s" % [depth, move.from, move.to, result.evaluation])
 			if result.evaluation >= best_result.evaluation:
 				best_result = Result.new(result.evaluation, move)
 				alpha = result.evaluation
 			if beta <= alpha:
-				print("Beta cut-off at d=%s, a=%s, b=%s" % [depth - 1, alpha, beta])
+				#print("Beta cut-off at d=%s, a=%s, b=%s" % [depth - 1, alpha, beta])
 				break  # beta cut-off
 		return best_result
 	else:
 		var worst_result: = Result.new(INF, null)
 		var legal_moves: = s.get_legal_moves()
 		sort_moves_by_strength_desc(legal_moves, s)
-		for move: Move in legal_moves:
+		#print(".")
+		for i in mini(legal_moves.size(), MAX_MOVES_TO_CONSIDER):
+			var move: = legal_moves[i]
+			#print(estimate_move_strength(move, s))
 			#print("%s: ai move from %v to %v" % [depth, move.from, move.to])
 			var new_board_state: = s.simulate_move(move)
-			var result: = get_best_result(new_board_state, depth - 1, alpha, beta)
+			var result: = _get_best_result(new_board_state, depth - 1, alpha, beta)
 			#print("%s: eval if ai move from %v to %v: %s" % [depth, move.from, move.to, result.evaluation])
 			if result.evaluation <= worst_result.evaluation:
 				worst_result = Result.new(result.evaluation, move)
 				beta = result.evaluation
 			if beta <= alpha:
-				print("Alpha cut-off at d=%s, a=%s, b=%s" % [depth - 1, alpha, beta])
+				#print("Alpha cut-off at d=%s, a=%s, b=%s" % [depth - 1, alpha, beta])
 				break  # alpha cut-off
 		return worst_result
 
@@ -75,7 +97,7 @@ func sort_moves_by_strength_desc(moves: Array[Move], board_state: BoardState) ->
 			move_strength_cache[m1] = estimate_move_strength(m1, board_state)
 		if not move_strength_cache.has(m2):
 			move_strength_cache[m2] = estimate_move_strength(m2, board_state)
-		return move_strength_cache[m1] < move_strength_cache[m2]
+		return move_strength_cache[m1] > move_strength_cache[m2]
 	)
 
 ## Used as a heuristic to prioritize certain moves in get_best_result

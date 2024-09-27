@@ -87,7 +87,7 @@ func ai_thread_func() -> void:
 		
 		print("AI thinking...")
 		var start_time: = Time.get_ticks_msec()
-		var best_result: = ai.get_best_result(board_state, 3, -INF, INF)
+		var best_result: = ai.get_best_result(board_state, 6)
 		var end_time: = Time.get_ticks_msec()
 		print("Found move after %s ms" % (end_time - start_time))
 		print("Result: %s" % best_result)
