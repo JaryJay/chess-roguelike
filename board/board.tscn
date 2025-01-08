@@ -3,4 +3,5 @@
 [ext_resource type="Script" path="res://board/board.gd" id="1_gq4b1"]
 
 [node name="Board" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_gq4b1")

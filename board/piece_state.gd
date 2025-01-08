@@ -177,15 +177,15 @@ func get_worth() -> float:
 	assert(type != Piece.Type.UNSET, "Type must be set")
 	match type:
 		Piece.Type.KING:
-			return 99999999
+			return 1_000_000
 		Piece.Type.QUEEN:
 			return 9
 		Piece.Type.ROOK:
 			return 5
 		Piece.Type.BISHOP:
-			return 3
+			return 3.2
 		Piece.Type.KNIGHT:
-			return 2.9
+			return 3
 		Piece.Type.PAWN:
 			return 1
 	assert(false, "Impossible!!!")

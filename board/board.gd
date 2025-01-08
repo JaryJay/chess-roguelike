@@ -32,7 +32,7 @@ func generate_tiles() -> void:
 			var normalized_dist: = dist / (MAX_X * sqrt(2) / 2)
 			val = val * (1 - normalized_dist)
 
-			if absf(val) > 0.3:
+			if absf(val) > 0.35:
 				tentative_tile_positions.append(Vector2i(x, y))
 	
 	# Prune tentative_tile_positions that are not cardinally adjacent to another tile
@@ -114,6 +114,16 @@ func perform_move(move: Move) -> void:
 	for piece_state: PieceState in state.piece_states.values():
 		var p: = get_piece(piece_state.id)
 		p.set_state(piece_state)
+	
+	if piece.type != piece.state().type:
+		assert(piece.type == Piece.Type.QUEEN and piece.state().type == Piece.Type.PAWN)
+		var old_state: = piece.state()
+		piece.queue_free()
+		piece = ArmyGenerator.queen_scene.instantiate()
+		piece.set_state(old_state)
+		spawn_piece(piece, move.from)
+	
+	create_tween().tween_property(piece, "position", Vector2(move.to.x, move.to.y) * 16, 0.1)
 
 func on_tile_selected(tile: Tile) -> void:
 	tile_selected.emit(tile)

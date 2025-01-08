@@ -22,6 +22,9 @@ func simulate_move(move: Move) -> BoardState:
 		new_state.piece_states.erase(move.to)
 	
 	new_state.piece_states.erase(piece_state.pos)
+	
+	if piece_state.type == Piece.Type.PAWN and not has_tile(piece_state.pos + (Vector2i.DOWN if piece_state.team.is_enemy() else Vector2i.UP)):
+		piece_state.type = Piece.Type.QUEEN
 	new_state.piece_states[move.to] = piece_state
 	piece_state.pos = move.to
 	

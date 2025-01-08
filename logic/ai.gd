@@ -22,6 +22,7 @@ func get_best_result(s: BoardState, depth: int) -> Result:
 	var current_result: = best_result
 	var board_state: = s
 	for d in range(depth - 1, -1, -1):
+		if not current_result.move: break
 		board_state = board_state.simulate_move(current_result.move)
 		current_result = _get_best_result(board_state, d, -INF, INF)
 		print("Continuation")
