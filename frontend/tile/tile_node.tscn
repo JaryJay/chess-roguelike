@@ -1,13 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://3a7o2ixjone3"]
 
-[ext_resource type="Script" path="res://board/tile.gd" id="1_mk64a"]
-[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="2_vo7sc"]
+[ext_resource type="Script" path="res://frontend/tile/tile_node.gd" id="1_s47jb"]
+[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="2_qlk8e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u3elo"]
 size = Vector2(16, 16)
 
 [node name="Tile" type="Node2D"]
-script = ExtResource("1_mk64a")
+script = ExtResource("1_s47jb")
 
 [node name="Area2D" type="Area2D" parent="."]
 
@@ -21,7 +21,7 @@ polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
 
 [node name="Dot" type="Sprite2D" parent="."]
 visible = false
-texture = ExtResource("2_vo7sc")
+texture = ExtResource("2_qlk8e")
 region_enabled = true
 region_rect = Rect2(40, 41, 4, 4)
 

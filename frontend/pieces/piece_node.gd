@@ -1,30 +1,20 @@
-class_name Piece extends Node2D
+class_name PieceNode extends Node2D
 
-enum Type {
-	UNSET,
-	KING,
-	QUEEN,
-	ROOK,
-	BISHOP,
-	KNIGHT,
-	PAWN,
-}
-
-@export var type: Type
+@export var type: Piece.Type
 @export var black_sprite: Sprite2D
 @export var white_sprite: Sprite2D
 
-var _state: PieceState
+var _state: Piece
 
 func _ready() -> void:
 	assert(black_sprite)
 	assert(white_sprite)
 	init_team_color()
 
-func state() -> PieceState:
+func state() -> Piece:
 	return _state
 
-func set_state(new_state: PieceState) -> void:
+func set_state(new_state: Piece) -> void:
 	_state = new_state
 
 func init_team_color() -> void:

@@ -23,6 +23,13 @@ window/size/viewport_height=768
 
 project/assembly_name="Chess-roguelike"
 
+[file_customization]
+
+folder_colors={
+"res://backend/": "green",
+"res://frontend/": "blue"
+}
+
 [input]
 
 primary={
