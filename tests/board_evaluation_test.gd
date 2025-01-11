@@ -75,7 +75,7 @@ static func test_2() -> void:
 	print("Test 2 passed")
 
 static func add_tile_to_board_state(pos: Vector2i, state: BoardState) -> void:
-	var tile: = Tile.new()
+	var tile: = TileNode.new()
 	tile._pos = Vector2(pos.x, pos.y)
 	state.tiles[pos] = tile
 

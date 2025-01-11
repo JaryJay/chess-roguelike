@@ -32,11 +32,11 @@ func _process(_delta: float) -> void:
 	
 	board.perform_move(move)
 
-func _on_board_tile_selected(tile: Tile) -> void:
+func _on_board_tile_selected(tile: TileNode) -> void:
 	#if not board.state.current_turn.is_player():
 		#return
 	
-	assert(tile, "Tile cannot be null")
+	assert(tile, "TileNode cannot be null")
 	assert(board.state.has_tile(tile.pos()), "Board must have this tile")
 	
 	var piece: = board.get_piece(board.state.get_piece_state(tile.pos()).id) if board.state.has_piece(tile.pos()) else null

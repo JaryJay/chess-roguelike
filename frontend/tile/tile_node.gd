@@ -1,4 +1,4 @@
-class_name Tile extends Node2D
+class_name TileNode extends Node2D
 
 signal mouse_selected
 

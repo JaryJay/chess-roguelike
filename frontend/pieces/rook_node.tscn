@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b50io8epatatj"]
 
-[ext_resource type="Script" path="res://pieces/piece.gd" id="1_s2cgv"]
+[ext_resource type="Script" path="res://frontend/pieces/piece_node.gd" id="1_s2cgv"]
 [ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="2_j0d2d"]
 
 [node name="Rook" type="Node2D" node_paths=PackedStringArray("black_sprite", "white_sprite")]
