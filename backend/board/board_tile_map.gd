@@ -1,4 +1,4 @@
-class_name MatchTileMap
+class_name BoardTileMap
 
 var _tiles: Array[Array]
 
