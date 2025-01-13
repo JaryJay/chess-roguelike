@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://b0v2ttp4dudf4"]
+
+[ext_resource type="Script" path="res://frontend/board/board_node.gd" id="1_btd2a"]
+[ext_resource type="Script" path="res://frontend/board/tile_nodes.gd" id="2_c1it5"]
+[ext_resource type="Script" path="res://frontend/board/piece_nodes.gd" id="3_njbjj"]
+
+[node name="BoardNode" type="Node2D"]
+script = ExtResource("1_btd2a")
+
+[node name="TileNodes" type="Node2D" parent="."]
+script = ExtResource("2_c1it5")
+
+[node name="PieceNodes" type="Node2D" parent="."]
+script = ExtResource("3_njbjj")
+
+[connection signal="tile_node_selected" from="TileNodes" to="." method="_on_tile_node_selected"]

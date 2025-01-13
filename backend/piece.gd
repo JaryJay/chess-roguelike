@@ -91,7 +91,7 @@ func is_attacking_square(p: Vector2i, b: Board) -> bool:
 
 const BOARD_LENGTH_UPPER_BOUND: int = 20
 
-const EIGHT_DIRECTIONS: = [
+const EIGHT_DIRECTIONS: Array[Vector2i] = [
 	Vector2i(1, 0),
 	Vector2i(1, 1),
 	Vector2i(0, 1),
@@ -127,17 +127,17 @@ func _king_get_available_moves(b: Board) -> Array[Move]:
 func _queen_get_available_moves(b: Board) -> Array[Move]:
 	return _get_moves_along_rays(EIGHT_DIRECTIONS, b)
 
-const FOUR_DIRECTIONS: = [Vector2i(1, 0), Vector2i(0, 1), Vector2i(-1, 0),  Vector2i(0, -1)]
+const FOUR_DIRECTIONS: Array[Vector2i] = [Vector2i(1, 0), Vector2i(0, 1), Vector2i(-1, 0),  Vector2i(0, -1)]
 
 func _rook_get_available_moves(b: Board) -> Array[Move]:
 	return _get_moves_along_rays(FOUR_DIRECTIONS, b)
 
-const DIAGONAL_DIRECTIONS: = [Vector2i(1, 1), Vector2i(-1, 1), Vector2i(-1, -1), Vector2i(1, -1)]
+const DIAGONAL_DIRECTIONS: Array[Vector2i] = [Vector2i(1, 1), Vector2i(-1, 1), Vector2i(-1, -1), Vector2i(1, -1)]
 
 func _bishop_get_available_moves(b: Board) -> Array[Move]:
 	return _get_moves_along_rays(DIAGONAL_DIRECTIONS, b)
 
-const KNIGHT_DIRECTIONS: = [
+const KNIGHT_DIRECTIONS: Array[Vector2i] = [
 	Vector2i(2, 1),
 	Vector2i(1, 2),
 	Vector2i(-1, 2),
@@ -261,7 +261,7 @@ func _get_moves_along_rays(
 			var piece: = b.piece_map.get_piece(next_pos)
 			if piece:
 				if piece.team.is_hostile_to(team):
-					available_moves.append(next_pos)
+					available_moves.append(Move.new(pos, next_pos, Move.CAPTURE))
 				break
 			available_moves.append(Move.new(pos, next_pos))
 	return available_moves
