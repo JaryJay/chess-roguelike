@@ -3,6 +3,12 @@ class_name BoardPieceMap
 var _pieces: Array[Array] = []
 var _cached_king_positions: Dictionary = {}
 
+func _init() -> void:
+	_pieces.resize(BoardTileMap.MAX_TILE_MAP_SIZE)
+	for y: int in _pieces.size():
+		_pieces[y] = []
+		_pieces[y].resize(BoardTileMap.MAX_TILE_MAP_SIZE)
+
 func get_piece(pos: Vector2i) -> Piece:
 	return _pieces[pos.y][pos.x]
 
@@ -23,6 +29,7 @@ func get_king(team: Team) -> Piece:
 	
 	for y: int in _pieces.size():
 		for x: int in _pieces[y].size():
+			if !has_piece(Vector2i(x, y)): continue
 			var piece: = get_piece(Vector2i(x, y))
 			if piece.type == Piece.Type.KING and piece.team == team:
 				_cached_king_positions[team] = piece

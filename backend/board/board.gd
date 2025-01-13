@@ -1,32 +1,40 @@
 class_name Board
 
-var tile_map: BoardTileMap
-var piece_map: BoardPieceMap
-var team_to_move: Team
+var tile_map: BoardTileMap = BoardTileMap.new()
+var piece_map: BoardPieceMap = BoardPieceMap.new()
+var team_to_move: Team = Team.PLAYER
 
 func get_available_moves() -> Array[Move]:
 	var all_moves: Array[Move] = []
 	for piece: Piece in piece_map.get_all_pieces():
 		if piece.team != team_to_move: continue
 		all_moves.append_array(piece.get_available_moves(self))
-	
+	return filter_out_illegal_moves(all_moves)
+
+func get_available_moves_from(from: Vector2i) -> Array[Move]:
+	assert(piece_map.has_piece(from), "Must be a piece there")
+	var piece: = piece_map.get_piece(from)
+	var moves: = piece.get_available_moves(self)
+	return filter_out_illegal_moves(moves)
+
+func filter_out_illegal_moves(moves: Array[Move]) -> Array[Move]:
 	# Filter out all illegal moves
-	for i in range(all_moves.size() - 1, -1, -1):
-		var move: = all_moves[i]
+	for i in range(moves.size() - 1, -1, -1):
+		var move: = moves[i]
 		#if move.is_castle():
 			#var castle_dir: = (move.to - move.from) / (move.to - move.from).abs().x
 		
 		var next_board: = perform_move(move)
 		if next_board.is_team_in_check(team_to_move):
 			# This is an illegal move
-			all_moves.remove_at(i)
+			moves.remove_at(i)
 			continue
 		if next_board.is_team_in_check(next_board.team_to_move):
 			# This move is a check
 			move.info = move.info | Move.CHECK
 		
 		
-	all_moves = all_moves.filter(
+	moves = moves.filter(
 		func(move: Move) -> bool:
 			var next_board: = perform_move(move)
 			return !next_board.is_team_in_check(next_board.team_to_move)
@@ -34,8 +42,8 @@ func get_available_moves() -> Array[Move]:
 	
 	# For castling moves specifically, we do some more checks:
 	# TODO
-	# all_moves = all_moves.filter(
-	return all_moves
+	# moves = moves.filter(
+	return moves
 
 func perform_move(move: Move) -> Board:
 	var current_team_to_move: = team_to_move
@@ -56,8 +64,11 @@ func perform_move(move: Move) -> Board:
 	if move.is_promotion():
 		var promo_type: Piece.Type = move.get_promotion_type()
 		var new_piece: Piece = Piece.new(promo_type, current_team_to_move, move.to)
+		next_board.piece_map.put_piece(move.to, new_piece)
 	else:
-		next_board.piece_map.put_piece(move.to, piece_to_move.duplicate())
+		var new_piece: = piece_to_move.duplicate()
+		new_piece.pos = move.to
+		next_board.piece_map.put_piece(move.to, new_piece)
 	
 	#assert(!next_board.is_team_in_check(current_team_to_move), "A move cannot put your own team in check")
 	
