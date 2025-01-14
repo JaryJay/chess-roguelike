@@ -1,13 +1,23 @@
-[gd_scene load_steps=3 format=3 uid="uid://dv7s8yd1t8te6"]
+[gd_scene load_steps=4 format=3 uid="uid://dv7s8yd1t8te6"]
 
 [ext_resource type="Script" path="res://frontend/pieces/piece_node.gd" id="1_7wlq8"]
 [ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="2_fui3i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lcc2p"]
+size = Vector2(16, 16)
 
 [node name="Bishop" type="Node2D" node_paths=PackedStringArray("black_sprite", "white_sprite")]
 script = ExtResource("1_7wlq8")
 type = 4
 black_sprite = NodePath("BishopB")
 white_sprite = NodePath("BishopW")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_lcc2p")
+debug_color = Color(0, 0.6, 0.701961, 0.211765)
 
 [node name="BishopB" type="Sprite2D" parent="."]
 texture = ExtResource("2_fui3i")

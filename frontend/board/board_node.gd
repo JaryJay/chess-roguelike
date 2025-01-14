@@ -50,10 +50,10 @@ func generate_tiles() -> void:
 	tile_nodes.create_tile_nodes(pruned_tile_positions)
 
 func generate_pieces() -> void:
-	var enemy_army: = ArmyGenerator.generate_army(1000, b, Team.ENEMY_AI)
+	var enemy_army: = PiecesGenerator.generate_army(1000, b, Team.ENEMY_AI)
 	for piece: Piece in enemy_army:
 		piece_nodes.spawn_piece(piece)
-	var army: = ArmyGenerator.generate_army(1000, b, Team.PLAYER)
+	var army: = PiecesGenerator.generate_army(1000, b, Team.PLAYER)
 	for piece: Piece in army:
 		piece_nodes.spawn_piece(piece)
 	
@@ -92,7 +92,7 @@ func perform_move(move: Move) -> void:
 		#assert(piece.type != Piece.Type.PAWN and piece.state().type == Piece.Type.PAWN)
 		#var old_state: = piece.state()
 		#piece.queue_free()
-		#piece = ArmyGenerator.queen_scene.instantiate()
+		#piece = PiecesGenerator.queen_scene.instantiate()
 		#piece.set_state(old_state)
 		#spawn_piece(piece, move.from)
 	

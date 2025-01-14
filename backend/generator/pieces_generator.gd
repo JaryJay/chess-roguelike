@@ -1,4 +1,4 @@
-class_name ArmyGenerator
+class_name PiecesGenerator
 
 const QUEEN_COST: = 900
 const ROOK_COST: = 500
