@@ -1,5 +1,7 @@
 class_name PieceNodes extends Node2D
 
+signal piece_node_selected(piece_node: PieceNode)
+
 ## Dictionary from int to PieceNode
 var _piece_nodes: Dictionary
 ## Dictionary from Team to PieceNode
@@ -9,15 +11,11 @@ func spawn_piece(piece: Piece) -> void:
 	var piece_node: = create_piece_node(piece)
 	piece_node.gen_id()
 	add_child(piece_node)
+	piece_node.mouse_selected.connect(_on_piece_node_selected.bind(piece_node))
 	piece_node.position = piece.pos * 16
 	_piece_nodes[piece_node.id()] = piece_node
 
 func get_piece_node(id: int) -> PieceNode:
-	assert(has_piece_node(id))
-	assert(!_piece_nodes[id].is_queued_for_deletion())
-	return _piece_nodes[id]
-
-func get_piece_node_from_pos(pos: Vector2i) -> PieceNode:
 	assert(has_piece_node(id))
 	assert(!_piece_nodes[id].is_queued_for_deletion())
 	return _piece_nodes[id]
@@ -46,7 +44,8 @@ func get_all_piece_nodes() -> Array[PieceNode]:
 	assert(_piece_nodes.size() == get_tree().get_nodes_in_group("piece_nodes").size())
 	return get_tree().get_nodes_in_group("piece_nodes").map(func(p): p as PieceNode) as Array[PieceNode]
 
-
+func _on_piece_node_selected(piece_node: PieceNode) -> void:
+	piece_node_selected.emit(piece_node)
 
 
 const king_scene: = preload("res://frontend/pieces/king_node.tscn")

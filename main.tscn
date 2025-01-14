@@ -18,5 +18,3 @@ zoom = Vector2(2.82, 2.82)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_xnp5u")
-
-[connection signal="tile_selected" from="BoardNode" to="." method="_on_board_node_tile_selected"]
