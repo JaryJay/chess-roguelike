@@ -200,7 +200,7 @@ func _pawn_promotion_types() -> Array[Piece.Type]:
 
 #region is_attacking_square implementation
 
-func _king_is_attacking_square(p: Vector2i, b: Board) -> bool:
+func _king_is_attacking_square(p: Vector2i, _b: Board) -> bool:
 	var _abs = (p - pos).abs()
 	return _abs.x <= 1 && _abs.y <= 1
 
@@ -230,11 +230,11 @@ func _bishop_is_attacking_square(p: Vector2i, b: Board) -> bool:
 	
 	return _is_attacking_from_ray(p, dir, b)
 
-func _knight_is_attacking_square(p: Vector2i, b: Board) -> bool:
+func _knight_is_attacking_square(p: Vector2i, _b: Board) -> bool:
 	var abs_diff: = (p - pos).abs()
 	return (abs_diff.x == 1 and abs_diff.y == 2) or (abs_diff.x == 2 and abs_diff.y == 1)
 
-func _pawn_is_attacking_square(p: Vector2i, b: Board) -> bool:
+func _pawn_is_attacking_square(p: Vector2i, _b: Board) -> bool:
 	var facing_dir: = _get_pawn_facing_direction()
 	
 	for side: Vector2i in PAWN_SIDES:

@@ -87,7 +87,11 @@ func is_team_in_check(team: Team) -> bool:
 	return false
 
 func is_match_over() -> bool:
-	var teams: Array[Team] = [Team.ENEMY_AI, Team.PLAYER]
+	var available_moves: = get_available_moves()
+	if available_moves.size() == 0:
+		return true
+	# if is_team_in_check(team_to_move): # in this case, it's a checkmate
+	# otherwise it's a stalemate
 	return false
 
 func duplicate() -> Board:

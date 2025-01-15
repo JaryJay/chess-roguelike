@@ -28,6 +28,11 @@ func set_tiles(tile_positions: Array[Vector2i]) -> void:
 		_cached_tile_count += 1
 	assert(num_tiles() == tile_positions.size())
 
+func is_promotion_tile(pos: Vector2i, team: Team) -> bool:
+	var y_modifier: = -1 if team.is_player() else 1
+	var pawn_facing_dir: = Vector2i(0, y_modifier)
+	return !has_tile(pos + pawn_facing_dir)
+
 func has_tile(coord: Vector2i) -> bool:
 	return _tiles[coord.y][coord.x]
 

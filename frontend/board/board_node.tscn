@@ -14,3 +14,4 @@ script = ExtResource("2_c1it5")
 script = ExtResource("3_njbjj")
 
 [connection signal="tile_node_selected" from="TileNodes" to="." method="_on_tile_node_selected"]
+[connection signal="piece_node_selected" from="PieceNodes" to="." method="_on_piece_node_selected"]
