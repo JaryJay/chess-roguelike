@@ -10,6 +10,7 @@ var _cached_king_positions: Dictionary = {}
 func spawn_piece(piece: Piece) -> void:
 	var piece_node: = create_piece_node(piece)
 	piece_node.gen_id()
+	assert(!has_piece_node(piece_node.id()))
 	add_child(piece_node)
 	piece_node.mouse_selected.connect(_on_piece_node_selected.bind(piece_node))
 	piece_node.position = piece.pos * 16
@@ -41,8 +42,11 @@ func get_king_node(team: Team) -> PieceNode:
 	return _cached_king_positions[team]
 
 func get_all_piece_nodes() -> Array[PieceNode]:
-	assert(_piece_nodes.size() == get_tree().get_nodes_in_group("piece_nodes").size())
-	return get_tree().get_nodes_in_group("piece_nodes").map(func(p): p as PieceNode) as Array[PieceNode]
+	assert(_piece_nodes.size() == get_tree().get_nodes_in_group("piece_nodes").size(),
+		"_piece_nodes.size(): %s, nodes in group: %s" % [_piece_nodes.size(), get_tree().get_nodes_in_group("piece_nodes").size()])
+	var piece_nodes: Array[PieceNode] = []
+	piece_nodes.append_array(get_tree().get_nodes_in_group("piece_nodes"))
+	return piece_nodes
 
 func _on_piece_node_selected(piece_node: PieceNode) -> void:
 	piece_node_selected.emit(piece_node)
