@@ -6,11 +6,11 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lcc2p"]
 size = Vector2(16, 16)
 
-[node name="Bishop" type="Node2D" node_paths=PackedStringArray("black_sprite", "white_sprite")]
+[node name="Bishop" type="Node2D" node_paths=PackedStringArray("_black_sprite", "_white_sprite")]
 script = ExtResource("1_7wlq8")
-type = 4
-black_sprite = NodePath("BishopB")
-white_sprite = NodePath("BishopW")
+type = 65536
+_black_sprite = NodePath("BishopB")
+_white_sprite = NodePath("BishopW")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_mask = 0
