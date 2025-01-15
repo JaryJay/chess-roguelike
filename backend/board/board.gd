@@ -8,8 +8,8 @@ func get_available_moves() -> Array[Move]:
 	var all_moves: Array[Move] = []
 	for piece: Piece in piece_map.get_all_pieces():
 		if piece.team != team_to_move: continue
-		all_moves.append_array(piece.get_available_moves(self))
-	return filter_out_illegal_moves(all_moves)
+		all_moves.append_array(get_available_moves_from(piece.pos))
+	return all_moves
 
 func get_available_moves_from(from: Vector2i) -> Array[Move]:
 	assert(piece_map.has_piece(from), "Must be a piece there")

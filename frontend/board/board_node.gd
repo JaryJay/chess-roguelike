@@ -4,6 +4,10 @@ enum BoardNodeState {
 	NOT_INITIALIZED,
 	INITIALIZED,
 }
+enum InputState {
+	NONE,
+	CHOOSING_PROMOTION,
+}
 
 var b: Board = Board.new()
 @onready var tile_nodes: TileNodes = $TileNodes
@@ -11,7 +15,10 @@ var b: Board = Board.new()
 
 var player_team: Team = Team.PLAYER
 var state: BoardNodeState = BoardNodeState.NOT_INITIALIZED
+var input_state: InputState = InputState.NONE
 var selected_piece_node: PieceNode = null
+
+var _cached_available_moves: Array[Move] = []
 
 func init_randomly() -> void:
 	assert(is_node_ready())
@@ -20,27 +27,66 @@ func init_randomly() -> void:
 	_generate_pieces()
 	state = BoardNodeState.INITIALIZED
 
+func _perform_move_action(move_action: MoveAction) -> void:
+	if move_action.is_promotion():
+		pass
+
 func _on_piece_node_selected(piece_node: PieceNode) -> void:
-	# if you click a piece when it's the opponent's turn
-	if b.team_to_move != player_team:
-		if _can_select_piece_node(piece_node):
-			_select_piece_node(piece_node)
-		else:
-			_select_piece_node(null)
-		return
-	
-	if selected_piece_node:
+	if b.team_to_move == player_team and selected_piece_node:
 		assert(selected_piece_node.piece().team == player_team)
-		
+		if _can_capture(piece_node):
+			var move_action: MoveAction
+			if b.tile_map.is_promotion_tile(piece_node.piece().pos, player_team):
+				input_state = InputState.CHOOSING_PROMOTION
+				# TODO
+				pass
+			else:
+				move_action = MoveAction.new(selected_piece_node.id(), piece_node.piece().pos, Move.CAPTURE, Piece.Type.UNSET, piece_node.id())
+			# TODO
+			return
+	
+	if _can_select(piece_node):
+		_select_piece_node(piece_node)
+	else:
+		_select_piece_node(null)
 
 func _on_tile_node_selected(tile_node: TileNode) -> void:
-	pass # Replace with function body.
+	if b.team_to_move == player_team and selected_piece_node:
+		assert(selected_piece_node.piece().team == player_team)
+		if _can_move_to(tile_node):
+			var move_action: MoveAction
+			if b.tile_map.is_promotion_tile(tile_node.pos(), player_team):
+				# TODO
+				pass
+			else:
+				move_action = MoveAction.new(selected_piece_node.id(), tile_node.pos())
+			return
+	_select_piece_node(null)
 
 func _select_piece_node(piece_node: PieceNode) -> void:
 	selected_piece_node = piece_node
 
-func _can_select_piece_node(piece_node: PieceNode) -> bool:
+#region utils
+
+func _can_select(piece_node: PieceNode) -> bool:
 	return piece_node.piece().team == player_team
+
+func _can_capture(piece_node: PieceNode) -> bool:
+	var available_moves: = b.get_available_moves_from(selected_piece_node.piece().pos)
+	for move: Move in available_moves:
+		if move.is_capture() and move.to == piece_node.piece().pos:
+			return true
+		assert(move.to != piece_node.piece().pos, "you shouldn't be able to move here without a capture flag")
+	return false
+
+func _can_move_to(tile_node: TileNode) -> bool:
+	var available_moves: = b.get_available_moves_from(selected_piece_node.piece().pos)
+	for move: Move in available_moves:
+		if move.to == tile_node.pos():
+			return true
+	return false
+
+#endregion
 
 func _generate_tiles() -> void:
 	var tile_positions: = TilesGenerator.generate_tiles()
