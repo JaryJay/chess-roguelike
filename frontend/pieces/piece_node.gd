@@ -3,8 +3,8 @@ class_name PieceNode extends Node2D
 signal mouse_selected
 
 @export var type: Piece.Type
-@export var black_sprite: Sprite2D
-@export var white_sprite: Sprite2D
+@export var _black_sprite: Sprite2D
+@export var _white_sprite: Sprite2D
 
 var _initialized: = false
 var _id: int
@@ -15,8 +15,8 @@ var pressed: bool = false
 var selected: bool = false
 
 func _ready() -> void:
-	assert(black_sprite)
-	assert(white_sprite)
+	assert(_black_sprite)
+	assert(_white_sprite)
 	init_team_color()
 	add_to_group("piece_nodes")
 
@@ -29,9 +29,9 @@ func set_piece(new_piece: Piece) -> void:
 func init_team_color() -> void:
 	assert(_initialized)
 	if piece().team.is_player():
-		black_sprite.queue_free()
+		_black_sprite.queue_free()
 	elif piece().team.is_enemy():
-		white_sprite.queue_free()
+		_white_sprite.queue_free()
 	else:
 		assert(false, "Unknown team %s" % piece().team._key)
 
@@ -60,12 +60,11 @@ func set_selected(new_selected: bool) -> void:
 
 # Generating ids
 static var _next_id: = 1
-func gen_id() -> int:
+func gen_id() -> void:
 	assert(!_initialized)
-	var _id: = _next_id
+	_id = _next_id
 	_next_id += 1
 	_initialized = true
-	return _id
 
 func id() -> int:
 	assert(_initialized)

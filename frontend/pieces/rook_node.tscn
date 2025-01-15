@@ -6,11 +6,11 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wx3nc"]
 size = Vector2(16, 16)
 
-[node name="Rook" type="Node2D" node_paths=PackedStringArray("black_sprite", "white_sprite")]
+[node name="Rook" type="Node2D" node_paths=PackedStringArray("_black_sprite", "_white_sprite")]
 script = ExtResource("1_s2cgv")
-type = 3
-black_sprite = NodePath("RookB")
-white_sprite = NodePath("RookW")
+type = 2048
+_black_sprite = NodePath("RookB")
+_white_sprite = NodePath("RookW")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_mask = 0

@@ -6,11 +6,11 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7g3vc"]
 size = Vector2(16, 16)
 
-[node name="Knight" type="Node2D" node_paths=PackedStringArray("black_sprite", "white_sprite")]
+[node name="Knight" type="Node2D" node_paths=PackedStringArray("_black_sprite", "_white_sprite")]
 script = ExtResource("1_ivkn7")
-type = 5
-black_sprite = NodePath("KnightB")
-white_sprite = NodePath("KnightW")
+type = 2097152
+_black_sprite = NodePath("KnightB")
+_white_sprite = NodePath("KnightW")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_mask = 0
