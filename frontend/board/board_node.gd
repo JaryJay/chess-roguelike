@@ -40,7 +40,7 @@ func _on_piece_node_selected(piece_node: PieceNode) -> void:
 			var move_action: MoveAction
 			if b.tile_map.is_promotion_tile(piece_node.piece().pos, player_team) and selected_piece_node.piece().type == Piece.Type.PAWN:
 				input_state = InputState.CHOOSING_PROMOTION
-				# TODO
+				assert(false, "Promotion not implemented")
 				pass
 			else:
 				move_action = MoveAction.new(selected_piece_node.id(), piece_node.piece().pos, Move.CAPTURE, Piece.Type.UNSET, piece_node.id())
@@ -61,7 +61,8 @@ func _on_tile_node_selected(tile_node: TileNode) -> void:
 			print("can move to %v" % tile_node.pos())
 			var move_action: MoveAction
 			if b.tile_map.is_promotion_tile(tile_node.pos(), player_team) and selected_piece_node.piece().type == Piece.Type.PAWN:
-				# TODO
+				input_state = InputState.CHOOSING_PROMOTION
+				assert(false, "Promotion not implemented")
 				pass
 			else:
 				move_action = MoveAction.new(selected_piece_node.id(), tile_node.pos())
