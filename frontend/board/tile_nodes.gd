@@ -6,6 +6,7 @@ const tile_node_scene: = preload("res://frontend/tile/tile_node.tscn")
 
 var _tile_nodes: Array[Array]
 var _cached_tile_count: = 0
+var _highlighted_tiles: Array[Vector2i] = []
 
 func get_all_tile_nodes() -> Array[TileNode]:
 	var all_tile_nodes: Array[TileNode] = []
@@ -34,6 +35,13 @@ func create_tile_nodes(tile_positions: Array[Vector2i]) -> void:
 		_cached_tile_count += 1
 		
 	assert(num_tile_nodes() == tile_positions.size())
+
+func highlight_tiles(tiles: Array[Vector2i]) -> void:
+	for tile_pos: Vector2i in _highlighted_tiles:
+		get_tile_node(tile_pos).set_show_dot(false)
+	for tile_pos: Vector2i in tiles:
+		get_tile_node(tile_pos).set_show_dot(true)
+	_highlighted_tiles = tiles
 
 func get_tile_node(coord: Vector2i) -> TileNode:
 	return _tile_nodes[coord.y][coord.x]

@@ -65,6 +65,14 @@ func _on_tile_node_selected(tile_node: TileNode) -> void:
 
 func _select_piece_node(piece_node: PieceNode) -> void:
 	selected_piece_node = piece_node
+	if piece_node:
+		var available_moves: = b.get_available_moves_from(piece_node.piece().pos)
+		var tiles_to_highlight: Array[Vector2i] = []
+		for move: Move in available_moves:
+			tiles_to_highlight.append(move.to)
+		tile_nodes.highlight_tiles(tiles_to_highlight)
+	else:
+		tile_nodes.highlight_tiles([])
 
 #region utils
 

@@ -32,3 +32,6 @@ centered = false
 offset = Vector2(-6.5, -16)
 region_enabled = true
 region_rect = Rect2(78, 81, 13, 23)
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

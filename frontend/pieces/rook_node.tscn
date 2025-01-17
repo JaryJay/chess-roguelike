@@ -30,3 +30,6 @@ texture = ExtResource("2_j0d2d")
 offset = Vector2(0, -2)
 region_enabled = true
 region_rect = Rect2(77, 39, 13, 17)
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

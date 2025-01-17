@@ -39,8 +39,8 @@ func init_team_color() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("primary") && hovered:
-		print("selected")
 		mouse_selected.emit()
+		get_viewport().set_input_as_handled()
 	elif event.is_action_released("primary"):
 		pressed = false
 
