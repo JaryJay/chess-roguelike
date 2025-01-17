@@ -62,16 +62,29 @@ static func normalize_positions(positions: Array[Vector2i]) -> Array[Vector2i]:
 		avg_pos += Vector2(pos)
 	avg_pos /= positions.size()
 	
-	# Calculate the offset needed to center the tiles
+	# Calculate the initial offset needed to center the tiles
 	var target_center: = Vector2(MAX_X / 2, MAX_Y / 2)
 	var offset: = (target_center - avg_pos).round()
 	
-	# Apply the offset to all positions
-	var normalized_positions: Array[Vector2i] = []
+	# Find the bounds after applying the offset
+	var min_pos: = Vector2i(INF, INF)
+	var max_pos: = Vector2i(-INF, -INF)
 	for pos in positions:
 		var new_pos: = Vector2i(pos) + Vector2i(offset)
-		# Ensure the new position is within bounds
-		if new_pos.x >= 0 and new_pos.x < MAX_X and new_pos.y >= 0 and new_pos.y < MAX_Y:
-			normalized_positions.append(new_pos)
+		min_pos.x = mini(min_pos.x, new_pos.x)
+		min_pos.y = mini(min_pos.y, new_pos.y)
+		max_pos.x = maxi(max_pos.x, new_pos.x)
+		max_pos.y = maxi(max_pos.y, new_pos.y)
+	
+	# Adjust offset if any positions would be out of bounds
+	offset.x += mini(0, -min_pos.x)  # Shift right if too far left
+	offset.x -= maxi(0, max_pos.x - (MAX_X - 1))  # Shift left if too far right
+	offset.y += mini(0, -min_pos.y)  # Shift down if too far up
+	offset.y -= maxi(0, max_pos.y - (MAX_Y - 1))  # Shift up if too far down
+	
+	# Apply the adjusted offset to all positions
+	var normalized_positions: Array[Vector2i] = []
+	for pos in positions:
+		normalized_positions.append(Vector2i(pos) + Vector2i(offset))
 	
 	return normalized_positions
