@@ -13,11 +13,12 @@ var b: Board = Board.new()
 @onready var tile_nodes: TileNodes = $TileNodes
 @onready var piece_nodes: PieceNodes = $PieceNodes
 @onready var ai_thread: AIThread = $AIThread
-
+@onready var promotion_ui: PromotionUI = $PromotionUI
 var player_team: Team = Team.PLAYER
 var state: BoardNodeState = BoardNodeState.NOT_INITIALIZED
 var input_state: InputState = InputState.NONE
 var selected_piece_node: PieceNode = null
+var temp_move_action: MoveAction = null
 
 func _ready() -> void:
 	ai_thread.init(DumbAI.new())
@@ -39,9 +40,9 @@ func _on_piece_node_selected(piece_node: PieceNode) -> void:
 		if _can_capture(piece_node):
 			var move_action: MoveAction
 			if b.tile_map.is_promotion_tile(piece_node.piece().pos, player_team) and selected_piece_node.piece().type == Piece.Type.PAWN:
+				temp_move_action = MoveAction.new(selected_piece_node.id(), piece_node.piece().pos, Move.CAPTURE, Piece.Type.UNSET, piece_node.id())
 				input_state = InputState.CHOOSING_PROMOTION
-				assert(false, "Promotion not implemented")
-				pass
+				promotion_ui.show()
 			else:
 				move_action = MoveAction.new(selected_piece_node.id(), piece_node.piece().pos, Move.CAPTURE, Piece.Type.UNSET, piece_node.id())
 			perform_move_action(move_action)
@@ -61,9 +62,9 @@ func _on_tile_node_selected(tile_node: TileNode) -> void:
 			print("can move to %v" % tile_node.pos())
 			var move_action: MoveAction
 			if b.tile_map.is_promotion_tile(tile_node.pos(), player_team) and selected_piece_node.piece().type == Piece.Type.PAWN:
+				temp_move_action = MoveAction.new(selected_piece_node.id(), tile_node.pos(), Move.CAPTURE, Piece.Type.UNSET)
 				input_state = InputState.CHOOSING_PROMOTION
-				assert(false, "Promotion not implemented")
-				pass
+				promotion_ui.show()
 			else:
 				move_action = MoveAction.new(selected_piece_node.id(), tile_node.pos())
 			perform_move_action(move_action)

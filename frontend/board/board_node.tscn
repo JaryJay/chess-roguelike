@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://b0v2ttp4dudf4"]
+[gd_scene load_steps=6 format=3 uid="uid://b0v2ttp4dudf4"]
 
 [ext_resource type="Script" path="res://frontend/board/board_node.gd" id="1_btd2a"]
 [ext_resource type="Script" path="res://frontend/board/tile_nodes.gd" id="2_c1it5"]
 [ext_resource type="Script" path="res://frontend/board/piece_nodes.gd" id="3_njbjj"]
 [ext_resource type="Script" path="res://frontend/ai/ai_thread.gd" id="4_ymfrq"]
+[ext_resource type="PackedScene" uid="uid://cnvljhd8dw2q7" path="res://frontend/ui/promotion_ui.tscn" id="5_wsxn3"]
 
 [node name="BoardNode" type="Node2D"]
 script = ExtResource("1_btd2a")
@@ -17,6 +18,14 @@ script = ExtResource("3_njbjj")
 
 [node name="AIThread" type="Node" parent="."]
 script = ExtResource("4_ymfrq")
+
+[node name="PromotionUi" parent="." instance=ExtResource("5_wsxn3")]
+visible = false
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [connection signal="tile_node_selected" from="TileNodes" to="." method="_on_tile_node_selected"]
 [connection signal="piece_node_selected" from="PieceNodes" to="." method="_on_piece_node_selected"]
