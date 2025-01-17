@@ -16,3 +16,5 @@ mono_crash.*.json
 
 # Blender back-up files
 *.blend1
+
+.vscode
