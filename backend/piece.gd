@@ -35,14 +35,18 @@ enum Type {
 	RESERVED_23 = 2**30,
 }
 
+const MOVED: int = 1
+
 var type: Type
 var team: Team
 var pos: Vector2i
+var info: int = 0
 
-func _init(_type: Type, _team: Team, _pos: Vector2i) -> void:
+func _init(_type: Type, _team: Team, _pos: Vector2i, _info: int = 0) -> void:
 	type = _type
 	team = _team
 	pos = _pos
+	info = _info
 
 func get_available_moves(b: Board) -> Array[Move]:
 	assert(type != Type.UNSET, "Type must be set")
@@ -172,15 +176,24 @@ func _pawn_get_available_moves(b: Board) -> Array[Move]:
 	
 	var forwards: = pos + facing_dir
 	if b.tile_map.has_tile(forwards) and not b.piece_map.has_piece(forwards):
-		# Going forwards is possible
-		if b.tile_map.has_tile(forwards + facing_dir):
-			# In this case, we don't promote
-			available_moves.append(Move.new(pos, forwards))
-		else:
-			# We promote the piece if there is no longer another tile in front
+		if b.tile_map.is_promotion_tile(forwards, team):
 			for promo_type: Piece.Type in _pawn_promotion_types():
 				available_moves.append(Move.new(pos, forwards, 0, promo_type))
+		else:
+			available_moves.append(Move.new(pos, forwards))
+			
+	# If info = 0, we have never moved
+	if info == 0:
+		# We can move two squares forward
+		var two_squares_forward: = pos + facing_dir * 2
+		if b.tile_map.has_tile(two_squares_forward) and not b.piece_map.has_piece(two_squares_forward):
+			if b.tile_map.is_promotion_tile(two_squares_forward, team):
+				for promo_type: Piece.Type in _pawn_promotion_types():
+					available_moves.append(Move.new(pos, two_squares_forward, 0, promo_type))
+			else:
+				available_moves.append(Move.new(pos, two_squares_forward))
 	
+	# Check for captures
 	for side: Vector2i in PAWN_SIDES:
 		var square: = pos + side + facing_dir
 		if b.piece_map.has_piece(square) and b.piece_map.get_piece(square).team.is_hostile_to(team):
@@ -308,9 +321,12 @@ func get_worth() -> float:
 	return 0
 
 func duplicate() -> Piece:
-	var new_piece: = Piece.new(type, team, pos)
-	assert(self.equals(new_piece))
+	var new_piece: = Piece.new(type, team, pos, info)
+	assert(self.equals(new_piece), "%s != %s" % [self._to_string(), new_piece._to_string()])
 	return new_piece
 
 func equals(p: Piece) -> bool:
-	return pos == p.pos and type == p.type and team == p.team
+	return pos == p.pos and type == p.type and team == p.team and info == p.info
+
+func _to_string() -> String:
+	return "Piece(%s, %s, %v, %d)" % [type, team, pos, info]

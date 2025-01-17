@@ -34,6 +34,8 @@ func is_promotion_tile(pos: Vector2i, team: Team) -> bool:
 	return !has_tile(pos + pawn_facing_dir)
 
 func has_tile(coord: Vector2i) -> bool:
+	if coord.x < 0 or coord.x >= MAX_TILE_MAP_SIZE or coord.y < 0 or coord.y >= MAX_TILE_MAP_SIZE:
+		return false
 	return _tiles[coord.y][coord.x]
 
 func num_tiles() -> int:

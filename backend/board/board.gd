@@ -67,11 +67,13 @@ func perform_move(move: Move, allow_illegal: bool = false) -> Board:
 		next_board.piece_map.remove_piece(move.to)
 	if move.is_promotion():
 		var promo_type: Piece.Type = move.get_promotion_type()
-		var new_piece: Piece = Piece.new(promo_type, current_team_to_move, move.to)
+		var new_piece: Piece = Piece.new(promo_type, current_team_to_move, move.to, 0)
 		next_board.piece_map.put_piece(move.to, new_piece)
 	else:
 		var new_piece: = piece_to_move.duplicate()
 		new_piece.pos = move.to
+		if piece_to_move.type == Piece.Type.PAWN:
+			new_piece.info = new_piece.info | Piece.MOVED
 		next_board.piece_map.put_piece(move.to, new_piece)
 	
 	if !allow_illegal:

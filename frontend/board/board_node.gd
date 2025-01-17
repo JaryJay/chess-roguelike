@@ -18,8 +18,6 @@ var state: BoardNodeState = BoardNodeState.NOT_INITIALIZED
 var input_state: InputState = InputState.NONE
 var selected_piece_node: PieceNode = null
 
-var _cached_available_moves: Array[Move] = []
-
 func init_randomly() -> void:
 	assert(is_node_ready())
 	assert(state == BoardNodeState.NOT_INITIALIZED)
@@ -36,13 +34,13 @@ func _on_piece_node_selected(piece_node: PieceNode) -> void:
 		assert(selected_piece_node.piece().team == player_team)
 		if _can_capture(piece_node):
 			var move_action: MoveAction
-			if b.tile_map.is_promotion_tile(piece_node.piece().pos, player_team):
+			if b.tile_map.is_promotion_tile(piece_node.piece().pos, player_team) and selected_piece_node.piece().type == Piece.Type.PAWN:
 				input_state = InputState.CHOOSING_PROMOTION
 				# TODO
 				pass
 			else:
 				move_action = MoveAction.new(selected_piece_node.id(), piece_node.piece().pos, Move.CAPTURE, Piece.Type.UNSET, piece_node.id())
-			# TODO
+			perform_move_action(move_action)
 			return
 	
 	if _can_select(piece_node):
@@ -51,15 +49,18 @@ func _on_piece_node_selected(piece_node: PieceNode) -> void:
 		_select_piece_node(null)
 
 func _on_tile_node_selected(tile_node: TileNode) -> void:
+	print("tile_node selected %v" % tile_node.pos())
 	if b.team_to_move == player_team and selected_piece_node:
 		assert(selected_piece_node.piece().team == player_team)
 		if _can_move_to(tile_node):
+			print("can move to %v" % tile_node.pos())
 			var move_action: MoveAction
-			if b.tile_map.is_promotion_tile(tile_node.pos(), player_team):
+			if b.tile_map.is_promotion_tile(tile_node.pos(), player_team) and selected_piece_node.piece().type == Piece.Type.PAWN:
 				# TODO
 				pass
 			else:
 				move_action = MoveAction.new(selected_piece_node.id(), tile_node.pos())
+			perform_move_action(move_action)
 			return
 	_select_piece_node(null)
 
@@ -115,3 +116,39 @@ func _generate_pieces() -> void:
 	for piece_node: PieceNode in piece_nodes.get_all_piece_nodes():
 		assert(b.piece_map.has_piece(piece_node.piece().pos))
 		assert(b.piece_map.get_piece(piece_node.piece().pos) == piece_node.piece())
+
+func perform_move_action(move_action: MoveAction) -> void:
+	assert(state == BoardNodeState.INITIALIZED)
+	
+	var piece_node: PieceNode = piece_nodes.get_piece_node(move_action.piece_id)
+	
+	# Update backend board state
+	b = b.perform_move(Move.new(piece_node.piece().pos, move_action.to, move_action.info, move_action.promo_info))
+	
+	# Handle captures
+	if move_action.is_capture():
+		piece_nodes.free_piece_node(move_action.captured_piece_id)
+	
+	# Handle promotions
+	if move_action.is_promotion():
+		# Get the new piece
+		var new_piece: = b.piece_map.get_piece(move_action.to)
+		# Free old piece node
+		var old_piece_position: = piece_node.position
+		piece_nodes.free_piece_node(piece_node.id())
+		# Spawn new piece node
+		piece_node = piece_nodes.spawn_piece(new_piece)
+		# put it back in the old position. It will be moved to the new position later
+		piece_node.position = old_piece_position
+	
+	# Update piece position in the UI
+	piece_node.move_to(tile_nodes.get_tile_node(move_action.to).position)
+	
+	# For each other piece node, set piece to be the new piece in the new board
+	for p: PieceNode in piece_nodes.get_all_piece_nodes():
+		if p != piece_node:
+			p.set_piece(b.piece_map.get_piece(p.piece().pos))
+
+	# Reset selection state
+	_select_piece_node(null)
+	input_state = InputState.NONE

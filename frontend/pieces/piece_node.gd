@@ -24,7 +24,14 @@ func piece() -> Piece:
 	return _piece
 
 func set_piece(new_piece: Piece) -> void:
+	if _initialized:
+		assert(_piece)
+		assert(_piece.type == new_piece.type, "%s != %s" % [_piece.type, new_piece.type])
 	_piece = new_piece
+
+func move_to(target_position: Vector2) -> void:
+	var tween = create_tween()
+	tween.tween_property(self, "position", target_position, 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 
 func init_team_color() -> void:
 	assert(_initialized)
