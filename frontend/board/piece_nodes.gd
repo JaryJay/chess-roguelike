@@ -22,6 +22,12 @@ func get_piece_node(id: int) -> PieceNode:
 	assert(!_piece_nodes[id].is_queued_for_deletion())
 	return _piece_nodes[id]
 
+func get_piece_node_by_pos(pos: Vector2i) -> PieceNode:
+	for piece_node: PieceNode in _piece_nodes.values():
+		if piece_node.piece().pos == pos:
+			return piece_node
+	return null
+
 func free_piece_node(id: int) -> void:
 	assert(has_piece_node(id))
 	get_piece_node(id).queue_free()

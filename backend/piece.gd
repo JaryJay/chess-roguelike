@@ -70,10 +70,10 @@ func get_available_moves(b: Board) -> Array[Move]:
 
 func is_attacking_square(p: Vector2i, b: Board) -> bool:
 	assert(type != Type.UNSET, "Type must be set")
-	assert(b.piece_map.has_piece(p), "There should be a piece that we're checking")
-	assert(b.tile_map.has_tile(p), "There should be a tile at the target position")
-	assert(b.tile_map.has_tile(pos), "There should be a tile at the current piece position")
-	assert(p != pos, "There should not be two pieces in the same position")
+	assert(b.piece_map.has_piece(p), "There should be a piece that we're checking at %.v" % p)
+	assert(b.tile_map.has_tile(p), "There should be a tile at the target position %.v" % p)
+	assert(b.tile_map.has_tile(pos), "There should be a tile at the current piece position %.v" % pos)
+	assert(p != pos, "There should not be two pieces in the same position %.v" % pos)
 	match type:
 		Type.KING:
 			return _king_is_attacking_square(p, b)
@@ -112,9 +112,8 @@ func _king_get_available_moves(b: Board) -> Array[Move]:
 	for dir: Vector2i in EIGHT_DIRECTIONS:
 		var next_pos: = pos + dir
 		if not b.tile_map.has_tile(next_pos): continue
-		var piece: = b.piece_map.get_piece(next_pos)
-
-		if piece:
+		if b.piece_map.has_piece(next_pos):
+			var piece: = b.piece_map.get_piece(next_pos)
 			if piece.team.is_hostile_to(team):
 				available_moves.append(Move.new(pos, next_pos, Move.CAPTURE))
 			continue
@@ -271,8 +270,8 @@ func _get_moves_along_rays(
 		for i in range(ray_length):
 			next_pos += dir
 			if not b.tile_map.has_tile(next_pos): break
-			var piece: = b.piece_map.get_piece(next_pos)
-			if piece:
+			if b.piece_map.has_piece(next_pos):
+				var piece: = b.piece_map.get_piece(next_pos)
 				if piece.team.is_hostile_to(team):
 					available_moves.append(Move.new(pos, next_pos, Move.CAPTURE))
 				break

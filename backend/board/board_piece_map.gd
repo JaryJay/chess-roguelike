@@ -10,22 +10,24 @@ func _init() -> void:
 		_pieces[y].resize(BoardTileMap.MAX_TILE_MAP_SIZE)
 
 func get_piece(pos: Vector2i) -> Piece:
+	assert(has_piece(pos), "No piece at %.v" % pos)
 	return _pieces[pos.y][pos.x]
 
 func remove_piece(pos: Vector2i) -> void:
-	assert(has_piece(pos))
+	assert(has_piece(pos), "No piece at %.v" % pos)
 	_pieces[pos.y][pos.x] = null
 
 func put_piece(pos: Vector2i, piece: Piece) -> void:
-	assert(!has_piece(pos))
+	assert(!has_piece(pos), "Piece already at %.v" % pos)
 	_pieces[pos.y][pos.x] = piece
 
 func has_piece(pos: Vector2i) -> bool:
 	return _pieces[pos.y][pos.x] != null
 
 func get_king(team: Team) -> Piece:
-	if _cached_king_positions.has(team):
-		return _cached_king_positions[team]
+	# TODO: implement caching
+	# if _cached_king_positions.has(team):
+	# 	return _cached_king_positions[team]
 	
 	for y: int in _pieces.size():
 		for x: int in _pieces[y].size():

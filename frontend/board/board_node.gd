@@ -12,11 +12,15 @@ enum InputState {
 var b: Board = Board.new()
 @onready var tile_nodes: TileNodes = $TileNodes
 @onready var piece_nodes: PieceNodes = $PieceNodes
+@onready var ai_thread: AIThread = $AIThread
 
 var player_team: Team = Team.PLAYER
 var state: BoardNodeState = BoardNodeState.NOT_INITIALIZED
 var input_state: InputState = InputState.NONE
 var selected_piece_node: PieceNode = null
+
+func _ready() -> void:
+	ai_thread.init(DumbAI.new())
 
 func init_randomly() -> void:
 	assert(is_node_ready())
@@ -41,6 +45,7 @@ func _on_piece_node_selected(piece_node: PieceNode) -> void:
 			else:
 				move_action = MoveAction.new(selected_piece_node.id(), piece_node.piece().pos, Move.CAPTURE, Piece.Type.UNSET, piece_node.id())
 			perform_move_action(move_action)
+			end_turn()
 			return
 	
 	if _can_select(piece_node):
@@ -61,6 +66,7 @@ func _on_tile_node_selected(tile_node: TileNode) -> void:
 			else:
 				move_action = MoveAction.new(selected_piece_node.id(), tile_node.pos())
 			perform_move_action(move_action)
+			end_turn()
 			return
 	_select_piece_node(null)
 
@@ -75,10 +81,28 @@ func _select_piece_node(piece_node: PieceNode) -> void:
 	else:
 		tile_nodes.highlight_tiles([])
 
+func end_turn() -> void:
+	if b.is_match_over():
+		return
+	ai_thread.process_board(b)
+
+func _on_ai_thread_move_found(move: Move) -> void:
+	# Create move action
+	var from: = move.from
+	var to: = move.to
+	var piece_id: = piece_nodes.get_piece_node_by_pos(from).id()
+	var captured_piece_id: = 0
+	if move.is_capture():
+		captured_piece_id = piece_nodes.get_piece_node_by_pos(to).id()
+	var move_action: MoveAction = MoveAction.new(piece_id, to, move.info, move.promo_info, captured_piece_id)
+	perform_move_action(move_action)
+	if b.is_match_over():
+		return
+
 #region utils
 
 func _can_select(piece_node: PieceNode) -> bool:
-	return piece_node.piece().team == player_team
+	return b.team_to_move == player_team and piece_node.piece().team == player_team
 
 func _can_capture(piece_node: PieceNode) -> bool:
 	var available_moves: = b.get_available_moves_from(selected_piece_node.piece().pos)
@@ -143,10 +167,11 @@ func perform_move_action(move_action: MoveAction) -> void:
 	
 	# Update piece position in the UI
 	piece_node.move_to(tile_nodes.get_tile_node(move_action.to).position)
+	piece_node.set_piece(b.piece_map.get_piece(move_action.to))
 	
 	# For each other piece node, set piece to be the new piece in the new board
 	for p: PieceNode in piece_nodes.get_all_piece_nodes():
-		if p != piece_node:
+		if p != piece_node and !p.is_queued_for_deletion():
 			p.set_piece(b.piece_map.get_piece(p.piece().pos))
 
 	# Reset selection state
