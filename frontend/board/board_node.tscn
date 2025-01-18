@@ -19,7 +19,7 @@ script = ExtResource("3_njbjj")
 [node name="AIThread" type="Node" parent="."]
 script = ExtResource("4_ymfrq")
 
-[node name="PromotionUi" parent="." instance=ExtResource("5_wsxn3")]
+[node name="PromotionUI" parent="." instance=ExtResource("5_wsxn3")]
 visible = false
 anchors_preset = 0
 anchor_right = 0.0
@@ -30,3 +30,4 @@ grow_vertical = 1
 [connection signal="tile_node_selected" from="TileNodes" to="." method="_on_tile_node_selected"]
 [connection signal="piece_node_selected" from="PieceNodes" to="." method="_on_piece_node_selected"]
 [connection signal="move_found" from="AIThread" to="." method="_on_ai_thread_move_found"]
+[connection signal="promotion_chosen" from="PromotionUI" to="." method="_on_promotion_ui_promotion_chosen"]

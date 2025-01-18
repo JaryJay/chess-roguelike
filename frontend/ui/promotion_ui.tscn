@@ -25,7 +25,7 @@ load_path = "res://.godot/imported/pieces_sprite_sheet.png-b320056e40fecbe295f2b
 atlas = SubResource("CompressedTexture2D_veobv")
 region = Rect2(45, 62, 18, 18)
 
-[node name="PromotionUi" type="ColorRect"]
+[node name="PromotionUI" type="ColorRect"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

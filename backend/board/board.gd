@@ -55,7 +55,10 @@ func perform_move(move: Move, allow_illegal: bool = false) -> Board:
 	assert(piece_map.has_piece(move.from), "No piece at %s" % move.from)
 	var piece_to_move: = piece_map.get_piece(move.from)
 	assert(piece_to_move.team == current_team_to_move, "You can't move someone else's piece")
-	assert(move.is_capture() == piece_map.has_piece(move.to), "It's a capture iff there is a piece")
+	if move.is_capture():
+		assert(piece_map.has_piece(move.to), "There must be a piece being captured")
+	else:
+		assert(!piece_map.has_piece(move.to), "There must not be a piece at the destination if it's not a capture")
 	
 	var next_board: = duplicate()
 	next_board.team_to_move = Team.PLAYER if current_team_to_move == Team.ENEMY_AI else Team.ENEMY_AI

@@ -45,8 +45,8 @@ func _on_piece_node_selected(piece_node: PieceNode) -> void:
 				promotion_ui.show()
 			else:
 				move_action = MoveAction.new(selected_piece_node.id(), piece_node.piece().pos, Move.CAPTURE, Piece.Type.UNSET, piece_node.id())
-			perform_move_action(move_action)
-			end_turn()
+				perform_move_action(move_action)
+				end_turn()
 			return
 	
 	if _can_select(piece_node):
@@ -62,15 +62,27 @@ func _on_tile_node_selected(tile_node: TileNode) -> void:
 			print("can move to %v" % tile_node.pos())
 			var move_action: MoveAction
 			if b.tile_map.is_promotion_tile(tile_node.pos(), player_team) and selected_piece_node.piece().type == Piece.Type.PAWN:
-				temp_move_action = MoveAction.new(selected_piece_node.id(), tile_node.pos(), Move.CAPTURE, Piece.Type.UNSET)
+				temp_move_action = MoveAction.new(selected_piece_node.id(), tile_node.pos(), 0, Piece.Type.UNSET)
 				input_state = InputState.CHOOSING_PROMOTION
 				promotion_ui.show()
 			else:
 				move_action = MoveAction.new(selected_piece_node.id(), tile_node.pos())
-			perform_move_action(move_action)
-			end_turn()
+				perform_move_action(move_action)
+				end_turn()
 			return
 	_select_piece_node(null)
+
+func _on_promotion_ui_promotion_chosen(promotion_type: Piece.Type) -> void:
+	assert(temp_move_action)
+	assert(input_state == InputState.CHOOSING_PROMOTION)
+	assert(selected_piece_node)
+	assert(b.team_to_move == player_team)
+	temp_move_action.promo_info = promotion_type
+	input_state = InputState.NONE
+	perform_move_action(temp_move_action)
+	promotion_ui.hide()
+	temp_move_action = null
+	end_turn()
 
 func _select_piece_node(piece_node: PieceNode) -> void:
 	selected_piece_node = piece_node
@@ -144,6 +156,7 @@ func _generate_pieces() -> void:
 		assert(b.piece_map.get_piece(piece_node.piece().pos) == piece_node.piece())
 
 func perform_move_action(move_action: MoveAction) -> void:
+	assert(move_action)
 	assert(state == BoardNodeState.INITIALIZED)
 	
 	var piece_node: PieceNode = piece_nodes.get_piece_node(move_action.piece_id)
@@ -159,8 +172,9 @@ func perform_move_action(move_action: MoveAction) -> void:
 	if move_action.is_promotion():
 		# Get the new piece
 		var new_piece: = b.piece_map.get_piece(move_action.to)
-		# Free old piece node
+		# Note: this is the position of the sprite, not the coordinates of the piece
 		var old_piece_position: = piece_node.position
+		# Free old piece node
 		piece_nodes.free_piece_node(piece_node.id())
 		# Spawn new piece node
 		piece_node = piece_nodes.spawn_piece(new_piece)
