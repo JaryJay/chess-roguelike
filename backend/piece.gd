@@ -175,35 +175,29 @@ func _pawn_get_available_moves(b: Board) -> Array[Move]:
 	
 	var forwards: = pos + facing_dir
 	if b.tile_map.has_tile(forwards) and not b.piece_map.has_piece(forwards):
-		if b.tile_map.is_promotion_tile(forwards, team):
-			for promo_type: Piece.Type in _pawn_promotion_types():
-				available_moves.append(Move.new(pos, forwards, 0, promo_type))
-		else:
-			available_moves.append(Move.new(pos, forwards))
-			
+		available_moves.append(Move.new(pos, forwards))
+	
 	# If info = 0, we have never moved
 	if info == 0:
-		# We can move two squares forward
-		var two_squares_forward: = pos + facing_dir * 2
-		if b.tile_map.has_tile(two_squares_forward) and not b.piece_map.has_piece(two_squares_forward):
-			if b.tile_map.is_promotion_tile(two_squares_forward, team):
-				for promo_type: Piece.Type in _pawn_promotion_types():
-					available_moves.append(Move.new(pos, two_squares_forward, 0, promo_type))
-			else:
-				available_moves.append(Move.new(pos, two_squares_forward))
+		available_moves.append_array(_get_moves_along_rays([facing_dir], b, 2, false))
+	else:
+		available_moves.append_array(_get_moves_along_rays([facing_dir], b, 1, false))
 	
 	# Check for captures
 	for side: Vector2i in PAWN_SIDES:
 		var square: = pos + side + facing_dir
 		if b.piece_map.has_piece(square) and b.piece_map.get_piece(square).team.is_hostile_to(team):
-			if b.tile_map.has_tile(square + facing_dir):
-				# Don't promote
-				available_moves.append(Move.new(pos, square, Move.CAPTURE))
-			else:
-				for promo_type: Piece.Type in _pawn_promotion_types():
-					available_moves.append(Move.new(pos, square, Move.CAPTURE, promo_type))
+			available_moves.append(Move.new(pos, square, Move.CAPTURE))
 	
-	return available_moves
+	var moves_including_promotion: Array[Move] = []
+	for move: Move in available_moves:
+		if b.tile_map.is_promotion_tile(move.to, team):
+			for promo_type: Piece.Type in _pawn_promotion_types():
+				moves_including_promotion.append(Move.new(pos, move.to, move.info, promo_type))
+		else:
+			moves_including_promotion.append(move)
+	
+	return moves_including_promotion
 
 func _pawn_promotion_types() -> Array[Piece.Type]:
 	return [Piece.Type.QUEEN, Piece.Type.ROOK, Piece.Type.BISHOP, Piece.Type.KNIGHT]
@@ -263,6 +257,7 @@ func _get_moves_along_rays(
 	ray_dirs: Array[Vector2i],
 	b: Board,
 	ray_length: int = BOARD_LENGTH_UPPER_BOUND,
+	enable_capture: = true,
 ) -> Array[Move]:
 	var available_moves: Array[Move] = []
 	for dir: Vector2i in ray_dirs:
@@ -272,7 +267,7 @@ func _get_moves_along_rays(
 			if not b.tile_map.has_tile(next_pos): break
 			if b.piece_map.has_piece(next_pos):
 				var piece: = b.piece_map.get_piece(next_pos)
-				if piece.team.is_hostile_to(team):
+				if enable_capture and piece.team.is_hostile_to(team):
 					available_moves.append(Move.new(pos, next_pos, Move.CAPTURE))
 				break
 			available_moves.append(Move.new(pos, next_pos))
