@@ -9,7 +9,7 @@ const PRUNE_TILES: = false
 
 const CENTER: = Vector2((MAX_X - 1) * 0.5, (MAX_Y - 1) * 0.5)
 const CARDINAL_DIRECTIONS = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
-
+const TILE_THRESHOLD: = 0.25
 
 static func generate_tiles() -> Array[Vector2i]:
 	var raw_positions: = generate_raw_positions()
@@ -31,7 +31,7 @@ static func generate_raw_positions() -> Array[Vector2i]:
 			var normalized_dist: = dist / (MAX_X * sqrt(2) / 2)
 			val = val * (1 - normalized_dist)
 
-			if absf(val) > 0.25:
+			if absf(val) > TILE_THRESHOLD:
 				raw_positions.append(Vector2i(x, y))
 	
 	return raw_positions
