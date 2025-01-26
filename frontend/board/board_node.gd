@@ -141,9 +141,7 @@ func _generate_tiles() -> void:
 	tile_nodes.create_tile_nodes(tile_positions)
 
 func _generate_pieces() -> void:
-	var enemy_army: = PiecesGenerator.generate_army(1000, b, Team.ENEMY_AI)
-	var army: = PiecesGenerator.generate_army(1000, b, Team.PLAYER)
-	var pieces: = enemy_army + army
+	var pieces: = PiecesGenerator.generate_armies(1000, b)
 	for piece: Piece in pieces:
 		assert(not b.piece_map.has_piece(piece.pos))
 		assert(b.tile_map.has_tile(piece.pos))

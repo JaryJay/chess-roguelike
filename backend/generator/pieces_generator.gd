@@ -14,6 +14,28 @@ const COSTS: = {
 	Piece.Type.PAWN: 100,
 }
 
+static func generate_armies(credits: int, b: Board) -> Array[Piece]:
+	# Generate armies for both teams
+	var enemy_army: = generate_army(credits, b, Team.ENEMY_AI)
+	var player_army: = generate_army(credits, b, Team.PLAYER)
+
+	var board_copy: = b.duplicate()
+	
+	for piece: Piece in enemy_army + player_army:
+		assert(not b.piece_map.has_piece(piece.pos))
+		assert(b.tile_map.has_tile(piece.pos))
+		
+		board_copy.piece_map.put_piece(piece.pos, piece)
+	if board_copy.is_team_in_check(Team.ENEMY_AI):
+		# If enemy king is in check, add a pawn in front of it
+		var king: Piece = enemy_army[0]
+		assert(king.type == Piece.Type.KING)
+		var pawn: Piece = Piece.new(Piece.Type.PAWN, Team.ENEMY_AI, king.pos + Vector2i.UP)
+		print("Adding pawn in front of king")
+		enemy_army.insert(0, pawn)
+
+	return enemy_army + player_army
+
 static func generate_army(credits: int, b: Board, team: Team) -> Array[Piece]:
 	var army: Array[Piece] = []
 	
