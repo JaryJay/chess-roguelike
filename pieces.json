@@ -1,6 +1,7 @@
 {
     "king": {
         "tags": ["king"],
+        "credit_cost": -1,
         "moves": [
             {
                 "dir": [1, 0],
@@ -37,6 +38,7 @@
         ]
     },
     "queen": {
+        "credit_cost": 900,
         "moves": [
             {
                 "dir": [1, 0],
@@ -73,6 +75,7 @@
         ]
     },
     "rook": {
+        "credit_cost": 500,
         "moves": [
             {
                 "dir": [1, 0],
@@ -93,6 +96,7 @@
         ]
     },
     "bishop": {
+        "credit_cost": 300,
         "moves": [
             {
                 "dir": [1, 1],
@@ -112,7 +116,29 @@
             }
         ]
     },
+    "knight": {
+        "credit_cost": 280,
+        "moves": [
+            {
+                "dir": [2, 1],
+                "dist": 1
+            },
+            {
+                "dir": [2, -1],
+                "dist": 1
+            },
+            {
+                "dir": [-2, 1],
+                "dist": 1
+            },
+            {
+                "dir": [-2, -1],
+                "dist": 1
+            }
+        ]
+    },
     "pawn": {
-        "tags": ["pawn"]
+        "tags": ["pawn"],
+        "credit_cost": 1
     }
 }
