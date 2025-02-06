@@ -77,7 +77,8 @@ func is_attacking_square(p: Vector2i, b: Board) -> bool:
 	var rule: = PieceRules.get_rule(type)
 	
 	if rule.tags.has("pawn"):
-		return _pawn_is_attacking_square(p, b)
+		if _pawn_is_attacking_square(p, b):
+			return true
 	
 	for move_ability: PieceMoveAbility in rule.moves:
 		if _is_attacking_from_ray(p, move_ability.dir, b, move_ability.dist):
