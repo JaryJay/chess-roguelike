@@ -55,11 +55,9 @@ func _on_piece_node_selected(piece_node: PieceNode) -> void:
 		_select_piece_node(null)
 
 func _on_tile_node_selected(tile_node: TileNode) -> void:
-	print("tile_node selected %v" % tile_node.pos())
 	if b.team_to_move == player_team and selected_piece_node:
 		assert(selected_piece_node.piece().team == player_team)
 		if _can_move_to(tile_node):
-			print("can move to %v" % tile_node.pos())
 			var move_action: MoveAction
 			if b.tile_map.is_promotion_tile(tile_node.pos(), player_team) and selected_piece_node.piece().type == Piece.Type.PAWN:
 				temp_move_action = MoveAction.new(selected_piece_node.id(), tile_node.pos(), 0, Piece.Type.UNSET)
