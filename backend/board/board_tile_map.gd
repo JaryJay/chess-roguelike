@@ -1,6 +1,6 @@
 class_name BoardTileMap
 
-const MAX_TILE_MAP_SIZE: = 12
+const MAX_TILE_MAP_SIZE: = 8
 
 var _tiles: Array[Array]
 var _cached_tile_count: = 0
@@ -20,7 +20,7 @@ func set_tiles(tile_positions: Array[Vector2i]) -> void:
 	_tiles.resize(MAX_TILE_MAP_SIZE)
 	for y in _tiles.size():
 		_tiles[y] = []
-		_tiles[y].resize(12)
+		_tiles[y].resize(MAX_TILE_MAP_SIZE)
 		_tiles[y].fill(false)
 	
 	for tile_pos: Vector2i in tile_positions:

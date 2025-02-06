@@ -1,9 +1,8 @@
 class_name TilesGenerator
 
 # The board can only be up to 16x16 in size, max.
-# The tile positions can be anywhere from (0, 0) to (11, 11)
-const MAX_X: = 12
-const MAX_Y: = 12
+const MAX_X: = BoardTileMap.MAX_TILE_MAP_SIZE
+const MAX_Y: = BoardTileMap.MAX_TILE_MAP_SIZE
 const NOISE_SCALE: float = 7
 const PRUNE_TILES: = false
 
