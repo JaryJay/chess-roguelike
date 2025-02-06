@@ -21,7 +21,7 @@ var selected_piece_node: PieceNode = null
 var temp_move_action: MoveAction = null
 
 func _ready() -> void:
-	ai_thread.init(DumbAI.new())
+	ai_thread.init(ABSearchAI.new())
 
 func init_randomly() -> void:
 	assert(is_node_ready())
