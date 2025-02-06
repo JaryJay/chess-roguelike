@@ -27,6 +27,7 @@ region_enabled = true
 region_rect = Rect2(40, 41, 4, 4)
 
 [node name="Label" type="Label" parent="."]
+visible = false
 offset_left = -8.0
 offset_top = -8.0
 offset_right = 8.0

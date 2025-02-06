@@ -13,6 +13,7 @@ var _piece: Piece
 var hovered: bool = false
 var pressed: bool = false
 var selected: bool = false
+var _is_moving: bool = false
 
 func _ready() -> void:
 	assert(_black_sprite)
@@ -30,8 +31,11 @@ func set_piece(new_piece: Piece) -> void:
 	_piece = new_piece
 
 func move_to(target_position: Vector2) -> void:
-	var tween = create_tween()
-	tween.tween_property(self, "position", target_position, 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	_is_moving = true
+	var tween: = create_tween()
+	tween.tween_property(self, "position", target_position + Vector2(0, -2), 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
+	tween.tween_property(self, "position", target_position, 0.05).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
+	tween.tween_callback(func(): _is_moving = false)
 
 func init_team_color() -> void:
 	assert(_initialized)
@@ -59,9 +63,20 @@ func _on_area_2d_mouse_exited() -> void:
 
 func set_hovered(new_hovered: bool) -> void:
 	hovered = new_hovered
+	if hovered and !_is_moving:
+		var tween: = create_tween()
+		tween.tween_property(self, "position", Vector2(0, -1), 0.05).as_relative().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
+	elif !hovered and !_is_moving:
+		var tween: = create_tween()
+		tween.tween_property(self, "position", Vector2(0, 1), 0.05).as_relative().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
 
 func set_selected(new_selected: bool) -> void:
 	selected = new_selected
+	if selected and !_is_moving:
+		var tween: = create_tween()
+		tween.tween_property(self, "position", Vector2(0, -2), 0.05).as_relative().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
+		tween.tween_property(self, "position", Vector2(0, 2), 0.05).as_relative().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
+		
 
 #endregion
 

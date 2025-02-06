@@ -85,6 +85,8 @@ func _on_promotion_ui_promotion_chosen(promotion_type: Piece.Type) -> void:
 	end_turn()
 
 func _select_piece_node(piece_node: PieceNode) -> void:
+	if selected_piece_node:
+		selected_piece_node.set_selected(false)
 	selected_piece_node = piece_node
 	if piece_node:
 		var available_moves: = b.get_available_moves_from(piece_node.piece().pos)
@@ -92,6 +94,7 @@ func _select_piece_node(piece_node: PieceNode) -> void:
 		for move: Move in available_moves:
 			tiles_to_highlight.append(move.to)
 		tile_nodes.highlight_tiles(tiles_to_highlight)
+		piece_node.set_selected(true)
 	else:
 		tile_nodes.highlight_tiles([])
 
