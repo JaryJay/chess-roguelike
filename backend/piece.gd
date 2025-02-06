@@ -48,25 +48,24 @@ func _init(_type: Type, _team: Team, _pos: Vector2i, _info: int = 0) -> void:
 	pos = _pos
 	info = _info
 
+## Returns all available moves for the current player
+## Will include illegal moves, which should be filtered out by the caller
 func get_available_moves(b: Board) -> Array[Move]:
 	assert(type != Type.UNSET, "Type must be set")
 	assert(b.tile_map.has_tile(pos), "There should be a tile at the current piece position")
-	match type:
-		Type.KING:
-			return _king_get_available_moves(b)
-		Type.QUEEN:
-			return _queen_get_available_moves(b)
-		Type.ROOK:
-			return _rook_get_available_moves(b)
-		Type.BISHOP:
-			return _bishop_get_available_moves(b)
-		Type.KNIGHT:
-			return _knight_get_available_moves(b)
-		Type.PAWN:
-			return _pawn_get_available_moves(b)
 	
-	assert(false, "piece.gd: get_avilable_moves not implemented for type %s" % type)
-	return []
+	var rule: = PieceRules.get_rule(type)
+	
+	var moves: Array[Move] = []
+	for move_ability: PieceMoveAbility in rule.moves:
+		moves.append_array(_get_moves_along_rays([move_ability.dir], b, move_ability.dist, true))
+
+	if rule.tags.has("king"):
+		moves.append_array(_king_get_additional_moves(b))
+	elif rule.tags.has("pawn"):
+		moves.append_array(_pawn_get_additional_moves(b))
+	
+	return moves
 
 func is_attacking_square(p: Vector2i, b: Board) -> bool:
 	assert(type != Type.UNSET, "Type must be set")
@@ -74,101 +73,28 @@ func is_attacking_square(p: Vector2i, b: Board) -> bool:
 	assert(b.tile_map.has_tile(p), "There should be a tile at the target position %.v" % p)
 	assert(b.tile_map.has_tile(pos), "There should be a tile at the current piece position %.v" % pos)
 	assert(p != pos, "There should not be two pieces in the same position %.v" % pos)
-	match type:
-		Type.KING:
-			return _king_is_attacking_square(p, b)
-		Type.QUEEN:
-			return _queen_is_attacking_square(p, b)
-		Type.ROOK:
-			return _rook_is_attacking_square(p, b)
-		Type.BISHOP:
-			return _bishop_is_attacking_square(p, b)
-		Type.KNIGHT:
-			return _knight_is_attacking_square(p, b)
-		Type.PAWN:
-			return _pawn_is_attacking_square(p, b)
+
+	var rule: = PieceRules.get_rule(type)
 	
-	assert(false, "piece.gd: is_attacking_square not implemented for type %s" % type)
-	return false;
+	if rule.tags.has("pawn"):
+		return _pawn_is_attacking_square(p, b)
+	
+	for move_ability: PieceMoveAbility in rule.moves:
+		if _is_attacking_from_ray(p, move_ability.dir, b, move_ability.dist):
+			return true
+	return false
 
 #region get_available_moves implementation
 
 const BOARD_LENGTH_UPPER_BOUND: int = 20
 
-const EIGHT_DIRECTIONS: Array[Vector2i] = [
-	Vector2i(1, 0),
-	Vector2i(1, 1),
-	Vector2i(0, 1),
-	Vector2i(-1, 1),
-	Vector2i(-1, 0),
-	Vector2i(-1, -1),
-	Vector2i(0, -1),
-	Vector2i(1, -1),
-]
-
-func _king_get_available_moves(b: Board) -> Array[Move]:
-	var available_moves: Array[Move] = []
-
-	for dir: Vector2i in EIGHT_DIRECTIONS:
-		var next_pos: = pos + dir
-		if not b.tile_map.has_tile(next_pos): continue
-		if b.piece_map.has_piece(next_pos):
-			var piece: = b.piece_map.get_piece(next_pos)
-			if piece.team.is_hostile_to(team):
-				available_moves.append(Move.new(pos, next_pos, Move.CAPTURE))
-			continue
-
-		available_moves.append(Move.new(pos, next_pos))
-
-	# Eliminate moves that would put king in check
-	# TODO
-	
-	# TODO: Add castling
-
-	return available_moves
-
-func _queen_get_available_moves(b: Board) -> Array[Move]:
-	return _get_moves_along_rays(EIGHT_DIRECTIONS, b)
-
-const FOUR_DIRECTIONS: Array[Vector2i] = [Vector2i(1, 0), Vector2i(0, 1), Vector2i(-1, 0),  Vector2i(0, -1)]
-
-func _rook_get_available_moves(b: Board) -> Array[Move]:
-	return _get_moves_along_rays(FOUR_DIRECTIONS, b)
-
-const DIAGONAL_DIRECTIONS: Array[Vector2i] = [Vector2i(1, 1), Vector2i(-1, 1), Vector2i(-1, -1), Vector2i(1, -1)]
-
-func _bishop_get_available_moves(b: Board) -> Array[Move]:
-	return _get_moves_along_rays(DIAGONAL_DIRECTIONS, b)
-
-const KNIGHT_DIRECTIONS: Array[Vector2i] = [
-	Vector2i(2, 1),
-	Vector2i(1, 2),
-	Vector2i(-1, 2),
-	Vector2i(-2, 1),
-	Vector2i(-2, -1),
-	Vector2i(-1, -2),
-	Vector2i(1, -2),
-	Vector2i(2, -1),
-]
-
-func _knight_get_available_moves(b: Board) -> Array[Move]:
-	var available_moves: Array[Move] = []
-
-	for dir: Vector2i in KNIGHT_DIRECTIONS:
-		var next_pos: = pos + dir
-		if not b.tile_map.has_tile(next_pos): continue
-
-		if not b.piece_map.has_piece(next_pos):
-			available_moves.append(Move.new(pos, next_pos))
-		elif b.piece_map.get_piece(next_pos).team.is_hostile_to(team):
-			available_moves.append(Move.new(pos, next_pos, Move.CAPTURE))
-
-	return available_moves
+func _king_get_additional_moves(_b: Board) -> Array[Move]:
+	return []
 
 const DIAGONALS_PLAYER: = [Vector2i(1, -1), Vector2i(1, -1)]
 const DIAGONALS_ENEMY: = [Vector2i(1, 1), Vector2i(1, 1)]
 
-func _pawn_get_available_moves(b: Board) -> Array[Move]:
+func _pawn_get_additional_moves(b: Board) -> Array[Move]:
 	var available_moves: Array[Move] = []
 	
 	var facing_dir: = _get_pawn_facing_direction()
@@ -205,40 +131,6 @@ func _pawn_promotion_types() -> Array[Piece.Type]:
 #endregion
 
 #region is_attacking_square implementation
-
-func _king_is_attacking_square(p: Vector2i, _b: Board) -> bool:
-	var _abs = (p - pos).abs()
-	return _abs.x <= 1 && _abs.y <= 1
-
-func _queen_is_attacking_square(p: Vector2i, b: Board) -> bool:
-	var _abs: = (p - pos).abs()
-	if _abs.x != 0 and _abs.y != 0 and _abs.x != _abs.y:
-		return false
-	assert(_abs != Vector2i.ZERO)
-	var dir: = (p - pos) / maxi(_abs.x, _abs.y)
-	assert (dir.abs().x <= 1 && dir.abs().y <= 1)
-	
-	return _is_attacking_from_ray(p, dir, b)
-
-func _rook_is_attacking_square(p: Vector2i, b: Board) -> bool:
-	var diff: = p - pos
-	if diff.x != 0 and diff.y != 0:
-		return false
-	var dir: = diff / absi(diff.x) if diff.x != 0 else diff / absi(diff.y)
-	
-	return _is_attacking_from_ray(p, dir, b)
-
-func _bishop_is_attacking_square(p: Vector2i, b: Board) -> bool:
-	var diff: = p - pos
-	if diff.abs().x != diff.abs().y:
-		return false
-	var dir: = diff / diff.abs().x
-	
-	return _is_attacking_from_ray(p, dir, b)
-
-func _knight_is_attacking_square(p: Vector2i, _b: Board) -> bool:
-	var abs_diff: = (p - pos).abs()
-	return (abs_diff.x == 1 and abs_diff.y == 2) or (abs_diff.x == 2 and abs_diff.y == 1)
 
 func _pawn_is_attacking_square(p: Vector2i, _b: Board) -> bool:
 	var facing_dir: = _get_pawn_facing_direction()
