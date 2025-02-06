@@ -1,6 +1,8 @@
 # Chess Roguelike
 A chess-inspired roguelike.
 
-## Screenshots
+## Demo
 
-![image](https://github.com/user-attachments/assets/1bd825e0-36c4-40ae-b384-2f7340c56566)
+
+https://github.com/user-attachments/assets/793644e1-53ef-47c5-b73c-5c37caa6e59c
+
