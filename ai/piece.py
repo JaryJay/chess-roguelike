@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from enum import Flag, auto
 from typing import List, Optional
 from .team import Team
+from .move import Move
 from .vector import Vector2i
 
 class PieceType(Flag):
@@ -38,7 +39,7 @@ class Piece:
     BOARD_LENGTH_UPPER_BOUND: int = 20
     PAWN_SIDES = [Vector2i.LEFT, Vector2i.RIGHT]
     
-    def get_available_moves(self, board) -> List['Move']:
+    def get_available_moves(self, board) -> List[Move]:
         """Returns all available moves for this piece"""
         from .piece_rules import PieceRules
         from .move import Move, MoveFlags

@@ -1,8 +1,9 @@
 import json
-from typing import Dict, Set
+from typing import Dict, List, Set
 from ..vector import Vector2i
 from ..team import Team
 from ..board import BoardTileMap
+from ..config import Config
 
 class TilesGenerator:
     """Generates the board tile layout from configuration"""
@@ -38,4 +39,32 @@ class TilesGenerator:
                 for pos in promo_data["enemy"]:
                     promotion_tiles[Team.ENEMY_AI].add(Vector2i(pos[0], pos[1]))
         
-        return BoardTileMap(tiles, promotion_tiles) 
+        return BoardTileMap(tiles, promotion_tiles)
+    
+    @classmethod
+    def generate_raw_positions(cls) -> List[Vector2i]:
+        """Generates initial tile positions using noise"""
+        import random
+        import math
+        
+        raw_positions: List[Vector2i] = []
+        
+        # Simple random noise implementation
+        for y in range(Config.max_board_size):
+            for x in range(Config.max_board_size):
+                # Generate noise value between 0 and 1
+                val = random.random()
+                
+                # Adjust based on distance from center
+                center = Config.max_board_size / 2
+                dist = math.sqrt((x - center)**2 + (y - center)**2)
+                normalized_dist = dist / (Config.max_board_size * math.sqrt(2) / 2)
+                val = val * (1 - normalized_dist)
+                
+                # Scale noise
+                val = val * Config.tile_generation_noise_scale
+                
+                if abs(val) > Config.tile_generation_threshold:
+                    raw_positions.append(Vector2i(x, y))
+        
+        return raw_positions 

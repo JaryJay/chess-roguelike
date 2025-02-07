@@ -4,6 +4,7 @@ from .piece import Piece, PieceType, PieceFlags
 from .move import Move, MoveFlags
 from .team import Team
 from .vector import Vector2i
+from .config import Config
 
 @dataclass
 class BoardTileMap:
@@ -20,7 +21,11 @@ class BoardTileMap:
 @dataclass
 class BoardPieceMap:
     """Manages piece positions on the board"""
-    pieces: Dict[Vector2i, Piece]
+    pieces: Dict[Vector2i, Piece] = None
+    
+    def __post_init__(self):
+        if self.pieces is None:
+            self.pieces = {}
     
     def has_piece(self, pos: Vector2i) -> bool:
         return pos in self.pieces
