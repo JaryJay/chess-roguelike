@@ -54,6 +54,6 @@ static func load_pieces() -> void:
 				moves.append(PieceMoveAbility.new(dir, move["dist"]))
 		
 		piece_type_to_rules[string_to_type[piece_type]] = PieceRule.new(tags, moves, credit_cost)
-	
+
 static func get_rule(piece_type: Piece.Type) -> PieceRule:
 	return piece_type_to_rules[piece_type]

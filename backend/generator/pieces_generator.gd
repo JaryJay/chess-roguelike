@@ -1,18 +1,12 @@
 class_name PiecesGenerator
 
-const QUEEN_COST: = 900
-const ROOK_COST: = 500
-const BISHOP_COST: = 300
-const KNIGHT_COST: = 280
-const PAWN_COST: = 100
-
-const COSTS: = {
-	Piece.Type.QUEEN: 900,
-	Piece.Type.ROOK: 500,
-	Piece.Type.BISHOP: 300,
-	Piece.Type.KNIGHT: 290,
-	Piece.Type.PAWN: 100,
-}
+const PIECE_TYPES: = [
+	Piece.Type.QUEEN,
+	Piece.Type.ROOK,
+	Piece.Type.BISHOP,
+	Piece.Type.KNIGHT,
+	Piece.Type.PAWN,
+]
 
 static func generate_army(credits: int, b: Board, team: Team) -> Array[Piece]:
 	var army: Array[Piece] = []
@@ -25,7 +19,7 @@ static func generate_army(credits: int, b: Board, team: Team) -> Array[Piece]:
 		var piece_type: = generate_piece_type(credits)
 		if piece_type == Piece.Type.UNSET: break
 		
-		credits -= COSTS[piece_type]
+		credits -= PieceRules.get_rule(piece_type).credit_cost
 		army.append(Piece.new(piece_type, team, Vector2i(0, 0)))
 	
 	# Arrange pieces
@@ -42,11 +36,12 @@ static func generate_army(credits: int, b: Board, team: Team) -> Array[Piece]:
 	return army
 
 static func generate_piece_type(credits: int) -> Piece.Type:
-	if credits < COSTS[Piece.Type.PAWN]: return Piece.Type.UNSET
+	if credits < PieceRules.get_rule(Piece.Type.PAWN).credit_cost: return Piece.Type.UNSET
 	
 	var affordable_types: Array[Piece.Type] = []
-	for type: Piece.Type in COSTS.keys():
-		if COSTS[type] <= credits: affordable_types.append(type)
+	for type: Piece.Type in PIECE_TYPES:
+		if PieceRules.get_rule(type).credit_cost <= credits:
+			affordable_types.append(type)
 	
 	assert(affordable_types.size() >= 1)
 	

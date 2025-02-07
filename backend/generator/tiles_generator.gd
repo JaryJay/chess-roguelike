@@ -1,15 +1,7 @@
 class_name TilesGenerator
 
-# The board can only be up to 16x16 in size, max.
-const MAX_X: = BoardTileMap.MAX_TILE_MAP_SIZE
-const MAX_Y: = BoardTileMap.MAX_TILE_MAP_SIZE
-const NOISE_SCALE: float = 7
-const PRUNE_TILES: = false
-
-const CENTER: = Vector2((MAX_X - 1) * 0.5, (MAX_Y - 1) * 0.5)
+const PRUNE_TILES: = true
 const CARDINAL_DIRECTIONS = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
-## The higher the threshold, the fewer tiles that will be generated
-const TILE_THRESHOLD: = 0.23
 
 static func generate_tiles() -> Array[Vector2i]:
 	var raw_positions: = generate_raw_positions()
@@ -22,16 +14,16 @@ static func generate_raw_positions() -> Array[Vector2i]:
 	var noise: = FastNoiseLite.new()
 	noise.seed = randi()
 	noise.offset = Vector3(.5, .5, .5)
-	for y: int in MAX_Y:
-		for x: int in MAX_X:
-			var val: = noise.get_noise_2d(x * NOISE_SCALE, y * NOISE_SCALE)
+	for y: int in Config.max_board_size:
+		for x: int in Config.max_board_size:
+			var val: = noise.get_noise_2d(x * Config.tile_generation_noise_scale, y * Config.tile_generation_noise_scale)
 			val = (val + 1) / 2
 			# val should be boosted depending on how close it is to the center
-			var dist: = Vector2(x, y).distance_to(CENTER)
-			var normalized_dist: = dist / (MAX_X * sqrt(2) / 2)
+			var dist: = Vector2(x, y).distance_to(Vector2.ONE * Config.max_board_size / 2)
+			var normalized_dist: = dist / (Config.max_board_size * sqrt(2) / 2)
 			val = val * (1 - normalized_dist)
 
-			if absf(val) > TILE_THRESHOLD:
+			if absf(val) > Config.tile_generation_threshold:
 				raw_positions.append(Vector2i(x, y))
 	
 	return raw_positions
@@ -63,7 +55,7 @@ static func normalize_positions(positions: Array[Vector2i]) -> Array[Vector2i]:
 	avg_pos /= positions.size()
 	
 	# Calculate the initial offset needed to center the tiles
-	var target_center: = Vector2(MAX_X / 2, MAX_Y / 2)
+	var target_center: = Vector2(Config.max_board_size / 2, Config.max_board_size / 2)
 	var offset: = (target_center - avg_pos).round()
 	
 	# Find the bounds after applying the offset
@@ -78,9 +70,9 @@ static func normalize_positions(positions: Array[Vector2i]) -> Array[Vector2i]:
 	
 	# Adjust offset if any positions would be out of bounds
 	offset.x += mini(0, -min_pos.x)  # Shift right if too far left
-	offset.x -= maxi(0, max_pos.x - (MAX_X - 1))  # Shift left if too far right
+	offset.x -= maxi(0, max_pos.x - (Config.max_board_size - 1))  # Shift left if too far right
 	offset.y += mini(0, -min_pos.y)  # Shift down if too far up
-	offset.y -= maxi(0, max_pos.y - (MAX_Y - 1))  # Shift up if too far down
+	offset.y -= maxi(0, max_pos.y - (Config.max_board_size - 1))  # Shift up if too far down
 	
 	# Apply the adjusted offset to all positions
 	var normalized_positions: Array[Vector2i] = []

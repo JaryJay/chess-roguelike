@@ -1,7 +1,5 @@
 class_name ABSearchAI extends AbstractAI
 
-const MAX_MOVES_TO_CONSIDER: = 10
-
 class Result extends Resource:
 	var evaluation: float
 	var move: Move
@@ -27,7 +25,7 @@ func _get_best_result(board: Board, depth: int, alpha: float, beta: float) -> Re
 		return Result.new(-INF if board.team_to_move == Team.PLAYER else INF, null)
 	
 	sort_moves_by_strength_desc(moves, board)
-	moves = moves.slice(0, MAX_MOVES_TO_CONSIDER)  # Only consider the top moves
+	moves = moves.slice(0, Config.ai.max_moves_to_consider)  # Only consider the top moves
 	
 	if board.team_to_move == Team.PLAYER:
 		var best_result: = Result.new(-INF, null)
