@@ -154,7 +154,7 @@
         ]
     },
     "pawn": {
-        "tags": ["pawn"],
-        "credit_cost": 1
+        "credit_cost": 100,
+        "tags": ["pawn"]
     }
 }
