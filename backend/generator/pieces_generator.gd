@@ -1,5 +1,7 @@
 class_name PiecesGenerator
 
+## Only the types that can be generated
+## Note that the king is not included here
 const PIECE_TYPES: = [
 	Piece.Type.QUEEN,
 	Piece.Type.ROOK,
@@ -40,6 +42,8 @@ static func generate_piece_type(credits: int) -> Piece.Type:
 	
 	var affordable_types: Array[Piece.Type] = []
 	for type: Piece.Type in PIECE_TYPES:
+		assert(PieceRules.get_rule(type) != null)
+		assert(PieceRules.get_rule(type).credit_cost > 0)
 		if PieceRules.get_rule(type).credit_cost <= credits:
 			affordable_types.append(type)
 	

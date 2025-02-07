@@ -4,10 +4,10 @@ var _pieces: Array[Array] = []
 var _cached_king_positions: Dictionary = {}
 
 func _init() -> void:
-	_pieces.resize(BoardTileMap.MAX_TILE_MAP_SIZE)
+	_pieces.resize(Config.max_board_size)
 	for y: int in _pieces.size():
 		_pieces[y] = []
-		_pieces[y].resize(BoardTileMap.MAX_TILE_MAP_SIZE)
+		_pieces[y].resize(Config.max_board_size)
 
 func get_piece(pos: Vector2i) -> Piece:
 	assert(has_piece(pos), "No piece at %.v" % pos)

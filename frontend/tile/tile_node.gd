@@ -20,7 +20,7 @@ func init(new_pos: Vector2i) -> void:
 		square.color = Color("2f3350")
 	name = "Tile_%v" % _pos
 	$Label.text = "%s,%s" % [_pos.x, _pos.y]
-	position = (Vector2(_pos) - Vector2.ONE * BoardTileMap.MAX_TILE_MAP_SIZE * 0.5) * 16
+	position = (Vector2(_pos) - Vector2.ONE * Config.max_board_size * 0.5) * 16
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("primary") && hovered:

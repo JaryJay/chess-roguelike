@@ -9,7 +9,7 @@ enum InputState {
 	CHOOSING_PROMOTION,
 }
 
-var b: Board = Board.new()
+@onready var b: Board = Board.new()
 @onready var tile_nodes: TileNodes = $TileNodes
 @onready var piece_nodes: PieceNodes = $PieceNodes
 @onready var ai_thread: AIThread = $AIThread
@@ -21,6 +21,7 @@ var selected_piece_node: PieceNode = null
 var temp_move_action: MoveAction = null
 
 func _ready() -> void:
+	assert(Config.loaded, "Config not loaded!")
 	ai_thread.init(ABSearchAI.new())
 
 func init_randomly() -> void:

@@ -20,10 +20,10 @@ func get_all_tile_nodes() -> Array[TileNode]:
 	return all_tile_nodes
 
 func create_tile_nodes(tile_positions: Array[Vector2i]) -> void:
-	_tile_nodes.resize(BoardTileMap.MAX_TILE_MAP_SIZE)
+	_tile_nodes.resize(Config.max_board_size)
 	for y in _tile_nodes.size():
 		_tile_nodes[y] = []
-		_tile_nodes[y].resize(BoardTileMap.MAX_TILE_MAP_SIZE)
+		_tile_nodes[y].resize(Config.max_board_size)
 		_tile_nodes[y].fill(false)
 	
 	for tile_pos: Vector2i in tile_positions:

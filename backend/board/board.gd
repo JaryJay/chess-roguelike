@@ -1,8 +1,13 @@
 class_name Board
 
-var tile_map: BoardTileMap = BoardTileMap.new()
-var piece_map: BoardPieceMap = BoardPieceMap.new()
-var team_to_move: Team = Team.PLAYER
+var tile_map: BoardTileMap
+var piece_map: BoardPieceMap
+var team_to_move: Team
+
+func _init() -> void:
+	tile_map = BoardTileMap.new()
+	piece_map = BoardPieceMap.new()
+	team_to_move = Team.PLAYER
 
 func get_available_moves() -> Array[Move]:
 	var all_moves: Array[Move] = []
