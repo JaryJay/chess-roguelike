@@ -59,26 +59,9 @@ func get_all_piece_nodes() -> Array[PieceNode]:
 func _on_piece_node_selected(piece_node: PieceNode) -> void:
 	piece_node_selected.emit(piece_node)
 
-
-const king_scene: = preload("res://frontend/pieces/king_node.tscn")
-const queen_scene: = preload("res://frontend/pieces/queen_node.tscn")
-const rook_scene: = preload("res://frontend/pieces/rook_node.tscn")
-const bishop_scene: = preload("res://frontend/pieces/bishop_node.tscn")
-const knight_scene: = preload("res://frontend/pieces/knight_node.tscn")
-const pawn_scene: = preload("res://frontend/pieces/pawn_node.tscn")
-
-
-const SCENES: = {
-	Piece.Type.KING: king_scene,
-	Piece.Type.QUEEN: queen_scene,
-	Piece.Type.ROOK: rook_scene,
-	Piece.Type.BISHOP: bishop_scene,
-	Piece.Type.KNIGHT: knight_scene,
-	Piece.Type.PAWN: pawn_scene,
-}
+const piece_node_scene: = preload("res://frontend/pieces/piece_node.tscn")
 
 static func create_piece_node(piece: Piece) -> PieceNode:
-	var scene: PackedScene = SCENES[piece.type]
-	var piece_node: = scene.instantiate() as PieceNode
+	var piece_node: = piece_node_scene.instantiate() as PieceNode
 	piece_node.set_piece(piece)
 	return piece_node

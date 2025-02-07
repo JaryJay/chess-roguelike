@@ -10,6 +10,14 @@ static var string_to_type: Dictionary = {
 	"knight": Piece.Type.KNIGHT,
 	"pawn": Piece.Type.PAWN,
 }
+static var type_to_string: Dictionary = {
+	Piece.Type.KING: "king",
+	Piece.Type.QUEEN: "queen",
+	Piece.Type.ROOK: "rook",
+	Piece.Type.BISHOP: "bishop",
+	Piece.Type.KNIGHT: "knight",
+	Piece.Type.PAWN: "pawn",
+}
 
 ## Dictionary from Piece.Type to PieceRule
 static var piece_type_to_rules: Dictionary = {}

@@ -2,9 +2,7 @@ class_name PieceNode extends Node2D
 
 signal mouse_selected
 
-@export var type: Piece.Type
-@export var _black_sprite: Sprite2D
-@export var _white_sprite: Sprite2D
+var _sprite_pivot: Node2D
 
 var _initialized: = false
 var _id: int
@@ -16,9 +14,7 @@ var selected: bool = false
 var _is_moving: bool = false
 
 func _ready() -> void:
-	assert(_black_sprite)
-	assert(_white_sprite)
-	init_team_color()
+	init_team_sprites()
 	add_to_group("piece_nodes")
 
 func piece() -> Piece:
@@ -37,12 +33,25 @@ func move_to(target_position: Vector2) -> void:
 	tween.tween_property(self, "position", target_position, 0.05).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
 	tween.tween_callback(func(): _is_moving = false)
 
-func init_team_color() -> void:
+func init_team_sprites() -> void:
 	assert(_initialized)
+	assert(_piece)
+
+	# $SpritePivot is the placeholder sprite node, we can remove it
+	$SpritePivot.queue_free()
+	remove_child($SpritePivot)
+
+	var sprite_path: = "res://frontend/pieces/sprites/%s_sprites.tscn" % PieceRules.type_to_string[_piece.type]
+	_sprite_pivot = load(sprite_path).instantiate()
+	_sprite_pivot.name = "SpritePivot"
+	add_child(_sprite_pivot)
+
 	if piece().team.is_player():
-		_black_sprite.queue_free()
+		# Hide black sprite
+		_sprite_pivot.get_node("B").hide()
 	elif piece().team.is_enemy():
-		_white_sprite.queue_free()
+		# Hide white sprite
+		_sprite_pivot.get_node("W").hide()
 	else:
 		assert(false, "Unknown team %s" % piece().team._key)
 

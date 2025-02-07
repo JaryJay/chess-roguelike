@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2krh8hced454"]
+
+[ext_resource type="Script" path="res://frontend/pieces/piece_node.gd" id="1_flxqp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_25au2"]
+size = Vector2(16, 16)
+
+[node name="PieceNode" type="Node2D"]
+script = ExtResource("1_flxqp")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_25au2")
+debug_color = Color(0, 0.6, 0.701961, 0.211765)
+
+[node name="SpritePivot" type="Marker2D" parent="."]
+editor_description = "This is the node that piece sprites will replace."
