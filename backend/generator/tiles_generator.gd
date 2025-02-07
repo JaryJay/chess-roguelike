@@ -8,7 +8,8 @@ const PRUNE_TILES: = false
 
 const CENTER: = Vector2((MAX_X - 1) * 0.5, (MAX_Y - 1) * 0.5)
 const CARDINAL_DIRECTIONS = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
-const TILE_THRESHOLD: = 0.25
+## The higher the threshold, the fewer tiles that will be generated
+const TILE_THRESHOLD: = 0.23
 
 static func generate_tiles() -> Array[Vector2i]:
 	var raw_positions: = generate_raw_positions()
