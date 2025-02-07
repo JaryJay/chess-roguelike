@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://if7u65hrkq2t"]
+
+[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="2_87wot"]
+
+[node name="Knight" type="Node2D"]
+
+[node name="B" type="Sprite2D" parent="."]
+texture = ExtResource("2_87wot")
+offset = Vector2(-1, -2)
+region_enabled = true
+region_rect = Rect2(63, 63, 17, 17)
+
+[node name="W" type="Sprite2D" parent="."]
+texture = ExtResource("2_87wot")
+offset = Vector2(-1, -2)
+region_enabled = true
+region_rect = Rect2(45, 63, 17, 17)
