@@ -9,49 +9,106 @@ from .config import Config
 @dataclass
 class BoardTileMap:
     """Represents the tile layout of the board"""
-    tiles: Set[Vector2i]
-    promotion_tiles: Dict[Team, Set[Vector2i]]
+    _tiles: List[List[bool]] = None
+    _cached_tile_count: int = 0
     
-    def has_tile(self, pos: Vector2i) -> bool:
-        return pos in self.tiles
+    def __post_init__(self):
+        if self._tiles is None:
+            self._tiles = [[False for _ in range(Config.max_board_size)] 
+                         for _ in range(Config.max_board_size)]
+    
+    def get_all_tiles(self) -> List[Vector2i]:
+        all_tiles: List[Vector2i] = []
+        for y in range(len(self._tiles)):
+            for x in range(len(self._tiles[y])):
+                pos = Vector2i(x, y)
+                if self.has_tile(pos):
+                    all_tiles.append(pos)
+        return all_tiles
+    
+    def set_tiles(self, tile_positions: List[Vector2i]) -> None:
+        self._tiles = [[False for _ in range(Config.max_board_size)] 
+                      for _ in range(Config.max_board_size)]
+        self._cached_tile_count = 0
+        
+        for pos in tile_positions:
+            self._tiles[pos.y][pos.x] = True
+            self._cached_tile_count += 1
+        assert self.num_tiles() == len(tile_positions)
     
     def is_promotion_tile(self, pos: Vector2i, team: Team) -> bool:
-        return pos in self.promotion_tiles.get(team, set())
+        y_modifier = -1 if team.is_player() else 1
+        pawn_facing_dir = Vector2i(0, y_modifier)
+        return not self.has_tile(pos + pawn_facing_dir)
+    
+    def has_tile(self, pos: Vector2i) -> bool:
+        if (pos.x < 0 or pos.x >= Config.max_board_size or 
+            pos.y < 0 or pos.y >= Config.max_board_size):
+            return False
+        return self._tiles[pos.y][pos.x]
+    
+    def num_tiles(self) -> int:
+        return self._cached_tile_count
 
 @dataclass
 class BoardPieceMap:
     """Manages piece positions on the board"""
-    pieces: Dict[Vector2i, Piece] = None
+    _pieces: List[List[Optional[Piece]]] = None
+    _cached_king_positions: Dict[Team, Piece] = None
     
     def __post_init__(self):
-        if self.pieces is None:
-            self.pieces = {}
+        if self._pieces is None:
+            self._pieces = []
+            self._pieces = [[None for _ in range(Config.max_board_size)] 
+                          for _ in range(Config.max_board_size)]
+        if self._cached_king_positions is None:
+            self._cached_king_positions = {}
     
     def has_piece(self, pos: Vector2i) -> bool:
-        return pos in self.pieces
+        return self._pieces[pos.y][pos.x] is not None
     
     def get_piece(self, pos: Vector2i) -> Piece:
         assert self.has_piece(pos), f"No piece at {pos}"
-        return self.pieces[pos]
+        return self._pieces[pos.y][pos.x]
     
     def get_king(self, team: Team) -> Piece:
-        for piece in self.pieces.values():
-            if piece.team == team and piece.type == PieceType.KING:
-                return piece
+        # TODO: Implement caching like in GDScript
+        for y in range(len(self._pieces)):
+            for x in range(len(self._pieces[y])):
+                pos = Vector2i(x, y)
+                if not self.has_piece(pos):
+                    continue
+                piece = self.get_piece(pos)
+                if piece.type == PieceType.KING and piece.team == team:
+                    self._cached_king_positions[team] = piece
+                    return piece
         raise ValueError(f"No king found for team {team}")
     
     def get_all_pieces(self) -> List[Piece]:
-        return list(self.pieces.values())
+        all_pieces: List[Piece] = []
+        for y in range(len(self._pieces)):
+            for x in range(len(self._pieces[y])):
+                pos = Vector2i(x, y)
+                if self.has_piece(pos):
+                    all_pieces.append(self.get_piece(pos))
+        return all_pieces
     
     def put_piece(self, pos: Vector2i, piece: Piece) -> None:
-        self.pieces[pos] = piece
+        assert not self.has_piece(pos), f"Piece already at {pos}"
+        self._pieces[pos.y][pos.x] = piece
     
     def remove_piece(self, pos: Vector2i) -> None:
-        if pos in self.pieces:
-            del self.pieces[pos]
+        assert self.has_piece(pos), f"No piece at {pos}"
+        self._pieces[pos.y][pos.x] = None
     
     def duplicate(self) -> 'BoardPieceMap':
-        return BoardPieceMap({pos: piece.duplicate() for pos, piece in self.pieces.items()})
+        new_piece_map = BoardPieceMap()
+        for y in range(len(self._pieces)):
+            for x in range(len(self._pieces[y])):
+                new_piece_map._pieces[y][x] = self._pieces[y][x]
+        for key in self._cached_king_positions:
+            new_piece_map._cached_king_positions[key] = self._cached_king_positions[key]
+        return new_piece_map
 
 @dataclass
 class Board:
