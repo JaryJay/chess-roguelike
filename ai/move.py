@@ -1,15 +1,7 @@
 from dataclasses import dataclass
-from enum import Flag, auto
 from typing import Optional
-from .piece import PieceType
-from .vector import Vector2i
-
-class MoveFlags(Flag):
-    NONE = 0
-    CHECK = auto()
-    CAPTURE = auto()
-    CASTLE_LEFT = auto()
-    CASTLE_RIGHT = auto()
+from vector import Vector2i
+from game_types import MoveFlags, PieceType
 
 @dataclass
 class Move:

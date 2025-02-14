@@ -15,14 +15,14 @@ class Config:
     loaded: bool = False
     
     @staticmethod
-    def load_config() -> None:
+    def load_config(config_path: str) -> None:
         assert not Config.loaded, "Config already loaded!"
         
         try:
-            with open("config.json", 'r') as f:
+            with open(config_path, 'r') as f:
                 config = json.load(f)
         except Exception as e:
-            raise RuntimeError(f"Failed to load config.json: {e}")
+            raise RuntimeError(f"Failed to load config from {config_path}: {e}")
         
         Config.max_board_size = config["max_board_size"]
         assert Config.max_board_size > 0

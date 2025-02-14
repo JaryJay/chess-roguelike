@@ -1,11 +1,9 @@
 import random
 import math
-from typing import Dict, List, Set
-from pyfastnoiselite import FastNoiseLite
-from ..vector import Vector2i
-from ..team import Team
-from ..board import BoardTileMap
-from ..config import Config
+from typing import List
+from pyfastnoiselite.pyfastnoiselite import FastNoiseLite
+from vector import Vector2i
+from config import Config
 
 class TilesGenerator:
     """Generates the board tile layout procedurally"""
@@ -33,7 +31,7 @@ class TilesGenerator:
         for y in range(Config.max_board_size):
             for x in range(Config.max_board_size):
                 # Get noise value in range [-1, 1]
-                val = noise.get_noise_2d(x + 0.5, y + 0.5)  # Adding offset to match Godot
+                val = noise.get_noise(x + 0.5, y + 0.5)  # Adding offset to match Godot
                 # Convert to range [0, 1]
                 val = (val + 1) / 2
                 

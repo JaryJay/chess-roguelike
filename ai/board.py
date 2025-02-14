@@ -1,10 +1,10 @@
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Set, Tuple
-from .piece import Piece, PieceType, PieceFlags
-from .move import Move, MoveFlags
-from .team import Team
-from .vector import Vector2i
-from .config import Config
+from typing import Dict, List, Optional
+from piece import Piece, PieceType, PieceFlags
+from move import Move, MoveFlags
+from team import Team
+from vector import Vector2i
+from config import Config
 
 @dataclass
 class BoardTileMap:

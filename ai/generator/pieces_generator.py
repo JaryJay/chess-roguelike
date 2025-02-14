@@ -1,11 +1,11 @@
 import json
 import random
 from typing import Dict, List
-from ..vector import Vector2i
-from ..team import Team
-from ..piece import Piece, PieceType
-from ..board import Board, BoardPieceMap
-from ..piece_rules import PieceRules
+from vector import Vector2i
+from team import Team
+from piece import Piece, PieceType
+from board import Board, BoardPieceMap
+from piece_rules import PieceRules
 
 class PiecesGenerator:
     """Generates armies of pieces based on a credit system"""

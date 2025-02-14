@@ -1,33 +1,10 @@
 from dataclasses import dataclass
-from enum import Flag, auto
 from typing import List, Optional
-from .team import Team
-from .move import Move
-from .vector import Vector2i
-
-class PieceType(Flag):
-    UNSET = 0
-    KING = auto()
-    QUEEN = auto()
-    ROOK = auto()
-    BISHOP = auto()
-    KNIGHT = auto()
-    PAWN = auto()
-
-class PieceFlags(Flag):
-    NONE = 0
-    MOVED = auto()
-
-@dataclass
-class PieceMoveAbility:
-    direction: Vector2i
-    max_distance: int
-
-@dataclass
-class PieceRule:
-    tags: List[str]
-    moves: List[PieceMoveAbility]
-    credit_cost: int
+from team import Team
+from move import Move
+from vector import Vector2i
+from piece_rules import PieceRules
+from game_types import PieceType, PieceFlags, MoveFlags
 
 @dataclass
 class Piece:
@@ -41,9 +18,6 @@ class Piece:
     
     def get_available_moves(self, board) -> List[Move]:
         """Returns all available moves for this piece"""
-        from .piece_rules import PieceRules
-        from .move import Move, MoveFlags
-        
         assert self.type != PieceType.UNSET, "Type must be set"
         assert board.tile_map.has_tile(self.pos), "Must be a tile at current position"
         
@@ -64,8 +38,6 @@ class Piece:
     
     def is_attacking_square(self, target_pos: Vector2i, board) -> bool:
         """Returns whether this piece is attacking the given square"""
-        from .piece_rules import PieceRules
-        
         assert self.type != PieceType.UNSET, "Type must be set"
         assert board.piece_map.has_piece(target_pos), f"Must be a piece at {target_pos}"
         assert board.tile_map.has_tile(target_pos), f"Must be a tile at {target_pos}"
@@ -88,8 +60,6 @@ class Piece:
     
     def _get_moves_along_rays(self, ray_dirs: List[Vector2i], board, ray_length: int = BOARD_LENGTH_UPPER_BOUND, enable_capture: bool = True) -> List['Move']:
         """Returns all moves along the given ray directions"""
-        from .move import Move, MoveFlags
-        
         moves: List[Move] = []
         for direction in ray_dirs:
             next_pos = self.pos
@@ -114,8 +84,6 @@ class Piece:
     
     def _pawn_get_additional_moves(self, board) -> List['Move']:
         """Returns additional moves specific to pawns"""
-        from .move import Move, MoveFlags
-        
         moves: List[Move] = []
         facing_dir = self._get_pawn_facing_direction()
         

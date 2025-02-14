@@ -1,25 +1,21 @@
-from .board import Board, BoardPieceMap
-from .team import Team
-from .piece_rules import PieceRules
-from .generator.tiles_generator import TilesGenerator
-from .generator.pieces_generator import PiecesGenerator
-from .config import Config
+from board import Board, BoardPieceMap, BoardTileMap
+from team import Team
+from generator.tiles_generator import TilesGenerator
+from generator.pieces_generator import PiecesGenerator
 
 class Game:
     """Main game class that handles initialization and state"""
     
-    STARTING_CREDITS = 20  # This could be moved to config.json if needed
+    STARTING_CREDITS = 1000
     
     @classmethod
     def create_new_game(cls) -> Board:
         """Creates a new game with initial board state"""
-        # Load configuration and rules
-        Config.load_config()
-        PieceRules.load_pieces()
-        
         # Create initial board
+        tile_map = BoardTileMap()
+        tile_map.set_tiles(TilesGenerator.generate_tiles())
         board = Board(
-            tile_map=TilesGenerator.generate(),
+            tile_map=tile_map,
             piece_map=BoardPieceMap(),
             team_to_move=Team.PLAYER
         )

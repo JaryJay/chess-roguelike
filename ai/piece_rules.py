@@ -1,12 +1,12 @@
 import json
 from typing import Dict, List
-from .piece import Piece, PieceType, PieceMoveAbility, PieceRule
-from .vector import Vector2i
+from game_types import PieceType
+from piece_move_ability import PieceMoveAbility
+from piece_rule import PieceRule
+from vector import Vector2i
 
 class PieceRules:
     """Manages piece movement rules loaded from JSON configuration"""
-    
-    PATH_TO_PIECES = "pieces.json"
     
     # Mapping between string names and PieceType enum
     STRING_TO_TYPE: Dict[str, PieceType] = {
@@ -24,13 +24,13 @@ class PieceRules:
     piece_type_to_rules: Dict[PieceType, PieceRule] = {}
     
     @classmethod
-    def load_pieces(cls) -> None:
+    def load_pieces(cls, pieces_path: str) -> None:
         """Loads and parses piece rules from the JSON file"""
         try:
-            with open(cls.PATH_TO_PIECES, 'r') as f:
+            with open(pieces_path, 'r') as f:
                 pieces_data = json.load(f)
         except Exception as e:
-            raise RuntimeError(f"Failed to load pieces.json: {e}")
+            raise RuntimeError(f"Failed to load pieces from {pieces_path}: {e}")
         
         for piece_type_str, piece_data in pieces_data.items():
             piece_type = cls.STRING_TO_TYPE[piece_type_str]
