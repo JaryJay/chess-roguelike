@@ -206,6 +206,10 @@ class Board:
             else:
                 print("stalemate")
             return True
+        # Check if the only pieces remaining are the kings
+        if len(self.piece_map.get_all_pieces()) == 2:
+            print("stalemate")
+            return True
         return False
     
     def duplicate(self) -> 'Board':

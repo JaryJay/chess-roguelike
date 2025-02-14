@@ -109,6 +109,10 @@ func is_match_over() -> bool:
 		else:
 			print("stalemate")
 		return true
+	# Check if the only pieces remaining are the kings
+	if piece_map.get_all_pieces().filter(func(piece: Piece) -> bool: return piece.type != Piece.Type.KING).size() == 0:
+		print("stalemate")
+		return true
 	# if is_team_in_check(team_to_move): # in this case, it's a checkmate
 	# otherwise it's a stalemate
 	return false
