@@ -25,13 +25,12 @@ class TilesGenerator:
         
         noise = FastNoiseLite()
         noise.seed = random.randint(0, 2**31-1)  # matches Godot's randi()
-        noise.frequency = Config.tile_generation_noise_scale
         # Note: FastNoiseLite in Python doesn't have offset property, so we add it in get_noise_2d
         
         for y in range(Config.max_board_size):
             for x in range(Config.max_board_size):
                 # Get noise value in range [-1, 1]
-                val = noise.get_noise(x + 0.5, y + 0.5)  # Adding offset to match Godot
+                val = noise.get_noise(x * Config.tile_generation_noise_scale + 0.5, y * Config.tile_generation_noise_scale + 0.5)  # Adding offset to match Godot
                 # Convert to range [0, 1]
                 val = (val + 1) / 2
                 
