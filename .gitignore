@@ -17,4 +17,11 @@ mono_crash.*.json
 # Blender back-up files
 *.blend1
 
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+
 .vscode
