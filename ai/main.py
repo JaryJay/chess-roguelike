@@ -39,8 +39,8 @@ def print_board(board: Board) -> None:
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Chess Roguelike AI')
-    parser.add_argument('config_path', help='Path to the config.json file')
-    parser.add_argument('pieces_path', help='Path to the pieces.json file')
+    parser.add_argument('--config-path', help='Path to the config.json file', default="../config.json")
+    parser.add_argument('--pieces-path', help='Path to the pieces.json file', default="../pieces.json") 
     return parser.parse_args()
 
 def main():
