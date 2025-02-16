@@ -5,6 +5,7 @@ from move import Move, MoveFlags
 from team import Team
 from vector import Vector2i
 from config import Config
+import numpy as np
 
 @dataclass
 class BoardTileMap:
@@ -116,6 +117,14 @@ class Board:
     tile_map: BoardTileMap
     piece_map: BoardPieceMap
     team_to_move: Team
+    _board_history: List['Board'] = None  # Store last 5 board states
+    _repetition_counter: Dict[str, int] = None  # Count repeated positions
+    
+    def __post_init__(self):
+        if self._board_history is None:
+            self._board_history = []
+        if self._repetition_counter is None:
+            self._repetition_counter = {}
     
     def get_available_moves(self) -> List[Move]:
         """Returns all legal moves for the current player"""
@@ -147,6 +156,80 @@ class Board:
                 
             legal_moves.append(move)
         return legal_moves
+    
+    def to_tensor(self) -> np.ndarray:
+        """Converts the board state into a tensor for neural network input.
+        
+        Returns:
+            np.ndarray: Tensor of shape (8, 8, 186) representing the board state
+        """
+        BITS_PER_BOARD_STATE = 31
+        # Initialize tensor
+        tensor = np.zeros((8, 8, BITS_PER_BOARD_STATE * 6), dtype=np.float32)
+        
+        # Process current board and history
+        boards_to_process = [self] + self._board_history[-5:]  # Current + last 5 boards
+        
+        # For each board state
+        for board_idx, board in enumerate(boards_to_process):
+            if board is None:  # If we don't have enough history
+                continue
+                
+            # Calculate base index for this board state
+            base_idx = board_idx * BITS_PER_BOARD_STATE  # 31 bits per board state
+            
+            # Repetition counter (2 bits for each tile)
+            board_hash = self._get_board_hash()
+            rep_count = min(2, self._repetition_counter.get(board_hash, 0))
+            
+            for y in range(8):
+                for x in range(8):
+                    pos = Vector2i(x, y)
+                    
+                    # Tile existence (2 bits)
+                    has_tile = board.tile_map.has_tile(pos)
+                    tensor[y, x, base_idx] = float(has_tile)
+                    tensor[y, x, base_idx + 1] = float(not has_tile)
+                    
+                    if has_tile:
+                        # General piece existence and team (3 bits)
+                        has_piece = board.piece_map.has_piece(pos)
+                        tensor[y, x, base_idx + 2] = float(has_piece)
+                        
+                        if has_piece:
+                            piece = board.piece_map.get_piece(pos)
+                            is_friendly = piece.team == self.team_to_move
+                            tensor[y, x, base_idx + 3] = float(is_friendly)  # isFriendly
+                            tensor[y, x, base_idx + 4] = float(not is_friendly)  # !isFriendly
+                            
+                            # Piece type and team combined (12x2 = 24 bits)
+                            # For each piece type, use [1,0] for friendly and [0,1] for enemy
+                            piece_type_idx = base_idx + 5 + piece.type.value * 2
+                            if is_friendly:
+                                tensor[y, x, piece_type_idx] = 1.0      # First bit
+                            else:
+                                tensor[y, x,   + 1] = 1.0  # Second bit
+                            
+                    if rep_count > 0:
+                        tensor[y, x, base_idx + 29 + rep_count - 1] = 1.0
+        
+        return tensor
+    
+    def _get_board_hash(self) -> str:
+        """Creates a unique hash for the current board state."""
+        state = []
+        for y in range(8):
+            for x in range(8):
+                pos = Vector2i(x, y)
+                if self.tile_map.has_tile(pos):
+                    if self.piece_map.has_piece(pos):
+                        piece = self.piece_map.get_piece(pos)
+                        state.append(f"{piece.type.value}{piece.team.value}")
+                    else:
+                        state.append("t")  # Empty tile
+                else:
+                    state.append("n")  # No tile
+        return "".join(state)
     
     def perform_move(self, move: Move, allow_illegal: bool = False) -> 'Board':
         """Performs a move and returns the resulting board state"""
@@ -184,6 +267,12 @@ class Board:
         if not allow_illegal:
             assert not next_board.is_team_in_check(current_team_to_move), "Move cannot put own team in check"
         
+        # Update history and repetition counter
+        board_hash = self._get_board_hash()
+        next_board._board_history = self._board_history[-4:] + [self]  # Keep last 5 states
+        next_board._repetition_counter = self._repetition_counter.copy()
+        next_board._repetition_counter[board_hash] = next_board._repetition_counter.get(board_hash, 0) + 1
+        
         return next_board
     
     def is_team_in_check(self, team: Team) -> bool:
@@ -214,8 +303,12 @@ class Board:
     
     def duplicate(self) -> 'Board':
         """Creates a deep copy of the board"""
-        return Board(
+        new_board = Board(
             tile_map=self.tile_map,  # TileMap is immutable, so we can share it
             piece_map=self.piece_map.duplicate(),
             team_to_move=self.team_to_move
         )
+        # Copy history and repetition counter
+        new_board._board_history = self._board_history.copy()
+        new_board._repetition_counter = self._repetition_counter.copy()
+        return new_board
