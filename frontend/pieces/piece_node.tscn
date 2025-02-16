@@ -5,7 +5,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_25au2"]
 size = Vector2(16, 16)
 
-[node name="PieceNode" type="Node2D"]
+[node name="PieceNode" type="Node2D" groups=["piece_nodes"]]
 script = ExtResource("1_flxqp")
 
 [node name="Area2D" type="Area2D" parent="."]

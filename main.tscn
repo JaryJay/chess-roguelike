@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bb0qxkgwbx5xc"]
+[gd_scene load_steps=5 format=3 uid="uid://bb0qxkgwbx5xc"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_fdhfs"]
 [ext_resource type="PackedScene" uid="uid://b0v2ttp4dudf4" path="res://frontend/board/board_node.tscn" id="2_cwym3"]
@@ -6,6 +6,9 @@
 [sub_resource type="Environment" id="Environment_xnp5u"]
 background_mode = 1
 background_color = Color(0.337754, 0.288089, 0.552513, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_pfcdr"]
+font_size = 24
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_fdhfs")
@@ -17,3 +20,31 @@ zoom = Vector2(2.82, 2.82)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_xnp5u")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GameOverScreen" type="HBoxContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -612.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/GameOverScreen"]
+layout_mode = 2
+text = "You win!"
+label_settings = SubResource("LabelSettings_pfcdr")
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="CanvasLayer/GameOverScreen"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Restart"
+
+[connection signal="game_over" from="BoardNode" to="." method="_on_board_node_game_over"]
+[connection signal="pressed" from="CanvasLayer/GameOverScreen/RestartButton" to="." method="_on_restart_button_pressed"]

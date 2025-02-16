@@ -216,4 +216,7 @@ func equals(p: Piece) -> bool:
 	return pos == p.pos and type == p.type and team == p.team and info == p.info
 
 func _to_string() -> String:
-	return "Piece(%s, %s, %v, %d)" % [type, team, pos, info]
+	return "Piece(%s, %s, %v, %d)" % [type_to_string(type), team, pos, info]
+
+static func type_to_string(piece_type: Piece.Type) -> String:
+	return Piece.Type.keys().filter(func(key: String): return Piece.Type[key] == piece_type)[0]

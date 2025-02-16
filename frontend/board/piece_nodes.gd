@@ -10,6 +10,7 @@ var _cached_king_positions: Dictionary = {}
 func spawn_piece(piece: Piece) -> PieceNode:
 	var piece_node: = create_piece_node(piece)
 	piece_node.gen_id()
+	piece_node.name = "PN_%s_%s_%d" % [Piece.type_to_string(piece.type), piece.team, piece_node.id()]
 	assert(!has_piece_node(piece_node.id()))
 	add_child(piece_node)
 	piece_node.mouse_selected.connect(_on_piece_node_selected.bind(piece_node))

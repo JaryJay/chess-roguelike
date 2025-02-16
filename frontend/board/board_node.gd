@@ -1,5 +1,7 @@
 class_name BoardNode extends Node2D
 
+signal game_over(game_result: Game.Result)
+
 enum BoardNodeState {
 	NOT_INITIALIZED,
 	INITIALIZED,
@@ -25,8 +27,20 @@ func _ready() -> void:
 	ai_thread.init(ABSearchAI.new())
 
 func init_randomly() -> void:
-	assert(is_node_ready())
-	assert(state == BoardNodeState.NOT_INITIALIZED)
+	assert(is_node_ready(), "BoardNode is not added to the tree")
+	if state == BoardNodeState.INITIALIZED:
+		state = BoardNodeState.NOT_INITIALIZED
+		# Reset the board
+		b = Board.new()
+		for piece_node: PieceNode in piece_nodes.get_all_piece_nodes():
+			piece_node.queue_free()
+		for tile_node: TileNode in tile_nodes.get_all_tile_nodes():
+			tile_node.queue_free()
+		# AI thread is stateless, so we don't need to reset it
+		promotion_ui.hide()
+		input_state = InputState.NONE
+		selected_piece_node = null
+		temp_move_action = null
 	_generate_tiles()
 	_generate_pieces()
 	state = BoardNodeState.INITIALIZED
@@ -47,7 +61,7 @@ func _on_piece_node_selected(piece_node: PieceNode) -> void:
 			else:
 				move_action = MoveAction.new(selected_piece_node.id(), piece_node.piece().pos, Move.CAPTURE, Piece.Type.UNSET, piece_node.id())
 				perform_move_action(move_action)
-				end_turn()
+				end_player_turn()
 			return
 	
 	if _can_select(piece_node):
@@ -67,7 +81,7 @@ func _on_tile_node_selected(tile_node: TileNode) -> void:
 			else:
 				move_action = MoveAction.new(selected_piece_node.id(), tile_node.pos())
 				perform_move_action(move_action)
-				end_turn()
+				end_player_turn()
 			return
 	_select_piece_node(null)
 
@@ -81,7 +95,7 @@ func _on_promotion_ui_promotion_chosen(promotion_type: Piece.Type) -> void:
 	perform_move_action(temp_move_action)
 	promotion_ui.hide()
 	temp_move_action = null
-	end_turn()
+	end_player_turn()
 
 func _select_piece_node(piece_node: PieceNode) -> void:
 	if selected_piece_node:
@@ -97,10 +111,16 @@ func _select_piece_node(piece_node: PieceNode) -> void:
 	else:
 		tile_nodes.highlight_tiles([])
 
-func end_turn() -> void:
+func end_player_turn() -> void:
 	if b.is_match_over():
+		game_over.emit(b.get_game_result())
 		return
 	ai_thread.process_board(b)
+
+func end_ai_turn() -> void:
+	if b.is_match_over():
+		game_over.emit(b.get_game_result())
+		return
 
 func _on_ai_thread_move_found(move: Move) -> void:
 	# Create move action
@@ -112,8 +132,7 @@ func _on_ai_thread_move_found(move: Move) -> void:
 		captured_piece_id = piece_nodes.get_piece_node_by_pos(to).id()
 	var move_action: MoveAction = MoveAction.new(piece_id, to, move.info, move.promo_info, captured_piece_id)
 	perform_move_action(move_action)
-	if b.is_match_over():
-		return
+	end_ai_turn()
 
 #region utils
 
@@ -143,15 +162,22 @@ func _generate_tiles() -> void:
 	tile_nodes.create_tile_nodes(tile_positions)
 
 func _generate_pieces() -> void:
+	var num_tiles: = b.tile_map.num_tiles()
+
 	var enemy_army: = PiecesGenerator.generate_army(1000, b, Team.ENEMY_AI)
 	var army: = PiecesGenerator.generate_army(1000, b, Team.PLAYER)
 	var pieces: = enemy_army + army
+	var num_pieces: = pieces.size()
+	assert(num_pieces < num_tiles, "There are more pieces than tiles")
+
 	for piece: Piece in pieces:
 		assert(not b.piece_map.has_piece(piece.pos))
 		assert(b.tile_map.has_tile(piece.pos))
 		
 		b.piece_map.put_piece(piece.pos, piece)
 		piece_nodes.spawn_piece(piece)
+	
+	assert(piece_nodes.get_all_piece_nodes().size() == pieces.size(), "Did not spawn all pieces")
 	
 	for piece_node: PieceNode in piece_nodes.get_all_piece_nodes():
 		assert(b.piece_map.has_piece(piece_node.piece().pos))

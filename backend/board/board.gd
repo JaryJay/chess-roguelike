@@ -117,6 +117,16 @@ func is_match_over() -> bool:
 	# otherwise it's a stalemate
 	return false
 
+func get_game_result() -> Game.Result:
+	assert(is_match_over(), "Match is not over")
+	if is_team_in_check(team_to_move):
+		if team_to_move == Team.PLAYER:
+			return Game.Result.LOSE
+		else:
+			return Game.Result.WIN
+	else:
+		return Game.Result.STALEMATE
+
 func duplicate() -> Board:
 	var new_board: = Board.new()
 	# In the future, tile_map can change. For now, it's safe to pass the same
