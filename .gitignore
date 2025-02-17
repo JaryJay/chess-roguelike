@@ -25,3 +25,8 @@ __pycache__/
 *.pyw
 
 .vscode
+/android/build
+*.aab
+*.apk
+*.idsig
+*.keystore
