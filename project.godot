@@ -59,4 +59,5 @@ limits/debugger/max_warnings_per_second=1600
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+textures/vram_compression/import_etc2_astc=true
 anti_aliasing/screen_space_roughness_limiter/enabled=false
