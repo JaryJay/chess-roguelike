@@ -28,5 +28,6 @@ func _on_restart_button_pressed() -> void:
 		tile_node.remove_from_group("tile_nodes")
 	board = load("res://frontend/board/board_node.tscn").instantiate()
 	add_child(board)
+	board.game_over.connect(_on_board_node_game_over)
 	board.init_randomly()
 	game_over_screen.hide()
