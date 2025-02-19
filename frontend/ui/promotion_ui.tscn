@@ -42,18 +42,22 @@ offset_bottom = 40.0
 [node name="QueenButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 icon = SubResource("AtlasTexture_xywnf")
+icon_alignment = 1
 
 [node name="RookButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 icon = SubResource("AtlasTexture_7imha")
+icon_alignment = 1
 
 [node name="BishopButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 icon = SubResource("AtlasTexture_hbmh1")
+icon_alignment = 1
 
 [node name="KnightButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 icon = SubResource("AtlasTexture_a6pn8")
+icon_alignment = 1
 
 [connection signal="pressed" from="VBoxContainer/QueenButton" to="." method="_on_queen_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/RookButton" to="." method="_on_rook_button_pressed"]

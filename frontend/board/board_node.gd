@@ -15,7 +15,7 @@ enum InputState {
 @onready var tile_nodes: TileNodes = $TileNodes
 @onready var piece_nodes: PieceNodes = $PieceNodes
 @onready var ai_thread: AIThread = $AIThread
-@onready var promotion_ui: PromotionUI = $PromotionUI
+@onready var promotion_ui: PromotionUI = $CanvasLayer/PromotionUI
 var player_team: Team = Team.PLAYER
 var state: BoardNodeState = BoardNodeState.NOT_INITIALIZED
 var input_state: InputState = InputState.NONE
