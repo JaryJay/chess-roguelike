@@ -30,3 +30,4 @@ __pycache__/
 *.apk
 *.idsig
 *.keystore
+*.afdesign~lock~
