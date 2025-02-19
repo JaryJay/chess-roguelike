@@ -1,9 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://3a7o2ixjone3"]
+[gd_scene load_steps=5 format=3 uid="uid://3a7o2ixjone3"]
 
 [ext_resource type="Script" path="res://frontend/tile/tile_node.gd" id="1_s47jb"]
 [ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="2_qlk8e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u3elo"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cc8mm"]
 size = Vector2(16, 16)
 
 [node name="Tile" type="Node2D" groups=["tile_nodes"]]
@@ -26,6 +29,9 @@ texture = ExtResource("2_qlk8e")
 region_enabled = true
 region_rect = Rect2(40, 41, 4, 4)
 
+[node name="Button" type="TouchScreenButton" parent="."]
+shape = SubResource("RectangleShape2D_cc8mm")
+
 [node name="Label" type="Label" parent="."]
 visible = false
 offset_left = -8.0
@@ -36,3 +42,4 @@ theme_override_font_sizes/font_size = 8
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

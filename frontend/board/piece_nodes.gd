@@ -13,7 +13,7 @@ func spawn_piece(piece: Piece) -> PieceNode:
 	piece_node.name = "PN_%s_%s_%d" % [Piece.type_to_string(piece.type), piece.team, piece_node.id()]
 	assert(!has_piece_node(piece_node.id()))
 	add_child(piece_node)
-	piece_node.mouse_selected.connect(_on_piece_node_selected.bind(piece_node))
+	piece_node.selected.connect(_on_piece_node_selected.bind(piece_node))
 	piece_node.position = (Vector2(piece.pos) - Vector2.ONE * Config.max_board_size * 0.5) * 16
 	_piece_nodes[piece_node.id()] = piece_node
 	return piece_node

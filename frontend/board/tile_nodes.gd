@@ -30,7 +30,7 @@ func create_tile_nodes(tile_positions: Array[Vector2i]) -> void:
 		var tile_node: TileNode = tile_node_scene.instantiate()
 		add_child(tile_node)
 		tile_node.init(tile_pos)
-		tile_node.mouse_selected.connect(_on_tile_node_selected.bind(tile_node))
+		tile_node.selected.connect(_on_tile_node_selected.bind(tile_node))
 		_tile_nodes[tile_pos.y][tile_pos.x] = tile_node
 		_cached_tile_count += 1
 		

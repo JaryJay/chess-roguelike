@@ -1,6 +1,6 @@
 class_name PieceNode extends Node2D
 
-signal mouse_selected
+signal selected
 
 var _sprite_pivot: Node2D
 
@@ -8,9 +8,8 @@ var _initialized: = false
 var _id: int
 var _piece: Piece
 
-var hovered: bool = false
-var pressed: bool = false
-var selected: bool = false
+var is_hovered: bool = false
+var is_selected: bool = false
 var _is_moving: bool = false
 
 func _ready() -> void:
@@ -57,35 +56,45 @@ func init_team_sprites() -> void:
 
 #region input handling
 
+# This only works for mouse_and_keyboard
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("primary") && hovered:
-		mouse_selected.emit()
+	if Settings.INPUT_MODE != "mouse_and_keyboard": return
+
+	if event.is_action_pressed("primary") && is_hovered:
+		selected.emit()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_released("primary"):
-		pressed = false
+		is_selected = false
+
+# This only works for touch
+func _on_button_pressed() -> void:
+	if Settings.INPUT_MODE != "touch": return
+	selected.emit()
+	get_viewport().set_input_as_handled()
 
 func _on_area_2d_mouse_entered() -> void:
+	if Settings.INPUT_MODE != "mouse_and_keyboard": return
 	set_hovered(true)
 
 func _on_area_2d_mouse_exited() -> void:
+	if Settings.INPUT_MODE != "mouse_and_keyboard": return
 	set_hovered(false)
 
 func set_hovered(new_hovered: bool) -> void:
-	hovered = new_hovered
-	if hovered and !_is_moving:
+	is_hovered = new_hovered
+	if is_hovered and !_is_moving:
 		var tween: = create_tween()
 		tween.tween_property(self, "position", Vector2(0, -1), 0.05).as_relative().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
-	elif !hovered and !_is_moving:
+	elif !is_hovered and !_is_moving:
 		var tween: = create_tween()
 		tween.tween_property(self, "position", Vector2(0, 1), 0.05).as_relative().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
 
 func set_selected(new_selected: bool) -> void:
-	selected = new_selected
-	if selected and !_is_moving:
+	is_selected = new_selected
+	if is_selected and !_is_moving:
 		var tween: = create_tween()
 		tween.tween_property(self, "position", Vector2(0, -2), 0.05).as_relative().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
 		tween.tween_property(self, "position", Vector2(0, 2), 0.05).as_relative().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
-		
 
 #endregion
 

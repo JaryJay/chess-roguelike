@@ -1,11 +1,11 @@
 class_name TileNode extends Node2D
 
-signal mouse_selected
+signal selected
 
 var _pos: Vector2i
-var hovered: bool = false
-var pressed: bool = false
-var selected: bool = false
+var is_hovered: bool = false
+var is_pressed: bool = false
+var is_selected: bool = false
 #var show_dot: bool = false
 
 @onready var square: Polygon2D = $Square
@@ -22,11 +22,20 @@ func init(new_pos: Vector2i) -> void:
 	$Label.text = "%s,%s" % [_pos.x, _pos.y]
 	position = (Vector2(_pos) - Vector2.ONE * Config.max_board_size * 0.5) * 16
 
+# This only works for mouse_and_keyboard
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("primary") && hovered:
-		mouse_selected.emit()
+	if Settings.INPUT_MODE != "mouse_and_keyboard": return
+	
+	if event.is_action_pressed("primary") && is_hovered:
+		selected.emit()
 	elif event.is_action_released("primary"):
-		pressed = false
+		is_pressed = false
+
+# This only works for touch
+func _on_button_pressed() -> void:
+	if Settings.INPUT_MODE != "touch": return
+	selected.emit()
+	get_viewport().set_input_as_handled()
 
 func _on_area_2d_mouse_entered() -> void:
 	set_hovered(true)
@@ -38,10 +47,10 @@ func pos() -> Vector2i:
 	return _pos
 
 func set_hovered(new_hovered: bool) -> void:
-	hovered = new_hovered
+	is_hovered = new_hovered
 
 func set_selected(new_selected: bool) -> void:
-	selected = new_selected
+	is_selected = new_selected
 
 func set_show_dot(new_val: bool) -> void:
 	dot.visible = new_val
