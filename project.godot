@@ -34,6 +34,11 @@ folder_colors={
 "res://frontend/": "blue"
 }
 
+[gui]
+
+theme/default_theme_scale=1.5
+theme/custom="res://frontend/theme.tres"
+
 [input]
 
 primary={
