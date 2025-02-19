@@ -1,5 +1,7 @@
 class_name Config
 
+const PATH_TO_CONFIG: String = "res://config.json"
+
 class AIConfig:
 	var max_moves_to_consider: int
 
@@ -13,7 +15,7 @@ static var loaded: bool = false
 static func load_config() -> void:
 	assert(!loaded, "Config already loaded!")
 	
-	var file: = FileAccess.open("config.json", FileAccess.READ)
+	var file: = FileAccess.open(PATH_TO_CONFIG, FileAccess.READ)
 	if file == null:
 		push_error("Failed to open config.json")
 		return
@@ -32,3 +34,4 @@ static func load_config() -> void:
 	tile_generation_noise_scale = config["tile_generation_noise_scale"]
 	ai.max_moves_to_consider = config["ai"]["max_moves_to_consider"]
 	loaded = true
+	print("Config loaded")

@@ -1,14 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://bb0qxkgwbx5xc"]
+[gd_scene load_steps=6 format=3 uid="uid://bb0qxkgwbx5xc"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_fdhfs"]
 [ext_resource type="PackedScene" uid="uid://b0v2ttp4dudf4" path="res://frontend/board/board_node.tscn" id="2_cwym3"]
+[ext_resource type="Texture2D" uid="uid://bl0xqb50vkq8q" path="res://assets/ui/panel-030.png" id="3_8srv1"]
 
 [sub_resource type="Environment" id="Environment_xnp5u"]
 background_mode = 1
 background_color = Color(0.337754, 0.288089, 0.552513, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_pfcdr"]
-font_size = 24
+font_size = 80
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_fdhfs")
@@ -22,30 +23,120 @@ zoom = Vector2(7.5, 7.5)
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_xnp5u")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="UILayer" type="CanvasLayer" parent="."]
 
-[node name="GameOverScreen" type="HBoxContainer" parent="CanvasLayer"]
+[node name="SettingsButton" type="Button" parent="UILayer"]
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -230.0
+offset_top = -90.0
+offset_right = -50.0
+offset_bottom = -50.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_vertical = 4
+text = "Settings"
+
+[node name="GameOverLayer" type="CanvasLayer" parent="."]
 visible = false
+
+[node name="Rect" type="NinePatchRect" parent="GameOverLayer"]
+self_modulate = Color(0, 0, 0, 0.647059)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -612.0
+offset_left = 100.0
+offset_top = 100.0
+offset_right = -100.0
+offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/separation = 20
+texture = ExtResource("3_8srv1")
+patch_margin_left = 24
+patch_margin_top = 24
+patch_margin_right = 24
+patch_margin_bottom = 24
+
+[node name="H" type="VBoxContainer" parent="GameOverLayer/Rect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 572.0
+offset_right = -571.0
+offset_bottom = -163.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+theme_override_constants/separation = 80
 alignment = 1
 
-[node name="Label" type="Label" parent="CanvasLayer/GameOverScreen"]
+[node name="Label" type="Label" parent="GameOverLayer/Rect/H"]
 layout_mode = 2
 text = "You win!"
 label_settings = SubResource("LabelSettings_pfcdr")
 horizontal_alignment = 1
 
-[node name="RestartButton" type="Button" parent="CanvasLayer/GameOverScreen"]
+[node name="RestartButton" type="Button" parent="GameOverLayer/Rect/H"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "New Game"
+
+[node name="SettingsLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Rect" type="NinePatchRect" parent="SettingsLayer"]
+self_modulate = Color(0, 0, 0, 0.647059)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+offset_top = 100.0
+offset_right = -100.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_8srv1")
+patch_margin_left = 24
+patch_margin_top = 24
+patch_margin_right = 24
+patch_margin_bottom = 24
+
+[node name="H" type="VBoxContainer" parent="SettingsLayer/Rect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 580.0
+offset_right = -580.0
+offset_bottom = -309.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="RestartButton" type="Button" parent="SettingsLayer/Rect/H"]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Restart"
 
+[node name="QuitButton" type="Button" parent="SettingsLayer/Rect/H"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Quit"
+
+[node name="BackButton" type="Button" parent="SettingsLayer/Rect/H"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Back to Game"
+
 [connection signal="game_over" from="BoardNode" to="." method="_on_board_node_game_over"]
-[connection signal="pressed" from="CanvasLayer/GameOverScreen/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="UILayer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="GameOverLayer/Rect/H/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="SettingsLayer/Rect/H/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="SettingsLayer/Rect/H/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="SettingsLayer/Rect/H/BackButton" to="." method="_on_back_button_pressed"]

@@ -1,9 +1,9 @@
 extends Node2D
 
 @onready var board: BoardNode = $BoardNode
-@onready var game_over_label: Label = $CanvasLayer/GameOverScreen/Label
-@onready var game_over_screen: Control = $CanvasLayer/GameOverScreen
-
+@onready var game_over_label: Label = $GameOverLayer/Rect/H/Label
+@onready var game_over_layer: CanvasLayer = $GameOverLayer
+@onready var settings_layer: CanvasLayer = $SettingsLayer
 func _enter_tree() -> void:
 	Config.load_config()
 	PieceRules.load_pieces()
@@ -18,7 +18,7 @@ func _on_board_node_game_over(game_result: Game.Result) -> void:
 		game_over_label.text = "You lose!"
 	elif game_result == Game.Result.STALEMATE:
 		game_over_label.text = "Stalemate!"
-	game_over_screen.show()
+	game_over_layer.show()
 
 func _on_restart_button_pressed() -> void:
 	board.queue_free()
@@ -30,4 +30,14 @@ func _on_restart_button_pressed() -> void:
 	add_child(board)
 	board.game_over.connect(_on_board_node_game_over)
 	board.init_randomly()
-	game_over_screen.hide()
+	game_over_layer.hide()
+	settings_layer.hide()
+
+func _on_quit_button_pressed() -> void:
+	get_tree().quit()
+
+func _on_settings_button_pressed() -> void:
+	settings_layer.show()
+
+func _on_back_button_pressed() -> void:
+	settings_layer.hide()
