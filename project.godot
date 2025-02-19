@@ -20,8 +20,8 @@ gdscript/warnings/integer_division=0
 
 [display]
 
-window/size/viewport_width=1366
-window/size/viewport_height=768
+window/size/viewport_width=1700
+window/size/viewport_height=900
 
 [dotnet]
 
@@ -48,6 +48,10 @@ secondary={
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":2,"pressure":0.0,"pressed":false,"script":null)
 ]
 }
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
 
 [network]
 
