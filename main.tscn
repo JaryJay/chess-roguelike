@@ -16,7 +16,8 @@ script = ExtResource("1_fdhfs")
 [node name="BoardNode" parent="." instance=ExtResource("2_cwym3")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2.82, 2.82)
+position = Vector2(0, -10.485)
+zoom = Vector2(7.5, 7.5)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_xnp5u")
