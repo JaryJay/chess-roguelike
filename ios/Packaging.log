@@ -1,0 +1,163 @@
+2025-02-21 02:09:33 +0000 [MT] Initial pipeline context: <IDEDistributionProcessingPipelineContext: 0x14eff0260; archive(resolved)="<IDEArchive: 0x600001b2f640>", distributionTask(resolved)="2", distributionDestination(resolved)="1", distributionMethod(resolved)="<IDEDistributionMethodDevelopmentSigned: 0x6000032082f0>", team(resolved)="<IDEProvisioningBasicTeam: 0x6000031c9320; teamID='695W828YNL', teamName='(null)'>">
+	Chain (14, self inclusive):
+	<IDEDistributionProcessingPipelineContext: 0x14eff0260; archive = "<IDEArchive: 0x600001b2f640>", distributionMethod="<IDEDistributionMethodDevelopmentSigned: 0x6000032082f0>", team="<IDEProvisioningBasicTeam: 0x6000031c9320; teamID='695W828YNL', teamName='(null)'>">
+	<IDEDistributionProcessingPipelineContext: 0x14efeffd0; archive = "<IDEArchive: 0x600001b2f640>", distributionMethod="<IDEDistributionMethodDevelopmentSigned: 0x6000032082f0>", team="<IDEProvisioningBasicTeam: 0x6000031c9320; teamID='695W828YNL', teamName='(null)'>">
+	<IDEDistributionContext: 0x14efe8dd0; archive = "<IDEArchive: 0x600001b2f640>", distributionMethod="<IDEDistributionMethodDevelopmentSigned: 0x6000032082f0>", team="<IDEProvisioningBasicTeam: 0x6000031c9320; teamID='695W828YNL', teamName='(null)'>">
+	<IDEDistributionContext: 0x12ee21370; archive = "<IDEArchive: 0x600001b2f640>", distributionMethod="<IDEDistributionMethodDevelopmentSigned: 0x6000032082f0>", team="<IDEProvisioningBasicTeam: 0x6000031c9320; teamID='695W828YNL', teamName='(null)'>">
+	<IDEDistributionContext: 0x14eef2120; archive = "<IDEArchive: 0x600001b2f640>", distributionMethod="<IDEDistributionMethodDevelopmentSigned: 0x6000032082f0>", team="<IDEProvisioningBasicTeam: 0x6000031c9320; teamID='695W828YNL', teamName='(null)'>">
+	<IDEDistributionContext: 0x14eef1cf0; archive = "<IDEArchive: 0x600001b2f640>", distributionMethod="<IDEDistributionMethodDevelopmentSigned: 0x6000032082f0>", team="<IDEProvisioningBasicTeam: 0x6000031c9320; teamID='695W828YNL', teamName='(null)'>">
+	<IDEDistributionContext: 0x12ee20ad0; archive = "<IDEArchive: 0x600001b2f640>", distributionMethod="<IDEDistributionMethodDevelopmentSigned: 0x6000032082f0>", team="<IDEProvisioningBasicTeam: 0x6000031c9320; teamID='695W828YNL', teamName='(null)'>">
+	<IDEDistributionContext: 0x12ee23f20; archive = "<IDEArchive: 0x600001b2f640>", distributionMethod="<IDEDistributionMethodDevelopmentSigned: 0x6000032082f0>", team="<IDEProvisioningBasicTeam: 0x6000031c9320; teamID='695W828YNL', teamName='(null)'>">
+	<IDEDistributionContext: 0x12ee208c0; archive = "<IDEArchive: 0x600001b2f640>", distributionMethod="<IDEDistributionMethodDevelopmentSigned: 0x6000032082f0>", team="<IDEProvisioningBasicTeam: 0x6000031c9320; teamID='695W828YNL', teamName='(null)'>">
+	<IDEDistributionContext: 0x14eee82c0; archive = "<IDEArchive: 0x600001b2f640>", distributionMethod="<IDEDistributionMethodDevelopmentSigned: 0x6000032082f0>", team="(null)">
+	<IDEDistributionContext: 0x12ee1f9a0; archive = "<IDEArchive: 0x600001b2f640>", distributionMethod="<IDEDistributionMethodDevelopmentSigned: 0x6000032082f0>", team="(null)">
+	<IDEDistributionContext: 0x12ee1f790; archive = "<IDEArchive: 0x600001b2f640>", distributionMethod="<IDEDistributionMethodDevelopmentSigned: 0x6000032082f0>", team="(null)">
+	<IDEDistributionContext: 0x14eec95c0; archive = "<IDEArchive: 0x600001b2f640>", distributionMethod="<IDEDistributionMethodDevelopmentSigned: 0x6000032082f0>", team="(null)">
+	<IDEDistributionContext: 0x12ee083b0; archive = "<IDEArchive: 0x600001b2f640>", distributionMethod="(null)", team="(null)">
+</IDEDistributionProcessingPipelineContext: 0x14eff0260>
+2025-02-21 02:09:33 +0000 [MT] Processing step: IDEDistributionCreateDestRootStep
+2025-02-21 02:09:33 +0000 [MT] Processing step: IDEDistributionCopyItemStep
+2025-02-21 02:09:33 +0000 [MT] Running /usr/bin/ditto '-V' '/Users/jaryjay/Documents/GitHub/chess-roguelike/ios/chess-roguelike-ios.xcarchive/Products/Applications/chess-roguelike-ios.app' '/var/folders/w7/lyhrts_51d50v0yq1b4x1wkm0000gp/T/XcodeDistPipeline.~~~3j7rf8/Root/Payload/chess-roguelike-ios.app'
+2025-02-21 02:09:33 +0000  >>> Copying /Users/jaryjay/Documents/GitHub/chess-roguelike/ios/chess-roguelike-ios.xcarchive/Products/Applications/chess-roguelike-ios.app 
+2025-02-21 02:09:33 +0000  copying file ./_CodeSignature/CodeResources ... 
+2025-02-21 02:09:33 +0000  4438 bytes for ./_CodeSignature/CodeResources
+2025-02-21 02:09:33 +0000  copying file ./AppIcon76x76@2x~ipad.png.import ... 
+2025-02-21 02:09:33 +0000  659 bytes for ./AppIcon76x76@2x~ipad.png.import
+2025-02-21 02:09:33 +0000  copying file ./en.lproj/InfoPlist.strings ... 
+2025-02-21 02:09:33 +0000  42 bytes for ./en.lproj/InfoPlist.strings
+2025-02-21 02:09:33 +0000  copying file ./AppIcon60x60@2x.png ... 
+2025-02-21 02:09:33 +0000  5941 bytes for ./AppIcon60x60@2x.png
+2025-02-21 02:09:33 +0000  copying file ./Launch Screen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib ... 
+2025-02-21 02:09:33 +0000  2105 bytes for ./Launch Screen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib
+2025-02-21 02:09:33 +0000  copying file ./Launch Screen.storyboardc/UIViewController-01J-lp-oVM.nib ... 
+2025-02-21 02:09:33 +0000  924 bytes for ./Launch Screen.storyboardc/UIViewController-01J-lp-oVM.nib
+2025-02-21 02:09:33 +0000  copying file ./Launch Screen.storyboardc/Info.plist ... 
+2025-02-21 02:09:33 +0000  258 bytes for ./Launch Screen.storyboardc/Info.plist
+2025-02-21 02:09:33 +0000  copying file ./AppIcon60x60@2x.png.import ... 
+2025-02-21 02:09:33 +0000  654 bytes for ./AppIcon60x60@2x.png.import
+2025-02-21 02:09:33 +0000  copying file ./chess-roguelike-ios ... 
+2025-02-21 02:09:33 +0000  61112336 bytes for ./chess-roguelike-ios
+copying file ./Assets.car ... 
+2025-02-21 02:09:33 +0000  293503 bytes for ./Assets.car
+copying file ./AppIcon76x76@2x~ipad.png ... 
+2025-02-21 02:09:33 +0000  6878 bytes for ./AppIcon76x76@2x~ipad.png
+copying file ./PrivacyInfo.xcprivacy ... 
+2025-02-21 02:09:33 +0000  990 bytes for ./PrivacyInfo.xcprivacy
+2025-02-21 02:09:33 +0000  copying file ./chess-roguelike-ios.pck ... 
+2025-02-21 02:09:33 +0000  99024 bytes for ./chess-roguelike-ios.pck
+2025-02-21 02:09:33 +0000  copying file ./embedded.mobileprovision ... 
+2025-02-21 02:09:33 +0000  12199 bytes for ./embedded.mobileprovision
+2025-02-21 02:09:33 +0000  copying file ./Info.plist ... 
+2025-02-21 02:09:33 +0000  1575 bytes for ./Info.plist
+2025-02-21 02:09:33 +0000  copying file ./PkgInfo ... 
+2025-02-21 02:09:33 +0000  8 bytes for ./PkgInfo
+2025-02-21 02:09:33 +0000 [MT] /usr/bin/ditto exited with 0
+2025-02-21 02:09:33 +0000 [MT] Processing step: IDEDistributionEmbedProfileStep
+2025-02-21 02:09:33 +0000 [MT] Processing step: IDEDistributionInfoPlistStep
+2025-02-21 02:09:33 +0000 [MT] Skipping step: IDEDistributionInfoPlistStep because it said so
+2025-02-21 02:09:33 +0000 [MT] Processing step: IDEDistributionAppThinningPlistStep
+2025-02-21 02:09:33 +0000 [MT] Skipping step: IDEDistributionAppThinningPlistStep because it said so
+2025-02-21 02:09:33 +0000 [MT] Processing step: IDEDistributionSymbolsStep
+2025-02-21 02:09:33 +0000 [MT] Skipping step: IDEDistributionSymbolsStep because it said so
+2025-02-21 02:09:33 +0000 [MT] Processing step: IDEDistributionAppThinningStep
+2025-02-21 02:09:33 +0000 [MT] Skipping step: IDEDistributionAppThinningStep because it said so
+2025-02-21 02:09:33 +0000 [MT] Processing step: IDEDistributionArchThinningStep
+2025-02-21 02:09:33 +0000 [MT] Item /Users/jaryjay/Documents/GitHub/chess-roguelike/ios/chess-roguelike-ios.xcarchive/Products/Applications/chess-roguelike-ios.app doesn't have the entitlement com.apple.developer.web-browser-engine.host enabled, returning ["arm64e"]
+2025-02-21 02:09:33 +0000 [MT] Archs to thin for item /Users/jaryjay/Documents/GitHub/chess-roguelike/ios/chess-roguelike-ios.xcarchive/Products/Applications/chess-roguelike-ios.app are ["arm64e"]
+2025-02-21 02:09:33 +0000 [MT] Running /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo '/var/folders/w7/lyhrts_51d50v0yq1b4x1wkm0000gp/T/XcodeDistPipeline.~~~3j7rf8/Root/Payload/chess-roguelike-ios.app/chess-roguelike-ios' '-verify_arch' 'arm64e'
+2025-02-21 02:09:33 +0000 [MT] /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo exited with 1
+2025-02-21 02:09:33 +0000 [MT] Skipping architecture thinning for item "chess-roguelike-ios" because arch "arm64e" wasn't found
+2025-02-21 02:09:33 +0000 [MT] Processing step: IDEDistributionODRStep
+2025-02-21 02:09:33 +0000 [MT] Processing step: IDEDistributionStripXattrsStep
+2025-02-21 02:09:33 +0000 [MT] Skipping stripping extended attributes because the codesign step will strip them.
+2025-02-21 02:09:33 +0000 [MT] Processing step: IDEDistributionCodesignStep
+2025-02-21 02:09:33 +0000 [MT] Entitlements for <IDEDistributionItem: 0x6000014ee0a0; bundleID='com.virtualcardboard.chessroguelike', path='<DVTFilePath:0x600001b2f5d0:'/Users/jaryjay/Documents/GitHub/chess-roguelike/ios/chess-roguelike-ios.xcarchive/Products/Applications/chess-roguelike-ios.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x6000013840f0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600000571f80; name='Apple Development: Jay Yuan Ren (K6ATD29WT5)', hash='48EABC76370E766AB8076142B1D6D8014F9F3B48', serialNumber='43AA1CC6E729CAC5F5792CF7E99235BF', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2025-02-21 01:13:18 +0000''>', entitlements='{
+    "application-identifier" = "695W828YNL.com.virtualcardboard.chessroguelike";
+    "com.apple.developer.team-identifier" = 695W828YNL;
+    "get-task-allow" = 1;
+}', teamID='695W828YNL', identifier='com.virtualcardboard.chessroguelike', executablePath='<DVTFilePath:0x600001b2e290:'/Users/jaryjay/Documents/GitHub/chess-roguelike/ios/chess-roguelike-ios.xcarchive/Products/Applications/chess-roguelike-ios.app/chess-roguelike-ios'>', hardenedRuntime='0'>'>: {
+    "application-identifier" = "695W828YNL.com.virtualcardboard.chessroguelike";
+    "com.apple.developer.team-identifier" = 695W828YNL;
+    "get-task-allow" = 1;
+}
+2025-02-21 02:09:33 +0000 [MT] Associated App Clip Identifiers Filter: Skipping because "com.apple.developer.associated-appclip-app-identifiers" is not present
+2025-02-21 02:09:33 +0000 [MT] Entitlements for <IDEDistributionItem: 0x6000014ee0a0; bundleID='com.virtualcardboard.chessroguelike', path='<DVTFilePath:0x600001b2f5d0:'/Users/jaryjay/Documents/GitHub/chess-roguelike/ios/chess-roguelike-ios.xcarchive/Products/Applications/chess-roguelike-ios.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x6000013840f0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600000572040; name='Apple Development: Jay Yuan Ren (K6ATD29WT5)', hash='48EABC76370E766AB8076142B1D6D8014F9F3B48', serialNumber='43AA1CC6E729CAC5F5792CF7E99235BF', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2025-02-21 01:13:18 +0000''>', entitlements='{
+    "application-identifier" = "695W828YNL.com.virtualcardboard.chessroguelike";
+    "com.apple.developer.team-identifier" = 695W828YNL;
+    "get-task-allow" = 1;
+}', teamID='695W828YNL', identifier='com.virtualcardboard.chessroguelike', executablePath='<DVTFilePath:0x600001b2e290:'/Users/jaryjay/Documents/GitHub/chess-roguelike/ios/chess-roguelike-ios.xcarchive/Products/Applications/chess-roguelike-ios.app/chess-roguelike-ios'>', hardenedRuntime='0'>'> are: {
+    "application-identifier" = "695W828YNL.com.virtualcardboard.chessroguelike";
+    "com.apple.developer.team-identifier" = 695W828YNL;
+    "get-task-allow" = 1;
+}
+2025-02-21 02:09:33 +0000 [MT] Writing entitlements for <IDEDistributionItem: 0x6000014ee0a0; bundleID='com.virtualcardboard.chessroguelike', path='<DVTFilePath:0x600001b2f5d0:'/Users/jaryjay/Documents/GitHub/chess-roguelike/ios/chess-roguelike-ios.xcarchive/Products/Applications/chess-roguelike-ios.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x6000013840f0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600000572640; name='Apple Development: Jay Yuan Ren (K6ATD29WT5)', hash='48EABC76370E766AB8076142B1D6D8014F9F3B48', serialNumber='43AA1CC6E729CAC5F5792CF7E99235BF', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2025-02-21 01:13:18 +0000''>', entitlements='{
+    "application-identifier" = "695W828YNL.com.virtualcardboard.chessroguelike";
+    "com.apple.developer.team-identifier" = 695W828YNL;
+    "get-task-allow" = 1;
+}', teamID='695W828YNL', identifier='com.virtualcardboard.chessroguelike', executablePath='<DVTFilePath:0x600001b2e290:'/Users/jaryjay/Documents/GitHub/chess-roguelike/ios/chess-roguelike-ios.xcarchive/Products/Applications/chess-roguelike-ios.app/chess-roguelike-ios'>', hardenedRuntime='0'>'> to: /var/folders/w7/lyhrts_51d50v0yq1b4x1wkm0000gp/T/XcodeDistPipeline.~~~3j7rf8/entitlements~~~AJ8etj
+2025-02-21 02:09:33 +0000 [MT] invoking codesign: <NSConcreteTask: 0x600001380190; launchPath='/usr/bin/codesign', arguments='(
+    "-f",
+    "-s",
+    48EABC76370E766AB8076142B1D6D8014F9F3B48,
+    "--entitlements",
+    "/var/folders/w7/lyhrts_51d50v0yq1b4x1wkm0000gp/T/XcodeDistPipeline.~~~3j7rf8/entitlements~~~AJ8etj",
+    "--preserve-metadata=identifier,flags,runtime",
+    "--generate-entitlement-der",
+    "--strip-disallowed-xattrs",
+    "-vvv",
+    "/var/folders/w7/lyhrts_51d50v0yq1b4x1wkm0000gp/T/XcodeDistPipeline.~~~3j7rf8/Root/Payload/chess-roguelike-ios.app"
+)'>
+2025-02-21 02:10:25 +0000 [MT] codesign output: /var/folders/w7/lyhrts_51d50v0yq1b4x1wkm0000gp/T/XcodeDistPipeline.~~~3j7rf8/Root/Payload/chess-roguelike-ios.app: replacing existing signature
+/var/folders/w7/lyhrts_51d50v0yq1b4x1wkm0000gp/T/XcodeDistPipeline.~~~3j7rf8/Root/Payload/chess-roguelike-ios.app: signed app bundle with Mach-O thin (arm64) [com.virtualcardboard.chessroguelike]
+2025-02-21 02:10:25 +0000 [MT] Processing step: IDEDistributionZipODRItemStep
+2025-02-21 02:10:25 +0000 [MT] Skipping step: IDEDistributionZipODRItemStep because it said so
+2025-02-21 02:10:25 +0000 [MT] Processing step: IDEDistributionCreateIPAStep
+2025-02-21 02:10:25 +0000 [MT] Running /usr/bin/ditto '-V' '-c' '-k' '--norsrc' '/var/folders/w7/lyhrts_51d50v0yq1b4x1wkm0000gp/T/XcodeDistPipeline.~~~3j7rf8/Root' '/var/folders/w7/lyhrts_51d50v0yq1b4x1wkm0000gp/T/XcodeDistPipeline.~~~3j7rf8/Packages/chess-roguelike-ios.ipa'
+2025-02-21 02:10:25 +0000  >>> Copying /var/folders/w7/lyhrts_51d50v0yq1b4x1wkm0000gp/T/XcodeDistPipeline.~~~3j7rf8/Root 
+2025-02-21 02:10:25 +0000  copying file ./Payload/chess-roguelike-ios.app/_CodeSignature/CodeResources ... 
+2025-02-21 02:10:25 +0000  4924 bytes for ./Payload/chess-roguelike-ios.app/_CodeSignature/CodeResources
+2025-02-21 02:10:25 +0000  copying file ./Payload/chess-roguelike-ios.app/AppIcon76x76@2x~ipad.png.import ... 
+2025-02-21 02:10:25 +0000  659 bytes for ./Payload/chess-roguelike-ios.app/AppIcon76x76@2x~ipad.png.import
+2025-02-21 02:10:25 +0000  copying file ./Payload/chess-roguelike-ios.app/en.lproj/InfoPlist.strings ... 
+42 bytes for ./Payload/chess-roguelike-ios.app/en.lproj/InfoPlist.strings
+2025-02-21 02:10:25 +0000  copying file ./Payload/chess-roguelike-ios.app/AppIcon60x60@2x.png ... 
+2025-02-21 02:10:25 +0000  5941 bytes for ./Payload/chess-roguelike-ios.app/AppIcon60x60@2x.png
+2025-02-21 02:10:25 +0000  copying file ./Payload/chess-roguelike-ios.app/Launch Screen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib ... 
+2025-02-21 02:10:25 +0000  2105 bytes for ./Payload/chess-roguelike-ios.app/Launch Screen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib
+2025-02-21 02:10:25 +0000  copying file ./Payload/chess-roguelike-ios.app/Launch Screen.storyboardc/UIViewController-01J-lp-oVM.nib ... 
+2025-02-21 02:10:25 +0000  924 bytes for ./Payload/chess-roguelike-ios.app/Launch Screen.storyboardc/UIViewController-01J-lp-oVM.nib
+2025-02-21 02:10:25 +0000  copying file ./Payload/chess-roguelike-ios.app/Launch Screen.storyboardc/Info.plist ... 
+2025-02-21 02:10:25 +0000  258 bytes for ./Payload/chess-roguelike-ios.app/Launch Screen.storyboardc/Info.plist
+copying file ./Payload/chess-roguelike-ios.app/AppIcon60x60@2x.png.import ... 
+2025-02-21 02:10:25 +0000  654 bytes for ./Payload/chess-roguelike-ios.app/AppIcon60x60@2x.png.import
+2025-02-21 02:10:25 +0000  copying file ./Payload/chess-roguelike-ios.app/chess-roguelike-ios ... 
+2025-02-21 02:10:27 +0000  61112336 bytes for ./Payload/chess-roguelike-ios.app/chess-roguelike-ios
+2025-02-21 02:10:27 +0000  copying file ./Payload/chess-roguelike-ios.app/Assets.car ... 
+2025-02-21 02:10:27 +0000  293503 bytes for ./Payload/chess-roguelike-ios.app/Assets.car
+copying file ./Payload/chess-roguelike-ios.app/AppIcon76x76@2x~ipad.png ... 
+2025-02-21 02:10:27 +0000  6878 bytes for ./Payload/chess-roguelike-ios.app/AppIcon76x76@2x~ipad.png
+2025-02-21 02:10:27 +0000  copying file ./Payload/chess-roguelike-ios.app/PrivacyInfo.xcprivacy ... 
+2025-02-21 02:10:27 +0000  990 bytes for ./Payload/chess-roguelike-ios.app/PrivacyInfo.xcprivacy
+2025-02-21 02:10:27 +0000  copying file ./Payload/chess-roguelike-ios.app/chess-roguelike-ios.pck ... 
+2025-02-21 02:10:27 +0000  99024 bytes for ./Payload/chess-roguelike-ios.app/chess-roguelike-ios.pck
+2025-02-21 02:10:27 +0000  copying file ./Payload/chess-roguelike-ios.app/embedded.mobileprovision ... 
+2025-02-21 02:10:27 +0000  12199 bytes for ./Payload/chess-roguelike-ios.app/embedded.mobileprovision
+2025-02-21 02:10:27 +0000  copying file ./Payload/chess-roguelike-ios.app/Info.plist ... 
+2025-02-21 02:10:27 +0000  1575 bytes for ./Payload/chess-roguelike-ios.app/Info.plist
+2025-02-21 02:10:27 +0000  copying file ./Payload/chess-roguelike-ios.app/PkgInfo ... 
+2025-02-21 02:10:27 +0000  8 bytes for ./Payload/chess-roguelike-ios.app/PkgInfo
+2025-02-21 02:10:27 +0000 [MT] /usr/bin/ditto exited with 0
+2025-02-21 02:10:27 +0000 [MT] Processing step: IDEDistributionAppStoreInformationStep
+2025-02-21 02:10:27 +0000 [MT] Skipping step: IDEDistributionAppStoreInformationStep because it said so
+2025-02-21 02:10:27 +0000 [MT] Processing step: IDEDistributionGenerateProcessedDistributionItems
+2025-02-21 02:10:27 +0000 [MT] IDEDistributionItem init <DVTFilePath:0x600001be1ea0:'/var/folders/w7/lyhrts_51d50v0yq1b4x1wkm0000gp/T/XcodeDistPipeline.~~~3j7rf8/Root/Payload/chess-roguelike-ios.app'>
+2025-02-21 02:10:27 +0000 [MT] Processing step: IDEDistributionCreateManifestStep

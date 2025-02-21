@@ -31,3 +31,16 @@ __pycache__/
 *.idsig
 *.keystore
 *.afdesign~lock~
+
+# iOS
+.DS_Store
+*.pck
+*.ipa
+/ios/chess-roguelike-ios.xcarchive/dSYMs/chess-roguelike-ios.app.dSYM/Contents
+/ios/chess-roguelike-ios.xcarchive/Products/Applications/chess-roguelike-ios.app
+/ios/chess-roguelike-ios.xcframework/ios-arm64
+/ios/chess-roguelike-ios.xcframework/ios-arm64_x86_64-simulator
+/ios/chess-roguelike-ios.xcodeproj/project.xcworkspace/xcuserdata
+/ios/MoltenVK.xcframework/ios-arm64_x86_64-maccatalyst
+/ios/MoltenVK.xcframework/ios-arm64_x86_64-simulator
+/ios/MoltenVK.xcframework/ios-arm64
