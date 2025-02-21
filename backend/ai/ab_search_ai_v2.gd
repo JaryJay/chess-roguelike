@@ -1,15 +1,4 @@
-class_name ABSearchAI extends AbstractAI
-
-class Result extends Resource:
-	var evaluation: float
-	var move: Move
-	
-	func _init(_evaluation: float, _move: Move) -> void:
-		evaluation = _evaluation
-		move = _move
-	
-	func _to_string() -> String:
-		return "Move %s, Eval %.1f" % [move, evaluation]
+class_name ABSearchAIV2 extends AbstractAI
 
 func get_move(board: Board) -> Move:
 	var depth: = 2
@@ -71,6 +60,9 @@ func evaluate(board: Board) -> float:
 		else:
 			eval -= calculate_piece_worth(piece, board)
 	
+	# Small logarithmic penalty for taking longer
+	eval += log(float(board.turn_number + 1)) * 0.02
+	
 	return eval
 
 func sort_moves_by_strength_desc(moves: Array[Move], board: Board) -> void:
@@ -115,7 +107,7 @@ func estimate_move_strength(move: Move, board: Board) -> float:
 		strength += 3.0
 	
 	# Add small bonus for moving a piece a long distance
-	strength += 0.04 * move.to.distance_to(move.from)
+	strength += 0.02 * move.to.distance_to(move.from)
 
 	# Add bonus for moving pawns
 	if piece.type == Piece.Type.PAWN:
@@ -128,6 +120,9 @@ func estimate_move_strength(move: Move, board: Board) -> float:
 		var enemy_king: Piece = enemy_pieces[0]
 		var distance: = piece.pos.distance_to(enemy_king.pos)
 		strength += maxf(4.0 - distance, 0.0) * 0.05
+	
+	# Finally, add a small randomness to the move strength
+	strength += randf_range(-0.05, 0.05)
 	
 	return strength
 
@@ -171,3 +166,14 @@ func calculate_piece_worth(piece: Piece, board: Board) -> float:
 		worth += proximity_bonus
 	
 	return worth
+
+class Result extends Resource:
+	var evaluation: float
+	var move: Move
+	
+	func _init(_evaluation: float, _move: Move) -> void:
+		evaluation = _evaluation
+		move = _move
+	
+	func _to_string() -> String:
+		return "Move %s, Eval %.3f" % [move, evaluation]

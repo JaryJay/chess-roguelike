@@ -11,10 +11,13 @@ enum InputState {
 	CHOOSING_PROMOTION,
 }
 
+@export var ai_vs_ai_mode: bool
+
 @onready var b: Board = Board.new()
 @onready var tile_nodes: TileNodes = $TileNodes
 @onready var piece_nodes: PieceNodes = $PieceNodes
-@onready var ai_thread: AIThread = $AIThread
+@onready var ai_thread1: AIThread = $AIThread1
+@onready var ai_thread2: AIThread = $AIThread2
 @onready var promotion_ui: PromotionUI = $CanvasLayer/PromotionUI
 var player_team: Team = Team.PLAYER
 var state: BoardNodeState = BoardNodeState.NOT_INITIALIZED
@@ -24,7 +27,8 @@ var temp_move_action: MoveAction = null
 
 func _ready() -> void:
 	assert(Config.loaded, "Config not loaded!")
-	ai_thread.init(ABSearchAI.new())
+	ai_thread1.init(ABSearchAIV1.new())
+	ai_thread2.init(ABSearchAIV2.new())
 
 func init_randomly() -> void:
 	assert(is_node_ready(), "BoardNode is not added to the tree")
@@ -45,11 +49,22 @@ func init_randomly() -> void:
 	_generate_pieces()
 	state = BoardNodeState.INITIALIZED
 
+
+	# Trigger AI's first move
+	if ai_vs_ai_mode:
+		if b.team_to_move == Team.PLAYER:
+			ai_thread1.process_board(b)
+		else:
+			ai_thread2.process_board(b)
+
+
 func _perform_move_action(move_action: MoveAction) -> void:
 	if move_action.is_promotion():
 		pass
 
 func _on_piece_node_selected(piece_node: PieceNode) -> void:
+	if ai_vs_ai_mode: return
+		
 	if b.team_to_move == player_team and selected_piece_node:
 		assert(selected_piece_node.piece().team == player_team)
 		if _can_capture(piece_node):
@@ -70,6 +85,8 @@ func _on_piece_node_selected(piece_node: PieceNode) -> void:
 		_select_piece_node(null)
 
 func _on_tile_node_selected(tile_node: TileNode) -> void:
+	if ai_vs_ai_mode: return
+		
 	if b.team_to_move == player_team and selected_piece_node:
 		assert(selected_piece_node.piece().team == player_team)
 		if _can_move_to(tile_node):
@@ -86,6 +103,8 @@ func _on_tile_node_selected(tile_node: TileNode) -> void:
 	_select_piece_node(null)
 
 func _on_promotion_ui_promotion_chosen(promotion_type: Piece.Type) -> void:
+	if ai_vs_ai_mode: return
+		
 	assert(temp_move_action)
 	assert(input_state == InputState.CHOOSING_PROMOTION)
 	assert(selected_piece_node)
@@ -115,12 +134,19 @@ func end_player_turn() -> void:
 	if b.is_match_over():
 		game_over.emit(b.get_game_result())
 		return
-	ai_thread.process_board(b)
+	ai_thread2.process_board(b)
 
 func end_ai_turn() -> void:
 	if b.is_match_over():
 		game_over.emit(b.get_game_result())
 		return
+	
+	if ai_vs_ai_mode:
+		# Trigger next AI's move
+		if b.team_to_move == Team.PLAYER:
+			ai_thread1.process_board(b)
+		else:
+			ai_thread2.process_board(b)
 
 func _on_ai_thread_move_found(move: Move) -> void:
 	# Create move action
@@ -221,3 +247,10 @@ func perform_move_action(move_action: MoveAction) -> void:
 	# Reset selection state
 	_select_piece_node(null)
 	input_state = InputState.NONE
+
+func start_ai_vs_ai() -> void:
+	ai_vs_ai_mode = true
+	ai_thread1.process_board(b)
+
+func stop_ai_vs_ai() -> void:
+	ai_vs_ai_mode = false

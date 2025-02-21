@@ -106,17 +106,13 @@ func is_team_in_check(team: Team) -> bool:
 func is_match_over() -> bool:
 	var available_moves: = get_available_moves()
 	if available_moves.size() == 0:
-		if is_team_in_check(team_to_move):
-			print("checkmate")
-		else:
-			print("stalemate")
 		return true
 	# Check if the only pieces remaining are the kings
-	if piece_map.get_all_pieces().filter(func(piece: Piece) -> bool: return piece.type != Piece.Type.KING).size() == 0:
-		print("stalemate")
+	if piece_map.get_all_pieces().size() == 2:
+		assert(piece_map.get_all_pieces()[0].type == Piece.Type.KING)
+		assert(piece_map.get_all_pieces()[1].type == Piece.Type.KING)
 		return true
-	# if is_team_in_check(team_to_move): # in this case, it's a checkmate
-	# otherwise it's a stalemate
+	
 	return false
 
 func get_game_result() -> Game.Result:

@@ -8,6 +8,7 @@
 
 [node name="BoardNode" type="Node2D"]
 script = ExtResource("1_btd2a")
+ai_vs_ai_mode = true
 
 [node name="TileNodes" type="Node2D" parent="."]
 script = ExtResource("2_c1it5")
@@ -16,7 +17,10 @@ script = ExtResource("2_c1it5")
 y_sort_enabled = true
 script = ExtResource("3_njbjj")
 
-[node name="AIThread" type="Node" parent="."]
+[node name="AIThread1" type="Node" parent="."]
+script = ExtResource("4_ymfrq")
+
+[node name="AIThread2" type="Node" parent="."]
 script = ExtResource("4_ymfrq")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -33,5 +37,6 @@ grow_vertical = 1
 
 [connection signal="tile_node_selected" from="TileNodes" to="." method="_on_tile_node_selected"]
 [connection signal="piece_node_selected" from="PieceNodes" to="." method="_on_piece_node_selected"]
-[connection signal="move_found" from="AIThread" to="." method="_on_ai_thread_move_found"]
+[connection signal="move_found" from="AIThread1" to="." method="_on_ai_thread_move_found"]
+[connection signal="move_found" from="AIThread2" to="." method="_on_ai_thread_move_found"]
 [connection signal="promotion_chosen" from="CanvasLayer/PromotionUI" to="." method="_on_promotion_ui_promotion_chosen"]
