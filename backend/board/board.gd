@@ -3,6 +3,7 @@ class_name Board
 var tile_map: BoardTileMap
 var piece_map: BoardPieceMap
 var team_to_move: Team
+var turn_number: int = 1  # Add turn number field
 
 func _init() -> void:
 	tile_map = BoardTileMap.new()
@@ -67,6 +68,7 @@ func perform_move(move: Move, allow_illegal: bool = false) -> Board:
 	
 	var next_board: = duplicate()
 	next_board.team_to_move = Team.PLAYER if current_team_to_move == Team.ENEMY_AI else Team.ENEMY_AI
+	next_board.turn_number = turn_number + 1  # Increment turn number
 	
 	next_board.piece_map.remove_piece(piece_to_move.pos)
 	if move.is_capture():
@@ -134,4 +136,5 @@ func duplicate() -> Board:
 	new_board.tile_map = tile_map
 	new_board.piece_map = piece_map.duplicate()
 	new_board.team_to_move = team_to_move
+	new_board.turn_number = turn_number
 	return new_board

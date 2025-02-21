@@ -117,6 +117,7 @@ class Board:
     tile_map: BoardTileMap
     piece_map: BoardPieceMap
     team_to_move: Team
+    turn_number: int = 1 
     _board_history: List['Board'] = None  # Store last 5 board states
     _repetition_counter: Dict[str, int] = None  # Count repeated positions
     
@@ -248,6 +249,7 @@ class Board:
         
         next_board = self.duplicate()
         next_board.team_to_move = Team.PLAYER if current_team_to_move == Team.ENEMY_AI else Team.ENEMY_AI
+        next_board.turn_number = self.turn_number + 1
         
         next_board.piece_map.remove_piece(piece_to_move.pos)
         if move.is_capture():
@@ -306,7 +308,8 @@ class Board:
         new_board = Board(
             tile_map=self.tile_map,  # TileMap is immutable, so we can share it
             piece_map=self.piece_map.duplicate(),
-            team_to_move=self.team_to_move
+            team_to_move=self.team_to_move,
+            turn_number=self.turn_number
         )
         # Copy history and repetition counter
         new_board._board_history = self._board_history.copy()
