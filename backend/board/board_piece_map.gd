@@ -51,6 +51,13 @@ func get_all_pieces() -> Array[Piece]:
 	
 	return all_pieces
 
+func get_team_pieces(team: Team) -> Array[Piece]:
+	var team_pieces: Array[Piece] = []
+	for piece: Piece in get_all_pieces():
+		if piece.team == team:
+			team_pieces.append(piece)
+	return team_pieces
+
 func duplicate() -> BoardPieceMap:
 	var new_piece_map: = BoardPieceMap.new()
 	

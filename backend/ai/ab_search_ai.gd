@@ -12,7 +12,13 @@ class Result extends Resource:
 		return "Move %s, Eval %.1f" % [move, evaluation]
 
 func get_move(board: Board) -> Move:
-	var result: = _get_best_result(board, 2, -INF, INF)  # 3 is a good depth for reasonable performance
+	var depth: = 2
+	if board.piece_map.get_all_pieces().size() <= 5:
+		depth = 4
+	elif board.piece_map.get_team_pieces(Team.PLAYER).size() <= 3 or \
+		board.piece_map.get_team_pieces(Team.ENEMY_AI).size() <= 3:
+		depth = 3
+	var result: = _get_best_result(board, depth, -INF, INF)  # 3 is a good depth for reasonable performance
 	print("Best result is %s" % str(result))
 	return result.move
 
@@ -23,6 +29,8 @@ func _get_best_result(board: Board, depth: int, alpha: float, beta: float) -> Re
 	var moves: = board.get_available_moves()
 	if moves.is_empty():
 		return Result.new(-INF if board.team_to_move == Team.PLAYER else INF, null)
+	elif moves.size() == 1:
+		return Result.new(evaluate(board), moves[0])
 	
 	sort_moves_by_strength_desc(moves, board)
 	moves = moves.slice(0, Config.ai.max_moves_to_consider)  # Only consider the top moves
@@ -61,9 +69,9 @@ func evaluate(board: Board) -> float:
 	var eval: = 0.0
 	for piece in board.piece_map.get_all_pieces():
 		if piece.team == Team.PLAYER:
-			eval += piece.get_worth()
+			eval += calculate_piece_worth(piece, board)
 		else:
-			eval -= piece.get_worth()
+			eval -= calculate_piece_worth(piece, board)
 	
 	return eval
 
@@ -84,11 +92,17 @@ func estimate_move_strength(move: Move, board: Board) -> float:
 	var piece: = board.piece_map.get_piece(move.from)
 	var opposing_team: Team = Team.ENEMY_AI if piece.team == Team.PLAYER else Team.PLAYER
 	
+	var enemy_pieces: = board.piece_map.get_team_pieces(opposing_team)
+	var only_king_left: = enemy_pieces.size() == 1
+	
 	# If it's a capture, add the value of the captured piece
 	if move.is_capture():
 		var captured_piece: = board.piece_map.get_piece(move.to)
-		strength += captured_piece.get_worth()
-	
+		strength += 2.0 + 2.0 * calculate_piece_worth(captured_piece, board)
+	if move.is_promotion() and move.promo_info == Piece.Type.QUEEN:
+		# Should almost always be a good idea
+		strength += 20.0
+
 	# Simulate the move
 	var next_board: = board.perform_move(move, true)
 	
@@ -98,13 +112,62 @@ func estimate_move_strength(move: Move, board: Board) -> float:
 	
 	# Add bonus for putting opponent in check
 	if next_board.is_team_in_check(opposing_team):
-		strength += 1.0
+		strength += 3.0
 	
 	# Add small bonus for moving a piece a long distance
-	strength += 0.05 * move.to.distance_to(move.from)
+	strength += 0.04 * move.to.distance_to(move.from)
 
 	# Add bonus for moving pawns
 	if piece.type == Piece.Type.PAWN:
-		strength += 2.0
+		if move.to - move.from == Vector2i(0, 2):
+			strength += 3.0
+		else:
+			strength += 2.0
+	
+	if piece.type == Piece.Type.KING and only_king_left:
+		var enemy_king: Piece = enemy_pieces[0]
+		var distance: = piece.pos.distance_to(enemy_king.pos)
+		strength += maxf(4.0 - distance, 0.0) * 0.05
 	
 	return strength
+
+func calculate_piece_worth(piece: Piece, board: Board) -> float:
+	var base_worth: = piece.get_worth()
+	var worth: = base_worth
+
+	var opposing_team: Team = Team.ENEMY_AI if piece.team == Team.PLAYER else Team.PLAYER
+	var enemy_pieces: = board.piece_map.get_team_pieces(opposing_team)
+	var only_king_left: = enemy_pieces.size() == 1
+
+	if piece.type == Piece.Type.PAWN:
+		# Check if there's an enemy piece blocking the pawn's path
+		var is_blocked: = false
+		var distance_from_end: = 0
+		var forward_dir: Vector2i = piece._get_pawn_facing_direction()
+		var forward_pos: Vector2i = piece.pos + forward_dir
+		while board.tile_map.has_tile(forward_pos):
+			if board.piece_map.has_piece(forward_pos) and board.piece_map.get_piece(forward_pos).team.is_hostile_to(piece.team):
+				is_blocked = true
+				break
+			forward_pos += forward_dir
+			distance_from_end += 1
+		# Add positional bonus (less if blocked)
+		var position_multiplier := 0.1 if is_blocked else 0.3
+		var end_game_multiplier: = 2.0 if only_king_left else 1.0
+		var position_bonus: = distance_from_end * position_multiplier * end_game_multiplier
+		worth += position_bonus
+	
+	# Add king proximity bonus in king-only endgame
+	if only_king_left:
+		assert(enemy_pieces[0].type == Piece.Type.KING)
+		var enemy_king: Piece = enemy_pieces[0]
+		var distance: = piece.pos.distance_to(enemy_king.pos)
+		# Add bonus for being closer to enemy king (max 2.0 when adjacent)
+		var proximity_bonus: float
+		if piece.type == Piece.Type.KING:
+			proximity_bonus = maxf(8 - distance, 0) * 0.08
+		else:
+			proximity_bonus = maxf(8 - distance, 0) * 0.01
+		worth += proximity_bonus
+	
+	return worth
