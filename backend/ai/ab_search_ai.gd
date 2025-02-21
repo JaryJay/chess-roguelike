@@ -29,8 +29,6 @@ func _get_best_result(board: Board, depth: int, alpha: float, beta: float) -> Re
 	var moves: = board.get_available_moves()
 	if moves.is_empty():
 		return Result.new(-INF if board.team_to_move == Team.PLAYER else INF, null)
-	elif moves.size() == 1:
-		return Result.new(evaluate(board), moves[0])
 	
 	sort_moves_by_strength_desc(moves, board)
 	moves = moves.slice(0, Config.ai.max_moves_to_consider)  # Only consider the top moves
@@ -76,6 +74,8 @@ func evaluate(board: Board) -> float:
 	return eval
 
 func sort_moves_by_strength_desc(moves: Array[Move], board: Board) -> void:
+	if moves.size() == 1:
+		return
 	var move_strength_cache: Dictionary = {}
 	moves.sort_custom(func(m1: Move, m2: Move) -> bool:
 		if not move_strength_cache.has(m1):
