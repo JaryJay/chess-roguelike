@@ -104,16 +104,24 @@ func is_team_in_check(team: Team) -> bool:
 	return false
 
 func is_match_over() -> bool:
-	var available_moves: = get_available_moves()
-	if available_moves.size() == 0:
-		return true
-	# Check if the only pieces remaining are the kings
-	if piece_map.get_all_pieces().size() == 2:
-		assert(piece_map.get_all_pieces()[0].type == Piece.Type.KING)
-		assert(piece_map.get_all_pieces()[1].type == Piece.Type.KING)
+	var pieces: = piece_map.get_all_pieces()
+	
+	# Check for kings only (fastest)
+	if pieces.size() == 2:
+		assert(pieces[0].type == Piece.Type.KING)
+		assert(pieces[1].type == Piece.Type.KING)
 		return true
 	
-	return false
+	# Check for any valid moves, return early if we find one
+	# This is equivalent to checking if get_available_moves().is_empty()
+	for piece: Piece in pieces:
+		if piece.team != team_to_move: 
+			continue
+		var moves: = get_available_moves_from(piece.pos)
+		if !moves.is_empty():
+			return false
+			
+	return true
 
 func get_game_result() -> Game.Result:
 	assert(is_match_over(), "Match is not over")
