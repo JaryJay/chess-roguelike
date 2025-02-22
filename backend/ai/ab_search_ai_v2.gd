@@ -1,12 +1,12 @@
 class_name ABSearchAIV2 extends AbstractAI
 
 func get_move(board: Board) -> Move:
-	var depth: = 2
+	var depth: = 3
 	if board.piece_map.get_all_pieces().size() <= 5:
 		depth = 4
-	elif board.piece_map.get_team_pieces(Team.PLAYER).size() <= 3 or \
+	elif board.piece_map.get_team_pieces(Team.PLAYER).size() <= 2 or \
 		board.piece_map.get_team_pieces(Team.ENEMY_AI).size() <= 3:
-		depth = 3
+		depth = 4
 	var result: = _get_best_result(board, depth, -INF, INF)  # 3 is a good depth for reasonable performance
 	print("Best result is %s" % str(result))
 	return result.move
