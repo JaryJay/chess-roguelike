@@ -57,11 +57,6 @@ func init_randomly() -> void:
 		else:
 			ai_thread2.process_board(b)
 
-
-func _perform_move_action(move_action: MoveAction) -> void:
-	if move_action.is_promotion():
-		pass
-
 func _on_piece_node_selected(piece_node: PieceNode) -> void:
 	if ai_vs_ai_mode: return
 		
@@ -190,8 +185,8 @@ func _generate_tiles() -> void:
 func _generate_pieces() -> void:
 	var num_tiles: = b.tile_map.num_tiles()
 
-	var enemy_army: = PiecesGenerator.generate_army(1000, b, Team.ENEMY_AI)
-	var army: = PiecesGenerator.generate_army(1000, b, Team.PLAYER)
+	var enemy_army: = PiecesGenerator.generate_army(1150, b, Team.ENEMY_AI)
+	var army: = PiecesGenerator.generate_army(1150, b, Team.PLAYER)
 	var pieces: = enemy_army + army
 	var num_pieces: = pieces.size()
 	assert(num_pieces < num_tiles, "There are more pieces than tiles")
