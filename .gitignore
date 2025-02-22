@@ -46,3 +46,5 @@ __pycache__/
 /ios/MoltenVK.xcframework/ios-arm64_x86_64-maccatalyst
 /ios/MoltenVK.xcframework/ios-arm64_x86_64-simulator
 /ios/MoltenVK.xcframework/ios-arm64
+/ios/chess-roguelike-ios/Images.xcassets
+/ios/chess-roguelike-ios.xcarchive
