@@ -17,11 +17,12 @@ static func generate_army(credits: int, b: Board, team: Team) -> Array[Piece]:
 	army.append(Piece.new(Piece.Type.KING, team, Vector2i(0, 0)))
 	
 	# Generate pieces
-	while credits > 0:
-		var piece_type: = generate_piece_type(credits)
+	var remaining_credits: = credits
+	while remaining_credits > 0:
+		var piece_type: = generate_piece_type(remaining_credits)
 		if piece_type == Piece.Type.UNSET: break
 		
-		credits -= PieceRules.get_rule(piece_type).credit_cost
+		remaining_credits -= PieceRules.get_rule(piece_type).credit_cost
 		army.append(Piece.new(piece_type, team, Vector2i(0, 0)))
 	
 	# Arrange pieces
@@ -53,3 +54,30 @@ static func generate_piece_type(credits: int) -> Piece.Type:
 
 static func sort_tiles_by_y(a: Vector2i, b: Vector2i) -> bool:
 	return a.y < b.y
+
+static func populate_board(board: Board, credits: int, retries: int = 100) -> Board:
+	for retry in retries:
+		var new_board := board.duplicate()
+		new_board.piece_map = BoardPieceMap.new()
+		
+		# Generate both armies
+		var player_army := generate_army(credits, new_board, Team.PLAYER)
+		var enemy_army := generate_army(credits, new_board, Team.ENEMY_AI)
+		var pieces := player_army + enemy_army
+		var num_pieces := pieces.size()
+		
+		if num_pieces >= new_board.tile_map.num_tiles():
+			print("There are more pieces than tiles, retrying")
+			continue
+		
+		# Place all pieces
+		for piece in pieces:
+			assert(not new_board.piece_map.has_piece(piece.pos))
+			assert(new_board.tile_map.has_tile(piece.pos))
+			new_board.piece_map.put_piece(piece.pos, piece)
+			
+		if !new_board.is_team_in_check(Team.PLAYER) and !new_board.is_team_in_check(Team.ENEMY_AI):
+			return new_board
+	
+	push_error("Failed to generate valid board after %d attempts" % retries)
+	return board

@@ -13,12 +13,12 @@ enum InputState {
 
 @export var ai_vs_ai_mode: bool
 
-@onready var b: Board = Board.new()
 @onready var tile_nodes: TileNodes = $TileNodes
 @onready var piece_nodes: PieceNodes = $PieceNodes
 @onready var ai_thread1: AIThread = $AIThread1
 @onready var ai_thread2: AIThread = $AIThread2
 @onready var promotion_ui: PromotionUI = $CanvasLayer/PromotionUI
+var b: Board
 var player_team: Team = Team.PLAYER
 var state: BoardNodeState = BoardNodeState.NOT_INITIALIZED
 var input_state: InputState = InputState.NONE
@@ -34,8 +34,7 @@ func init_randomly() -> void:
 	assert(is_node_ready(), "BoardNode is not added to the tree")
 	if state == BoardNodeState.INITIALIZED:
 		state = BoardNodeState.NOT_INITIALIZED
-		# Reset the board
-		b = Board.new()
+		# Reset UI elements
 		for piece_node: PieceNode in piece_nodes.get_all_piece_nodes():
 			piece_node.queue_free()
 		for tile_node: TileNode in tile_nodes.get_all_tile_nodes():
@@ -45,10 +44,21 @@ func init_randomly() -> void:
 		input_state = InputState.NONE
 		selected_piece_node = null
 		temp_move_action = null
-	_generate_tiles()
-	_generate_pieces()
+	
+	# Generate board with tiles and pieces
+	b = TilesGenerator.generate_board_with_tiles()
+	b = PiecesGenerator.populate_board(b, 1150)  # Use existing credit amount
+	
+	# Create UI elements
+	tile_nodes.create_tile_nodes(b.tile_map.get_all_tiles())
+	var pieces := b.piece_map.get_all_pieces()
+	for piece in pieces:
+		var piece_node := piece_nodes.spawn_piece(piece)
+		assert(b.piece_map.has_piece(piece_node.piece().pos))
+		assert(b.piece_map.get_piece(piece_node.piece().pos) == piece_node.piece())
+	
+	assert(piece_nodes.get_all_piece_nodes().size() == pieces.size(), "Did not spawn all pieces")
 	state = BoardNodeState.INITIALIZED
-
 
 	# Trigger AI's first move
 	if ai_vs_ai_mode:
@@ -176,33 +186,6 @@ func _can_move_to(tile_node: TileNode) -> bool:
 	return false
 
 #endregion
-
-func _generate_tiles() -> void:
-	var tile_positions: = TilesGenerator.generate_tiles()
-	b.tile_map.set_tiles(tile_positions)
-	tile_nodes.create_tile_nodes(tile_positions)
-
-func _generate_pieces() -> void:
-	var num_tiles: = b.tile_map.num_tiles()
-
-	var enemy_army: = PiecesGenerator.generate_army(1150, b, Team.ENEMY_AI)
-	var army: = PiecesGenerator.generate_army(1150, b, Team.PLAYER)
-	var pieces: = enemy_army + army
-	var num_pieces: = pieces.size()
-	assert(num_pieces < num_tiles, "There are more pieces than tiles")
-
-	for piece: Piece in pieces:
-		assert(not b.piece_map.has_piece(piece.pos))
-		assert(b.tile_map.has_tile(piece.pos))
-		
-		b.piece_map.put_piece(piece.pos, piece)
-		piece_nodes.spawn_piece(piece)
-	
-	assert(piece_nodes.get_all_piece_nodes().size() == pieces.size(), "Did not spawn all pieces")
-	
-	for piece_node: PieceNode in piece_nodes.get_all_piece_nodes():
-		assert(b.piece_map.has_piece(piece_node.piece().pos))
-		assert(b.piece_map.get_piece(piece_node.piece().pos) == piece_node.piece())
 
 func perform_move_action(move_action: MoveAction) -> void:
 	assert(move_action)

@@ -3,15 +3,22 @@ class_name TilesGenerator
 const PRUNE_TILES: = true
 const CARDINAL_DIRECTIONS = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 
-static func generate_tiles(retries: = 10) -> Array[Vector2i]:
-	var raw_positions: = generate_raw_positions()
-	var pruned_positions: = prune_positions(raw_positions)
-	var normalized_positions: = normalize_positions(pruned_positions)
-
-	if normalized_positions.size() < 20 and retries > 0:
+static func generate_board_with_tiles(retries: int = 10) -> Board:
+	var board := Board.new()
+	
+	for retry in retries:
+		var positions := generate_raw_positions()
+		var pruned_positions := prune_positions(positions)
+		var normalized_positions := normalize_positions(pruned_positions)
+		
+		if normalized_positions.size() >= 20:
+			board.tile_map.set_tiles(normalized_positions)
+			return board
+			
 		print("only generated %d tiles, retrying" % normalized_positions.size())
-		return generate_tiles(retries - 1)
-	return normalized_positions
+	
+	push_error("Failed to generate board with enough tiles after %d attempts" % retries)
+	return board
 
 static func generate_raw_positions() -> Array[Vector2i]:
 	var raw_positions: Array[Vector2i] = []
