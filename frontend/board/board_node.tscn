@@ -8,7 +8,6 @@
 
 [node name="BoardNode" type="Node2D"]
 script = ExtResource("1_btd2a")
-ai_vs_ai_mode = true
 
 [node name="TileNodes" type="Node2D" parent="."]
 script = ExtResource("2_c1it5")

@@ -2,6 +2,8 @@ class_name AIThread extends Node
 
 signal move_found(move: Move)
 
+var _initialized: = false
+
 var _is_thinking: = false
 
 var _ai: AbstractAI
@@ -17,6 +19,7 @@ func init(ai: AbstractAI) -> void:
 	_semaphore = Semaphore.new()
 	_thread = Thread.new()
 	_thread.start(_ai_thread_func)
+	_initialized = true
 
 func _ai_thread_func() -> void:
 	print("AI thread started")
@@ -44,6 +47,8 @@ func process_board(board: Board) -> void:
 	_semaphore.post()
 
 func _exit_tree() -> void:
+	if !_initialized: return
+	
 	_mutex.lock()
 	_exit_thread = true
 	_mutex.unlock()
