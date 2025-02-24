@@ -3,12 +3,18 @@ class_name Board
 var tile_map: BoardTileMap
 var piece_map: BoardPieceMap
 var team_to_move: Team
-var turn_number: int = 1  # Add turn number field
+
+# The following fields are not included in the hash
+var turn_number: int = 1
+## Dictionary from int to int. Maps position hashes to the repetition count
+var position_counts: Dictionary = {}
+var is_threefold_repetition: bool = false
 
 func _init() -> void:
 	tile_map = BoardTileMap.new()
 	piece_map = BoardPieceMap.new()
 	team_to_move = Team.PLAYER
+	position_counts[self.hash()] = 1
 
 func get_available_moves() -> Array[Move]:
 	var all_moves: Array[Move] = []
@@ -68,7 +74,7 @@ func perform_move(move: Move, allow_illegal: bool = false) -> Board:
 	
 	var next_board: = duplicate()
 	next_board.team_to_move = Team.PLAYER if current_team_to_move == Team.ENEMY_AI else Team.ENEMY_AI
-	next_board.turn_number = turn_number + 1  # Increment turn number
+	next_board.turn_number = turn_number + 1
 	
 	next_board.piece_map.remove_piece(piece_to_move.pos)
 	if move.is_capture():
@@ -85,6 +91,18 @@ func perform_move(move: Move, allow_illegal: bool = false) -> Board:
 		if piece_to_move.type == Piece.Type.PAWN:
 			new_piece.info = new_piece.info | Piece.MOVED
 		next_board.piece_map.put_piece(move.to, new_piece)
+	
+	# If the move is a capture, promotion, or pawn move, then the board
+	# is changed "permanently" so we don't have to store all the previous
+	# board positions.
+	if !move.is_capture() and !move.is_promotion() and piece_to_move.type != Piece.Type.PAWN:
+		next_board.position_counts = position_counts.duplicate()
+	var pos_hash = next_board.hash()
+	var new_count = next_board.position_counts.get(pos_hash, 0) + 1
+	next_board.position_counts[pos_hash] = new_count
+	# Set threefold repetition flag if count reaches 3
+	if new_count >= 3:
+		next_board.is_threefold_repetition = true
 	
 	if !allow_illegal:
 		assert(!next_board.is_team_in_check(current_team_to_move), "A move cannot put your own team in check")
@@ -104,6 +122,10 @@ func is_team_in_check(team: Team) -> bool:
 	return false
 
 func is_match_over() -> bool:
+	# Check for threefold repetition first
+	if is_threefold_repetition:
+		return true
+	
 	var pieces: = piece_map.get_all_pieces()
 	
 	# Check for kings only (fastest)
@@ -125,6 +147,12 @@ func is_match_over() -> bool:
 
 func get_game_result() -> Game.Result:
 	assert(is_match_over(), "Match is not over")
+	
+	# Check for threefold repetition first
+	if is_threefold_repetition:
+		return Game.Result.STALEMATE
+	
+	# Then check for other conditions
 	if is_team_in_check(team_to_move):
 		if team_to_move == Team.PLAYER:
 			return Game.Result.LOSE
@@ -141,4 +169,30 @@ func duplicate() -> Board:
 	new_board.piece_map = piece_map.duplicate()
 	new_board.team_to_move = team_to_move
 	new_board.turn_number = turn_number
+	new_board.position_counts = position_counts.duplicate()
+	new_board.is_threefold_repetition = is_threefold_repetition
 	return new_board
+
+func hash() -> int:
+	var ctx: = HashingContext.new()
+	ctx.start(HashingContext.HASH_MD5)
+	
+	# Add team to move
+	ctx.update(PackedByteArray([team_to_move.hash()]))
+	
+	var pieces: = piece_map.get_all_pieces()
+	for piece: Piece in pieces:
+		var piece_data := PackedByteArray([
+			piece.pos.x,
+			piece.pos.y,
+			piece.type,
+			piece.team.hash(),
+			piece.info,
+		])
+		ctx.update(piece_data)
+	
+	# Get the hash as bytes
+	var hash_bytes: = ctx.finish()
+	
+	# Convert first 4 bytes to integer
+	return hash_bytes.decode_s32(0)

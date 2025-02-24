@@ -24,3 +24,6 @@ func is_friendly_to(t: Team) -> bool:
 
 func _to_string() -> String:
 	return "Player" if is_player() else "Enemy AI"
+
+func hash() -> int:
+	return _key
