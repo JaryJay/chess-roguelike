@@ -150,7 +150,7 @@ func get_game_result() -> Game.Result:
 	
 	# Check for threefold repetition first
 	if is_threefold_repetition:
-		return Game.Result.STALEMATE
+		return Game.Result.DRAW_THREEFOLD_REPETITION
 	
 	# Then check for other conditions
 	if is_team_in_check(team_to_move):
@@ -159,7 +159,7 @@ func get_game_result() -> Game.Result:
 		else:
 			return Game.Result.WIN
 	else:
-		return Game.Result.STALEMATE
+		return Game.Result.DRAW_STALEMATE
 
 func duplicate() -> Board:
 	var new_board: = Board.new()

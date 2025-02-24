@@ -16,8 +16,12 @@ func _on_board_node_game_over(game_result: Game.Result) -> void:
 		game_over_label.text = "You win!"
 	elif game_result == Game.Result.LOSE:
 		game_over_label.text = "You lose!"
-	elif game_result == Game.Result.STALEMATE:
+	elif game_result == Game.Result.DRAW_STALEMATE:
 		game_over_label.text = "Stalemate!"
+	elif game_result == Game.Result.DRAW_INSUFFICIENT_MATERIAL:
+		game_over_label.text = "Draw! Insufficient material"
+	elif game_result == Game.Result.DRAW_THREEFOLD_REPETITION:
+		game_over_label.text = "Draw! Threefold repetition"
 	game_over_layer.show()
 
 func _on_restart_button_pressed() -> void:
