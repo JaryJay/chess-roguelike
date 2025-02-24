@@ -1,14 +1,14 @@
-class_name ABSearchAIV1 extends AbstractAI
+class_name ABSearchAIV3 extends AbstractAI
 
 func get_move(board: Board) -> Move:
-	var depth: = 2
+	var depth: = 3
 	if board.piece_map.get_all_pieces().size() <= 5:
 		depth = 4
-	elif board.piece_map.get_team_pieces(Team.PLAYER).size() <= 3 or \
+	elif board.piece_map.get_team_pieces(Team.PLAYER).size() <= 2 or \
 		board.piece_map.get_team_pieces(Team.ENEMY_AI).size() <= 3:
-		depth = 3
+		depth = 4
 	var result: = _get_best_result(board, depth, -INF, INF)  # 3 is a good depth for reasonable performance
-	print("Best result is %s" % str(result))
+	print("V3: Best result is %s" % str(result))
 	return result.move
 
 func _get_best_result(board: Board, depth: int, alpha: float, beta: float) -> Result:
@@ -60,6 +60,10 @@ func evaluate(board: Board) -> float:
 		else:
 			eval -= calculate_piece_worth(piece, board)
 	
+	# Add king mobility penalties
+	eval += calculate_king_mobility_penalty(board, Team.ENEMY_AI)
+	eval -= calculate_king_mobility_penalty(board, Team.PLAYER)
+	
 	# Small logarithmic penalty for taking longer
 	eval += log(float(board.turn_number + 1)) * 0.02
 	
@@ -107,7 +111,7 @@ func estimate_move_strength(move: Move, board: Board) -> float:
 		strength += 3.0
 	
 	# Add small bonus for moving a piece a long distance
-	strength += 0.04 * move.to.distance_to(move.from)
+	strength += 0.01 * move.to.distance_to(move.from)
 
 	# Add bonus for moving pawns
 	if piece.type == Piece.Type.PAWN:
@@ -118,8 +122,12 @@ func estimate_move_strength(move: Move, board: Board) -> float:
 	
 	if piece.type == Piece.Type.KING and only_king_left:
 		var enemy_king: Piece = enemy_pieces[0]
-		var distance: = piece.pos.distance_to(enemy_king.pos)
-		strength += maxf(4.0 - distance, 0.0) * 0.05
+		var old_distance: = piece.pos.distance_to(enemy_king.pos)
+		var new_distance: = move.to.distance_to(enemy_king.pos)
+		strength += maxf(old_distance - new_distance, 0.0) * 1
+	
+	# Finally, add a small randomness to the move strength
+	strength += randf_range(-0.05, 0.05)
 	
 	return strength
 
@@ -162,7 +170,32 @@ func calculate_piece_worth(piece: Piece, board: Board) -> float:
 			proximity_bonus = maxf(8 - distance, 0) * 0.01
 		worth += proximity_bonus
 	
+	var piece_existence_bonus: = 0.05
+	worth += piece_existence_bonus
+	
 	return worth
+
+
+func calculate_king_mobility_penalty(board: Board, team: Team) -> float:
+	var team_pieces := board.piece_map.get_team_pieces(team)
+	if team_pieces.size() == 1 and team_pieces[0].type == Piece.Type.KING:
+		var king: Piece = team_pieces[0]
+		var moveable_squares: = 0
+		
+		# Check all 8 squares around the king
+		for dx in [-1, 0, 1]:
+			for dy in [-1, 0, 1]:
+				if dx == 0 and dy == 0:
+					continue
+				
+				var check_pos: = king.pos + Vector2i(dx, dy)
+				if board.tile_map.has_tile(check_pos) and \
+				not board.piece_map.has_piece(check_pos):
+					moveable_squares += 1
+		
+		# Add penalty based on how few moves the king has (up to 0.5 per restricted move)
+		return (8.0 - moveable_squares) * 0.08
+	return 0.0
 
 class Result extends Resource:
 	var evaluation: float

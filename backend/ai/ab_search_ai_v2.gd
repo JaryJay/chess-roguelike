@@ -8,7 +8,7 @@ func get_move(board: Board) -> Move:
 		board.piece_map.get_team_pieces(Team.ENEMY_AI).size() <= 3:
 		depth = 4
 	var result: = _get_best_result(board, depth, -INF, INF)  # 3 is a good depth for reasonable performance
-	print("Best result is %s" % str(result))
+	print("V2 Best result is %s" % str(result))
 	return result.move
 
 func _get_best_result(board: Board, depth: int, alpha: float, beta: float) -> Result:

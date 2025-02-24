@@ -28,8 +28,8 @@ var temp_move_action: MoveAction = null
 func _ready() -> void:
 	assert(Config.loaded, "Config not loaded!")
 	if ai_vs_ai_mode:
-		ai_thread1.init(ABSearchAIV1.new())
-	ai_thread2.init(ABSearchAIV2.new())
+		ai_thread1.init(ABSearchAIV2.new())
+	ai_thread2.init(ABSearchAIV3.new())
 
 func init_randomly() -> void:
 	assert(is_node_ready(), "BoardNode is not added to the tree")
