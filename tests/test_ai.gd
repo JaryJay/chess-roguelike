@@ -7,6 +7,7 @@ func _ready() -> void:
 	test_mate_in_one()
 	test_obvious_queen_capture()
 	test_pawn_promotion_mate()
+	test_pawn_promotion_less_obvious()
 	test_knight_fork()
 	
 	get_tree().quit()
@@ -78,6 +79,28 @@ func test_pawn_promotion_mate() -> void:
 	assert(move.to == Vector2i(5,4))	# Pawn to top left, promoting
 	assert(move.promo_info == Piece.Type.QUEEN)  # Promotes to queen for mate
 	print("Pawn promotion mate passed")
+
+func test_pawn_promotion_less_obvious() -> void:
+	var b := Board.new()
+	b.team_to_move = Team.ENEMY_AI
+	b.tile_map.set_tiles([
+		Vector2i(2,4), Vector2i(3,4), Vector2i(4,4), Vector2i(5,4),  # Bottom row
+		Vector2i(2,5), Vector2i(3,5), Vector2i(4,5), Vector2i(5,5),  # Row 2
+		Vector2i(2,6), Vector2i(3,6), Vector2i(4,6), Vector2i(5,6),  # Row 3
+		Vector2i(2,7), Vector2i(3,7), Vector2i(4,7), Vector2i(5,7),  # Top row (promotion rank)
+	])
+
+	b.piece_map.put_piece(Vector2i(3,6), Piece.new(Piece.Type.PAWN, Team.ENEMY_AI))
+	b.piece_map.put_piece(Vector2i(2,6), Piece.new(Piece.Type.KING, Team.ENEMY_AI))
+	b.piece_map.put_piece(Vector2i(4,6), Piece.new(Piece.Type.KING, Team.PLAYER))
+
+	var ai := _create_ai()
+	var move := ai.get_move(b)
+	
+	assert(move.from == Vector2i(3,6))
+	assert(move.to == Vector2i(3,7))
+	assert(move.promo_info == Piece.Type.QUEEN, "Got %s" % Piece.type_to_string(move.promo_info))
+	print("Pawn promotion less obvious passed")
 
 func test_knight_fork() -> void:
 	var b := Board.new()
