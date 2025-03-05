@@ -22,9 +22,9 @@ func test_mate_in_one() -> void:
 	])
 	
 	# Black king trapped at bottom, White rook delivers mate from top, protected by pawn
-	b.piece_map.put_piece(Vector2i(3,2), Piece.new(Piece.Type.KING, Team.ENEMY_AI, Vector2i(3,2)))  # Black king top left
-	b.piece_map.put_piece(Vector2i(3,4), Piece.new(Piece.Type.KING, Team.PLAYER, Vector2i(3,4)))	# White king bottom left
-	b.piece_map.put_piece(Vector2i(5,4), Piece.new(Piece.Type.ROOK, Team.PLAYER, Vector2i(5,4)))	# White rook bottom right
+	b.piece_map.put_piece(Vector2i(3,2), Piece.new(Piece.Type.KING, Team.ENEMY_AI))  # Black king top left
+	b.piece_map.put_piece(Vector2i(3,4), Piece.new(Piece.Type.KING, Team.PLAYER))	# White king bottom left
+	b.piece_map.put_piece(Vector2i(5,4), Piece.new(Piece.Type.ROOK, Team.PLAYER))	# White rook bottom right
 	
 	var ai := _create_ai()
 	var move := ai.get_move(b)
@@ -44,10 +44,10 @@ func test_obvious_queen_capture() -> void:
 	])
 	
 	# Undefended queen can be captured by rook
-	b.piece_map.put_piece(Vector2i(2,2), Piece.new(Piece.Type.KING, Team.PLAYER, Vector2i(2,2)))
-	b.piece_map.put_piece(Vector2i(4,4), Piece.new(Piece.Type.KING, Team.ENEMY_AI, Vector2i(4,4)))
-	b.piece_map.put_piece(Vector2i(2,3), Piece.new(Piece.Type.QUEEN, Team.ENEMY_AI, Vector2i(2,3)))
-	b.piece_map.put_piece(Vector2i(3,3), Piece.new(Piece.Type.ROOK, Team.PLAYER, Vector2i(3,3)))
+	b.piece_map.put_piece(Vector2i(2,2), Piece.new(Piece.Type.KING, Team.PLAYER))
+	b.piece_map.put_piece(Vector2i(4,4), Piece.new(Piece.Type.KING, Team.ENEMY_AI))
+	b.piece_map.put_piece(Vector2i(2,3), Piece.new(Piece.Type.QUEEN, Team.ENEMY_AI))
+	b.piece_map.put_piece(Vector2i(3,3), Piece.new(Piece.Type.ROOK, Team.PLAYER))
 	
 	var ai := _create_ai()
 	var move := ai.get_move(b)
@@ -67,9 +67,9 @@ func test_pawn_promotion_mate() -> void:
 		Vector2i(2,7), Vector2i(3,7), Vector2i(4,7), Vector2i(5,7),  # Top row (promotion rank)
 	])
 	
-	b.piece_map.put_piece(Vector2i(5,5), Piece.new(Piece.Type.PAWN, Team.PLAYER, Vector2i(5,5)))
-	b.piece_map.put_piece(Vector2i(4,5), Piece.new(Piece.Type.KING, Team.PLAYER, Vector2i(4,5)))
-	b.piece_map.put_piece(Vector2i(2,6), Piece.new(Piece.Type.KING, Team.ENEMY_AI, Vector2i(2,6)))
+	b.piece_map.put_piece(Vector2i(5,5), Piece.new(Piece.Type.PAWN, Team.PLAYER))
+	b.piece_map.put_piece(Vector2i(4,5), Piece.new(Piece.Type.KING, Team.PLAYER))
+	b.piece_map.put_piece(Vector2i(2,6), Piece.new(Piece.Type.KING, Team.ENEMY_AI))
 
 	var ai := _create_ai()
 	var move := ai.get_move(b)
@@ -90,11 +90,11 @@ func test_knight_fork() -> void:
 	])
 	
 	# Knight can fork enemy king and queen
-	b.piece_map.put_piece(Vector2i(2,2), Piece.new(Piece.Type.KING, Team.PLAYER, Vector2i(2,2)))
-	b.piece_map.put_piece(Vector2i(2,3), Piece.new(Piece.Type.ROOK, Team.PLAYER, Vector2i(2,3)))
-	b.piece_map.put_piece(Vector2i(2,4), Piece.new(Piece.Type.KNIGHT, Team.PLAYER, Vector2i(2,4)))
-	b.piece_map.put_piece(Vector2i(5,5), Piece.new(Piece.Type.KING, Team.ENEMY_AI, Vector2i(5,5)))
-	b.piece_map.put_piece(Vector2i(3,5), Piece.new(Piece.Type.QUEEN, Team.ENEMY_AI, Vector2i(3,5)))
+	b.piece_map.put_piece(Vector2i(2,2), Piece.new(Piece.Type.KING, Team.PLAYER))
+	b.piece_map.put_piece(Vector2i(2,3), Piece.new(Piece.Type.ROOK, Team.PLAYER))
+	b.piece_map.put_piece(Vector2i(2,4), Piece.new(Piece.Type.KNIGHT, Team.PLAYER))
+	b.piece_map.put_piece(Vector2i(5,5), Piece.new(Piece.Type.KING, Team.ENEMY_AI))
+	b.piece_map.put_piece(Vector2i(3,5), Piece.new(Piece.Type.QUEEN, Team.ENEMY_AI))
 	
 	var ai := _create_ai()
 	var move := ai.get_move(b)

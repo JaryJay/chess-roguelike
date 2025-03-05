@@ -20,6 +20,7 @@ func remove_piece(pos: Vector2i) -> void:
 func put_piece(pos: Vector2i, piece: Piece) -> void:
 	assert(!has_piece(pos), "Piece already at %.v" % pos)
 	_pieces[pos.y][pos.x] = piece
+	piece.pos = pos
 
 func has_piece(pos: Vector2i) -> bool:
 	if pos.x < 0 or pos.x >= Config.max_board_size or pos.y < 0 or pos.y >= Config.max_board_size:

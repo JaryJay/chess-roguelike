@@ -42,7 +42,7 @@ var team: Team
 var pos: Vector2i
 var info: int = 0
 
-func _init(_type: Type, _team: Team, _pos: Vector2i, _info: int = 0) -> void:
+func _init(_type: Type, _team: Team, _pos: Vector2i = Vector2i.ZERO, _info: int = 0) -> void:
 	type = _type
 	team = _team
 	pos = _pos
