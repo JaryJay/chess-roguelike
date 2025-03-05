@@ -172,12 +172,29 @@ func _get_pawn_facing_direction() -> Vector2i:
 
 var PAWN_SIDES: = [Vector2i.LEFT, Vector2i.RIGHT]
 
+func _is_in_direction(target: Vector2i, dir: Vector2i) -> bool:
+	var delta: = target - pos
+	
+	# Handle straight moves
+	if dir.x == 0:
+		return delta.x == 0 and delta.y * dir.y > 0
+	if dir.y == 0:
+		return delta.y == 0 and delta.x * dir.x > 0
+		
+	# This is equivalent to checking delta.x / dir.x == delta.y / dir.y > 0, except without
+	# integer division truncating stuff
+	return delta.x * dir.y == delta.y * dir.x
+
 func _is_attacking_from_ray(
 	p: Vector2i,
 	dir: Vector2i,
 	b: Board,
 	ray_length: int = BOARD_LENGTH_UPPER_BOUND,
 ) -> bool:
+	# Quick check if target is even in this direction
+	if not _is_in_direction(p, dir):
+		return false
+		
 	var next_pos: = pos
 	for i in range(ray_length):
 		next_pos += dir
