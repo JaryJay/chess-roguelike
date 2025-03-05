@@ -128,16 +128,14 @@ func is_match_over() -> bool:
 	
 	var pieces: = piece_map.get_all_pieces()
 	
-	# Check for kings only (fastest)
-	if pieces.size() == 2:
-		assert(pieces[0].type == Piece.Type.KING)
-		assert(pieces[1].type == Piece.Type.KING)
+	# Check for insufficient material
+	if _is_insufficient_material(pieces):
 		return true
 	
 	# Check for any valid moves, return early if we find one
 	# This is equivalent to checking if get_available_moves().is_empty()
 	for piece: Piece in pieces:
-		if piece.team != team_to_move: 
+		if piece.team != team_to_move:
 			continue
 		var moves: = get_available_moves_from(piece.pos)
 		if !moves.is_empty():
@@ -145,12 +143,51 @@ func is_match_over() -> bool:
 			
 	return true
 
+func _is_insufficient_material(pieces: Array[Piece]) -> bool:
+	# Filter out kings first since we know there are exactly two
+	var non_king_pieces := pieces.filter(func(p): return p.type != Piece.Type.KING)
+	
+	# King vs King
+	if non_king_pieces.is_empty():
+		return true
+	
+	# If there are more than 2 non-king pieces, there must be sufficient material
+	if non_king_pieces.size() > 2:
+		return false
+	
+	# King + Bishop vs King or King + Knight vs King
+	if non_king_pieces.size() == 1:
+		var piece_type = non_king_pieces[0].type
+		return piece_type == Piece.Type.BISHOP or piece_type == Piece.Type.KNIGHT
+	
+	# Split remaining pieces by team
+	var white_pieces: = non_king_pieces.filter(func(p): return p.team == Team.PLAYER)
+	var black_pieces: = non_king_pieces.filter(func(p): return p.team == Team.ENEMY_AI)
+	
+	# King + Bishop vs King + Bishop (same colored squares)
+	if non_king_pieces.size() == 2:
+		if white_pieces.size() == 1 and black_pieces.size() == 1:
+			var white_piece = white_pieces[0]
+			var black_piece = black_pieces[0]
+			if white_piece.type == Piece.Type.BISHOP and black_piece.type == Piece.Type.BISHOP:
+				# Check if bishops are on same colored squares
+				# In chess, squares are same color if (x + y) % 2 is the same
+				var white_square_color = (white_piece.pos.x + white_piece.pos.y) % 2
+				var black_square_color = (black_piece.pos.x + black_piece.pos.y) % 2
+				return white_square_color == black_square_color
+	
+	return false
+
 func get_game_result() -> Game.Result:
 	assert(is_match_over(), "Match is not over")
 	
 	# Check for threefold repetition first
 	if is_threefold_repetition:
 		return Game.Result.DRAW_THREEFOLD_REPETITION
+	
+	# Check for insufficient material
+	if _is_insufficient_material(piece_map.get_all_pieces()):
+		return Game.Result.DRAW_INSUFFICIENT_MATERIAL
 	
 	# Then check for other conditions
 	if is_team_in_check(team_to_move):
