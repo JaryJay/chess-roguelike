@@ -26,7 +26,7 @@ func test_mate_in_one() -> void:
 	b.piece_map.put_piece(Vector2i(3,4), Piece.new(Piece.Type.KING, Team.PLAYER, Vector2i(3,4)))	# White king bottom left
 	b.piece_map.put_piece(Vector2i(5,4), Piece.new(Piece.Type.ROOK, Team.PLAYER, Vector2i(5,4)))	# White rook bottom right
 	
-	var ai := ABSearchAIV2.new()
+	var ai := _create_ai()
 	var move := ai.get_move(b)
 	
 	assert(move.from == Vector2i(5,4))  # Rook from bottom right
@@ -49,7 +49,7 @@ func test_obvious_queen_capture() -> void:
 	b.piece_map.put_piece(Vector2i(2,3), Piece.new(Piece.Type.QUEEN, Team.ENEMY_AI, Vector2i(2,3)))
 	b.piece_map.put_piece(Vector2i(3,3), Piece.new(Piece.Type.ROOK, Team.PLAYER, Vector2i(3,3)))
 	
-	var ai := ABSearchAIV2.new()
+	var ai := _create_ai()
 	var move := ai.get_move(b)
 	
 	assert(move.from == Vector2i(3,3) or move.from == Vector2i(2,2))
@@ -71,7 +71,7 @@ func test_pawn_promotion_mate() -> void:
 	b.piece_map.put_piece(Vector2i(4,5), Piece.new(Piece.Type.KING, Team.PLAYER, Vector2i(4,5)))
 	b.piece_map.put_piece(Vector2i(2,6), Piece.new(Piece.Type.KING, Team.ENEMY_AI, Vector2i(2,6)))
 
-	var ai := ABSearchAIV2.new()
+	var ai := _create_ai()
 	var move := ai.get_move(b)
 	
 	assert(move.from == Vector2i(5,5))  # Pawn from bottom left
@@ -96,9 +96,12 @@ func test_knight_fork() -> void:
 	b.piece_map.put_piece(Vector2i(5,5), Piece.new(Piece.Type.KING, Team.ENEMY_AI, Vector2i(5,5)))
 	b.piece_map.put_piece(Vector2i(3,5), Piece.new(Piece.Type.QUEEN, Team.ENEMY_AI, Vector2i(3,5)))
 	
-	var ai := ABSearchAIV2.new()
+	var ai := _create_ai()
 	var move := ai.get_move(b)
 	
 	assert(move.from == Vector2i(2,4))  # Knight from current position
 	assert(move.to == Vector2i(4,3))    # Knight to forking square
 	print("Knight fork passed")
+
+func _create_ai() -> AbstractAI:
+	return ABSearchAIV4.new()
