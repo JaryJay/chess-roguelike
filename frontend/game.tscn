@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bb0qxkgwbx5xc"]
 
-[ext_resource type="Script" path="res://game.gd" id="1_qfs6o"]
+[ext_resource type="Script" path="res://frontend/game.gd" id="1_qfs6o"]
 [ext_resource type="PackedScene" uid="uid://b0v2ttp4dudf4" path="res://frontend/board/board_node.tscn" id="2_b7sum"]
 [ext_resource type="Texture2D" uid="uid://bl0xqb50vkq8q" path="res://assets/ui/panel-030.png" id="3_dry2n"]
 

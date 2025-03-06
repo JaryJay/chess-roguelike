@@ -1,4 +1,4 @@
-extends Node2D
+class_name Game extends Node2D
 
 @onready var board: BoardNode = $BoardNode
 @onready var game_over_label: Label = $GameOverLayer/Rect/H/Label
