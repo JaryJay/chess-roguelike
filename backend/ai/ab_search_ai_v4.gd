@@ -42,7 +42,7 @@ func get_move(board: Board) -> Move:
 		print("V4: Best result is %s" % str(result))
 		_print_timing_info(_root_timing)
 	
-	_root_timing = {}  # Clear timing data
+	_root_timing = {} # Clear timing data
 	return result.move
 
 func _get_best_result(board: Board, depth: int, alpha: float, beta: float, is_root: bool) -> Result:
@@ -239,7 +239,7 @@ func calculate_piece_worth(piece: Piece, board: Board) -> float:
 				break
 			forward_pos += forward_dir
 			distance_from_end += 1
-		var position_multiplier := 0.1 if is_blocked else 0.3
+		var position_multiplier: = 0.1 if is_blocked else 0.3
 		var end_game_multiplier: = 2.0 if only_king_left else 1.0
 		var position_bonus: = distance_from_end * position_multiplier * end_game_multiplier
 		worth += position_bonus
