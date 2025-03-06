@@ -11,16 +11,21 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	board.init_randomly()
 
-func _on_board_node_game_over(game_result: Game.Result) -> void:
-	if game_result == Game.Result.WIN:
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("open_settings"):
+		settings_layer.visible = !settings_layer.visible
+		get_viewport().set_input_as_handled()
+
+func _on_board_node_game_over(game_result: Match.Result) -> void:
+	if game_result == Match.Result.WIN:
 		game_over_label.text = "You win!"
-	elif game_result == Game.Result.LOSE:
+	elif game_result == Match.Result.LOSE:
 		game_over_label.text = "You lose!"
-	elif game_result == Game.Result.DRAW_STALEMATE:
+	elif game_result == Match.Result.DRAW_STALEMATE:
 		game_over_label.text = "Stalemate!"
-	elif game_result == Game.Result.DRAW_INSUFFICIENT_MATERIAL:
+	elif game_result == Match.Result.DRAW_INSUFFICIENT_MATERIAL:
 		game_over_label.text = "Draw! Insufficient material"
-	elif game_result == Game.Result.DRAW_THREEFOLD_REPETITION:
+	elif game_result == Match.Result.DRAW_THREEFOLD_REPETITION:
 		game_over_label.text = "Draw! Threefold repetition"
 	game_over_layer.show()
 

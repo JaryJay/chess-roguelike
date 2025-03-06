@@ -1,4 +1,4 @@
-class_name Game
+class_name Match
 
 enum Result {
 	WIN,

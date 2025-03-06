@@ -1,6 +1,6 @@
 class_name BoardNode extends Node2D
 
-signal game_over(game_result: Game.Result)
+signal game_over(game_result: Match.Result)
 
 enum BoardNodeState {
 	NOT_INITIALIZED,
@@ -28,7 +28,7 @@ var temp_move_action: MoveAction = null
 func _ready() -> void:
 	assert(Config.loaded, "Config not loaded!")
 	if ai_vs_ai_mode:
-		ai_thread1.init(ABSearchAIV3.new())
+		ai_thread1.init(ABSearchAIV4.new())
 	ai_thread2.init(ABSearchAIV4.new())
 
 func init_randomly() -> void:

@@ -187,25 +187,25 @@ func _is_insufficient_material(pieces: Array[Piece]) -> bool:
 	
 	return false
 
-func get_game_result() -> Game.Result:
+func get_game_result() -> Match.Result:
 	assert(is_match_over(), "Match is not over")
 	
 	# Check for threefold repetition first
 	if is_threefold_repetition:
-		return Game.Result.DRAW_THREEFOLD_REPETITION
+		return Match.Result.DRAW_THREEFOLD_REPETITION
 	
 	# Check for insufficient material
 	if _is_insufficient_material(piece_map.get_all_pieces()):
-		return Game.Result.DRAW_INSUFFICIENT_MATERIAL
+		return Match.Result.DRAW_INSUFFICIENT_MATERIAL
 	
 	# Then check for other conditions
 	if is_team_in_check(team_to_move):
 		if team_to_move == Team.PLAYER:
-			return Game.Result.LOSE
+			return Match.Result.LOSE
 		else:
-			return Game.Result.WIN
+			return Match.Result.WIN
 	else:
-		return Game.Result.DRAW_STALEMATE
+		return Match.Result.DRAW_STALEMATE
 
 func duplicate() -> Board:
 	var new_board: = Board.new()
