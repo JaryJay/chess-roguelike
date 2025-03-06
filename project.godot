@@ -22,8 +22,9 @@ gdscript/warnings/integer_division=0
 
 [display]
 
-window/size/viewport_width=1700
-window/size/viewport_height=900
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=3
 
 [dotnet]
 
