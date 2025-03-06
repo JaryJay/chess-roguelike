@@ -23,6 +23,16 @@ func get_available_moves() -> Array[Move]:
 		all_moves.append_array(get_available_moves_from(piece.pos))
 	return all_moves
 
+func has_available_moves_from(from: Vector2i) -> bool:
+	assert(piece_map.has_piece(from), "Must be a piece there")
+	var piece: = piece_map.get_piece(from)
+	var moves: = piece.get_available_moves(self)
+	for move: Move in moves:
+		var filtered_moves: = filter_out_illegal_moves_and_tag_check_moves([move])
+		if !filtered_moves.is_empty():
+			return true
+	return false
+
 func get_available_moves_from(from: Vector2i) -> Array[Move]:
 	assert(piece_map.has_piece(from), "Must be a piece there")
 	var piece: = piece_map.get_piece(from)
@@ -137,8 +147,7 @@ func is_match_over() -> bool:
 	for piece: Piece in pieces:
 		if piece.team != team_to_move:
 			continue
-		var moves: = get_available_moves_from(piece.pos)
-		if !moves.is_empty():
+		if has_available_moves_from(piece.pos):
 			return false
 			
 	return true
