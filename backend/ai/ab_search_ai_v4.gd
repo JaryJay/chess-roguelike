@@ -7,7 +7,9 @@ var _root_timing: Dictionary
 
 func get_move(board: Board) -> Move:
 	var depth: = 3
-	if board.piece_map.get_all_pieces().size() <= 5:
+	if board.piece_map.get_all_pieces().size() <= 4:
+		depth = 5
+	elif board.piece_map.get_all_pieces().size() <= 5:
 		depth = 4
 	elif board.piece_map.get_team_pieces(Team.PLAYER).size() <= 2 or \
 		board.piece_map.get_team_pieces(Team.ENEMY_AI).size() <= 3:
@@ -39,7 +41,7 @@ func get_move(board: Board) -> Move:
 	if ENABLE_PERFORMANCE_ANALYSIS:
 		print("\n=== AI V4 Performance Analysis ===")
 		print("V4: Total AI move time: %d ms" % (Time.get_ticks_msec() - total_time))
-		print("V4: Best result is %s" % str(result))
+		print("V4: Best result is %s" % result.to_string())
 		_print_timing_info(_root_timing)
 	
 	_root_timing = {} # Clear timing data
@@ -180,12 +182,14 @@ func estimate_move_strength(move: Move, board: Board) -> float:
 		_root_timing["estimate_perform_move_time"] += Time.get_ticks_msec() - start_time
 	
 	start_time = Time.get_ticks_msec()
-	if next_board.is_match_over() and next_board.is_team_in_check(opposing_team):
+
+	# If the move ends the game, it's definitely a good move to consider, even if the move results in a stalemate
+	if next_board.is_match_over():
 		if not _root_timing.is_empty():
 			_root_timing["estimate_check_time"] += Time.get_ticks_msec() - start_time
 		return INF
 	
-	if next_board.is_team_in_check(opposing_team):
+	if move.is_check():
 		strength += 3.0
 	if not _root_timing.is_empty():
 		_root_timing["estimate_check_time"] += Time.get_ticks_msec() - start_time
@@ -241,7 +245,7 @@ func calculate_piece_worth(piece: Piece, board: Board) -> float:
 			distance_from_end += 1
 		var position_multiplier: = 0.1 if is_blocked else 0.3
 		var end_game_multiplier: = 2.0 if only_king_left else 1.0
-		var position_bonus: = distance_from_end * position_multiplier * end_game_multiplier
+		var position_bonus: = maxf(0, (8 - distance_from_end) * position_multiplier * end_game_multiplier)
 		worth += position_bonus
 	
 	if only_king_left:
@@ -283,7 +287,7 @@ func calculate_king_mobility_penalty(board: Board, team: Team) -> float:
 		return (8.0 - moveable_squares) * 0.08
 	return 0.0
 
-class Result extends Resource:
+class Result extends RefCounted:
 	var evaluation: float
 	var move: Move
 	
@@ -292,7 +296,7 @@ class Result extends Resource:
 		move = _move
 	
 	func _to_string() -> String:
-		return "Move %s, Eval %.3f" % [move, evaluation]
+		return "%s, Eval %.3f" % [str(move), evaluation]
 
 func _print_timing_info(timing: Dictionary) -> void:
 	print("\nPerformance Breakdown:")

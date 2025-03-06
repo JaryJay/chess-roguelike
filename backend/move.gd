@@ -36,3 +36,15 @@ func is_promotion() -> bool:
 func get_promotion_type() -> Piece.Type:
 	assert(is_promotion(), "Must be a promotion")
 	return promo_info
+
+func _to_string() -> String:
+	var info_strings: PackedStringArray = []
+	if is_check():
+		info_strings.append("CHECK")
+	if is_capture():
+		info_strings.append("CAPTURE")
+	if is_castle():
+		info_strings.append("CASTLE")
+	if is_promotion():
+		info_strings.append("PROMOTION")
+	return "Move(%.v -> %.v, %s)" % [from, to, " | ".join(info_strings)]
