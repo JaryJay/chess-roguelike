@@ -4,6 +4,7 @@ class_name Game extends Node2D
 @onready var game_over_label: Label = $GameOverLayer/Rect/H/Label
 @onready var game_over_layer: CanvasLayer = $GameOverLayer
 @onready var settings_layer: CanvasLayer = $SettingsLayer
+
 func _enter_tree() -> void:
 	Config.load_config()
 	PieceRules.load_pieces()

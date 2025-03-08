@@ -36,7 +36,7 @@ autowrap_mode = 3
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.334
+anchor_top = 0.447
 anchor_right = 0.35
 anchor_bottom = 1.0
 offset_left = 142.0
@@ -59,7 +59,23 @@ text = "Coming Soon"
 layout_mode = 2
 text = "Exit Game"
 
-[node name="Title2" type="Label" parent="UI/Control"]
+[node name="VersionLabel" type="Label" parent="UI/Control"]
+custom_minimum_size = Vector2(100, 48)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = -48.0
+offset_right = 253.0
+offset_bottom = -15.0
+grow_vertical = 0
+text = "vX.Y.Z"
+label_settings = SubResource("LabelSettings_wndoa")
+vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="CreatedByLabel" type="Label" parent="UI/Control"]
 custom_minimum_size = Vector2(100, 48)
 layout_mode = 1
 anchors_preset = -1
