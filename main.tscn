@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c5f1dsko5aivp"]
 
-[ext_resource type="Script" path="res://main.gd" id="1_fdhfs"]
+[ext_resource type="Script" uid="uid://bltechx2mha0j" path="res://main.gd" id="1_fdhfs"]
 [ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="1_y06v8"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_wu52y"]

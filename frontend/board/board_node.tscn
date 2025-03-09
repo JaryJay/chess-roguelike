@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://b0v2ttp4dudf4"]
 
-[ext_resource type="Script" path="res://frontend/board/board_node.gd" id="1_btd2a"]
-[ext_resource type="Script" path="res://frontend/board/tile_nodes.gd" id="2_c1it5"]
-[ext_resource type="Script" path="res://frontend/board/piece_nodes.gd" id="3_njbjj"]
-[ext_resource type="Script" path="res://frontend/ai/ai_thread.gd" id="4_ymfrq"]
+[ext_resource type="Script" uid="uid://ck2cbboi0hid5" path="res://frontend/board/board_node.gd" id="1_btd2a"]
+[ext_resource type="Script" uid="uid://ck84b4nix3hwq" path="res://frontend/board/tile_nodes.gd" id="2_c1it5"]
+[ext_resource type="Script" uid="uid://b6s7umyto2dxc" path="res://frontend/board/piece_nodes.gd" id="3_njbjj"]
+[ext_resource type="Script" uid="uid://xuocme3jgpt5" path="res://frontend/ai/ai_thread.gd" id="4_ymfrq"]
 [ext_resource type="PackedScene" uid="uid://cnvljhd8dw2q7" path="res://frontend/ui/promotion_ui.tscn" id="5_wsxn3"]
 
 [node name="BoardNode" type="Node2D"]
