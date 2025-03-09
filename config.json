@@ -4,5 +4,94 @@
     "tile_generation_noise_scale": 7.0,
     "ai": {
         "max_moves_to_consider": 8
-    }
+    },
+	"factions": [
+		{
+			"name": "monarchy",
+			"display_name": "Monarchy",
+			"description": "The only faction where you're not single.",
+			"piece_types": [
+				"queen",
+				"rook",
+				"knight",
+				"pawn",
+				"pawn"
+			]
+		},
+		{
+			"name": "sharpshooters",
+			"display_name": "Sharpshooters",
+			"description": "Put this apple on your head!",
+			"piece_types": [
+				"rook",
+				"rook",
+				"bishop",
+				"bishop",
+				"pawn",
+				"pawn",
+				"pawn"
+			]
+		},
+		{
+			"name": "military",
+			"display_name": "Military",
+			"description":"Peace was never an option.",
+			"piece_types": [
+				"knight",
+				"knight",
+				"knight",
+				"knight",
+				"knight",
+				"pawn",
+				"pawn",
+				"pawn",
+				"pawn"
+			]
+		},
+		{
+			"name": "the_squad",
+			"display_name": "The Squad",
+			"description": "It's bring your kids to work day.",
+			"piece_types": [
+				"pawn",
+				"pawn",
+				"pawn",
+				"pawn",
+				"pawn",
+				"pawn",
+				"pawn",
+				"pawn"
+			]
+		}
+	],
+	"difficulties": [
+		{
+			"name": "novice",
+			"display_name": "Novice",
+			"description": "It's okay to be bad at chess.",
+			"eval_randomness": 0.8,
+			"default_depth": 2
+		},
+		{
+			"name": "standard",
+			"display_name": "Standard",
+			"description": "A worthy challenge.",
+			"eval_randomness": 0.5,
+			"default_depth": 3
+		},
+		{
+			"name": "master",
+			"display_name": "Master",
+			"description": "The proving ground.",
+			"eval_randomness": 0.2,
+			"default_depth": 4
+		},
+		{
+			"name": "grandmaster",
+			"display_name": "Grandmaster",
+			"description": "You know your stuff.",
+			"eval_randomness": 0.0,
+			"default_depth": 4
+		}
+	]
 }
