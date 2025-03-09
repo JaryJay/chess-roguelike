@@ -237,3 +237,20 @@ func _to_string() -> String:
 
 static func type_to_string(piece_type: Piece.Type) -> String:
 	return Piece.Type.keys().filter(func(key: String): return Piece.Type[key] == piece_type)[0]
+
+const STRING_TO_TYPE: Dictionary[String, Piece.Type] = {
+	"king": Piece.Type.KING,
+	"queen": Piece.Type.QUEEN,
+	"rook": Piece.Type.ROOK,
+	"bishop": Piece.Type.BISHOP,
+	"knight": Piece.Type.KNIGHT,
+	"pawn": Piece.Type.PAWN,
+}
+const TYPE_TO_STRING: Dictionary[Piece.Type, String] = {
+	Piece.Type.KING: "king",
+	Piece.Type.QUEEN: "queen",
+	Piece.Type.ROOK: "rook",
+	Piece.Type.BISHOP: "bishop",
+	Piece.Type.KNIGHT: "knight",
+	Piece.Type.PAWN: "pawn",
+}

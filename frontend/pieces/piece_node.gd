@@ -40,7 +40,7 @@ func init_team_sprites() -> void:
 	$SpritePivot.queue_free()
 	remove_child($SpritePivot)
 
-	var sprite_path: = "res://frontend/pieces/sprites/%s_sprites.tscn" % PieceRules.type_to_string[_piece.type]
+	var sprite_path: = "res://frontend/pieces/sprites/%s_sprites.tscn" % Piece.TYPE_TO_STRING[_piece.type]
 	_sprite_pivot = load(sprite_path).instantiate()
 	_sprite_pivot.name = "SpritePivot"
 	add_child(_sprite_pivot)

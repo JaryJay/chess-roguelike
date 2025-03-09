@@ -2,25 +2,7 @@ class_name PieceRules
 
 const PATH_TO_PIECES: = "res://pieces.json"
 
-static var string_to_type: Dictionary = {
-	"king": Piece.Type.KING,
-	"queen": Piece.Type.QUEEN,
-	"rook": Piece.Type.ROOK,
-	"bishop": Piece.Type.BISHOP,
-	"knight": Piece.Type.KNIGHT,
-	"pawn": Piece.Type.PAWN,
-}
-static var type_to_string: Dictionary = {
-	Piece.Type.KING: "king",
-	Piece.Type.QUEEN: "queen",
-	Piece.Type.ROOK: "rook",
-	Piece.Type.BISHOP: "bishop",
-	Piece.Type.KNIGHT: "knight",
-	Piece.Type.PAWN: "pawn",
-}
-
-## Dictionary from Piece.Type to PieceRule
-static var piece_type_to_rules: Dictionary = {}
+static var piece_type_to_rules: Dictionary[Piece.Type, PieceRule] = {}
 
 # Loads and parses the pieces from the JSON file
 static func load_pieces() -> void:
@@ -53,7 +35,7 @@ static func load_pieces() -> void:
 				var dir: = Vector2i(dir_array[0], dir_array[1])
 				moves.append(PieceMoveAbility.new(dir, move["dist"]))
 		
-		piece_type_to_rules[string_to_type[piece_type]] = PieceRule.new(tags, moves, credit_cost)
+		piece_type_to_rules[Piece.STRING_TO_TYPE[piece_type]] = PieceRule.new(tags, moves, credit_cost)
 
 static func get_rule(piece_type: Piece.Type) -> PieceRule:
 	return piece_type_to_rules[piece_type]
