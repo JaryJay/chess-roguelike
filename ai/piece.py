@@ -123,8 +123,25 @@ class Piece:
         facing_dir = self._get_pawn_facing_direction()
         return any(self.pos + facing_dir + side == target_pos for side in self.PAWN_SIDES)
     
+    def _is_in_direction(self, target: Vector2i, direction: Vector2i) -> bool:
+        delta = target - self.pos
+        
+        # Handle straight moves
+        if direction.x == 0:
+            return delta.x == 0 and delta.y * direction.y > 0
+        if direction.y == 0:
+            return delta.y == 0 and delta.x * direction.x > 0
+        
+        # Check if points lie on same ray using cross product
+        # This is equivalent to delta.x / direction.x == delta.y / direction.y > 0
+        # but avoids division which could truncate
+        return delta.x * direction.y == delta.y * direction.x
+
     def _is_attacking_from_ray(self, target_pos: Vector2i, direction: Vector2i, board, ray_length: int = BOARD_LENGTH_UPPER_BOUND) -> bool:
-        """Returns whether this piece is attacking the target position along a ray"""
+        # Quick check if target is even in this direction
+        if not self._is_in_direction(target_pos, direction):
+            return False
+        
         next_pos = self.pos
         for _ in range(ray_length):
             next_pos = next_pos + direction

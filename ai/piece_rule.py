@@ -7,4 +7,4 @@ class PieceRule:
     """Defines the movement rules and properties for a piece type"""
     tags: List[str]
     moves: List[PieceMoveAbility]
-    credit_cost: int 
+    credit_cost: int

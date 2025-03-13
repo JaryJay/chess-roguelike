@@ -119,7 +119,8 @@ class Board:
     team_to_move: Team
     turn_number: int = 1 
     _board_history: List['Board'] = None  # Store last 5 board states
-    _repetition_counter: Dict[str, int] = None  # Count repeated positions
+    _repetition_counter: Dict[int, int] = None  # Count repeated positions
+    _is_threefold_repetition: bool = False
     
     def __post_init__(self):
         if self._board_history is None:
@@ -136,6 +137,16 @@ class Board:
             all_moves.extend(self.get_available_moves_from(piece.pos))
         return all_moves
     
+    def has_available_moves_from(self, from_pos: Vector2i) -> bool:
+        assert self.piece_map.has_piece(from_pos), "Must be a piece there"
+        piece = self.piece_map.get_piece(from_pos)
+        moves = piece.get_available_moves(self)
+        for move in moves:
+            filtered_moves = self.filter_out_illegal_moves_and_tag_check_moves([move])
+            if len(filtered_moves) > 0:
+                return True
+        return False
+
     def get_available_moves_from(self, from_pos: Vector2i) -> List[Move]:
         """Returns all legal moves for a piece at the given position"""
         assert self.piece_map.has_piece(from_pos), "Must be a piece there"
@@ -216,21 +227,21 @@ class Board:
         
         return tensor
     
-    def _get_board_hash(self) -> str:
+    def _get_board_hash(self) -> int:
         """Creates a unique hash for the current board state."""
-        state = []
+        state = ""
         for y in range(8):
             for x in range(8):
                 pos = Vector2i(x, y)
                 if self.tile_map.has_tile(pos):
                     if self.piece_map.has_piece(pos):
                         piece = self.piece_map.get_piece(pos)
-                        state.append(f"{piece.type.value}{piece.team.value}")
+                        state += f"{piece.type.value}{piece.team.value}"
                     else:
-                        state.append("t")  # Empty tile
+                        state += "t"  # Empty tile
                 else:
-                    state.append("n")  # No tile
-        return "".join(state)
+                    state += "n"  # No tile
+        return hash(state)
     
     def perform_move(self, move: Move, allow_illegal: bool = False) -> 'Board':
         """Performs a move and returns the resulting board state"""
@@ -274,6 +285,8 @@ class Board:
         next_board._board_history = self._board_history[-4:] + [self]  # Keep last 5 states
         next_board._repetition_counter = self._repetition_counter.copy()
         next_board._repetition_counter[board_hash] = next_board._repetition_counter.get(board_hash, 0) + 1
+        if next_board._repetition_counter[board_hash] >= 3:
+            next_board._is_threefold_repetition = True
         
         return next_board
     
@@ -290,17 +303,57 @@ class Board:
     
     def is_match_over(self) -> bool:
         """Returns whether the game is over (checkmate or stalemate)"""
-        available_moves = self.get_available_moves()
-        if not available_moves:
-            if self.is_team_in_check(self.team_to_move):
-                print("checkmate")
-            else:
-                print("stalemate")
+        if self._is_threefold_repetition:
             return True
-        # Check if the only pieces remaining are the kings
-        if len(self.piece_map.get_all_pieces()) == 2:
-            print("stalemate")
+        
+        pieces = self.piece_map.get_all_pieces()
+
+        if self._is_insufficient_material(pieces):
             return True
+        
+        # Check for any valid moves, return early if we find one
+        for piece in pieces:
+            if piece.team != self.team_to_move:
+                continue
+            if self.has_available_moves_from(piece.pos):
+                return False
+        
+        return True
+    
+    def _is_insufficient_material(self, pieces: List[Piece]) -> bool:
+        """Returns whether the game is over due to insufficient material"""
+        # Filter out kings first since we know there are exactly two
+        non_king_pieces = [p for p in pieces if p.type != PieceType.KING]
+        
+        # King vs King
+        if len(non_king_pieces) == 0:
+            return True
+        
+        # If there are more than 2 non-king pieces, there must be sufficient material
+        if len(non_king_pieces) > 2:
+            return False
+        
+        # King + Bishop vs King or King + Knight vs King
+        if len(non_king_pieces) == 1:
+            piece_type = non_king_pieces[0].type
+            return piece_type == PieceType.BISHOP or piece_type == PieceType.KNIGHT
+        
+        # Split remaining pieces by team
+        white_pieces = [p for p in non_king_pieces if p.team == Team.PLAYER]
+        black_pieces = [p for p in non_king_pieces if p.team == Team.ENEMY_AI]
+        
+        # King + Bishop vs King + Bishop (same colored squares)
+        if len(non_king_pieces) == 2:
+            if len(white_pieces) == 1 and len(black_pieces) == 1:
+                white_piece = white_pieces[0]
+                black_piece = black_pieces[0]
+                if white_piece.type == PieceType.BISHOP and black_piece.type == PieceType.BISHOP:
+                    # Check if bishops are on same colored squares
+                    # In chess, squares are same color if (x + y) % 2 is the same
+                    white_square_color = (white_piece.pos.x + white_piece.pos.y) % 2
+                    black_square_color = (black_piece.pos.x + black_piece.pos.y) % 2
+                    return white_square_color == black_square_color
+        
         return False
     
     def duplicate(self) -> 'Board':
