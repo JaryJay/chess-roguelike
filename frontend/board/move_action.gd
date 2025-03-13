@@ -9,7 +9,7 @@ var captured_piece_id: int = 0
 var info: int
 var promo_info: Piece.Type
 
-func _init(_piece_id: int, _to: Vector2i, _info: = 0, _promo_info: = Piece.Type.UNSET, _capt_id: = 0):
+func _init(_piece_id: int, _to: Vector2i, _info := 0, _promo_info := Piece.Type.UNSET, _capt_id := 0):
 	piece_id = _piece_id
 	to = _to
 	info = _info

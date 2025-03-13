@@ -35,7 +35,7 @@ func get_king(team: Team) -> Piece:
 	for y: int in _pieces.size():
 		for x: int in _pieces[y].size():
 			if !has_piece(Vector2i(x, y)): continue
-			var piece: = get_piece(Vector2i(x, y))
+			var piece := get_piece(Vector2i(x, y))
 			if piece.type == Piece.Type.KING and piece.team == team:
 				_cached_king_positions[team] = piece
 	
@@ -46,7 +46,7 @@ func get_all_pieces() -> Array[Piece]:
 	
 	for y: int in _pieces.size():
 		for x: int in _pieces[y].size():
-			var pos: = Vector2i(x, y)
+			var pos := Vector2i(x, y)
 			if has_piece(pos):
 				all_pieces.append(get_piece(pos))
 	
@@ -60,7 +60,7 @@ func get_team_pieces(team: Team) -> Array[Piece]:
 	return team_pieces
 
 func duplicate() -> BoardPieceMap:
-	var new_piece_map: = BoardPieceMap.new()
+	var new_piece_map := BoardPieceMap.new()
 	
 	for y: int in _pieces.size():
 		for x: int in _pieces[y].size():

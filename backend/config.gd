@@ -17,18 +17,18 @@ static var loaded: bool = false
 static func load_config() -> void:
 	assert(!loaded, "Config already loaded!")
 	
-	var file: = FileAccess.open(PATH_TO_CONFIG, FileAccess.READ)
+	var file := FileAccess.open(PATH_TO_CONFIG, FileAccess.READ)
 	if file == null:
 		push_error("Failed to open config.json")
 		return
 	
-	var json_text: = file.get_as_text()
+	var json_text := file.get_as_text()
 	file.close()
 	
-	var json: = JSON.new()
+	var json := JSON.new()
 	json.parse(json_text)
 
-	var config: = json.data as Dictionary
+	var config := json.data as Dictionary
 	
 	max_board_size = config["max_board_size"]
 	assert(max_board_size > 0, "Max board size must be a positive integer")

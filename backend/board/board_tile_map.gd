@@ -1,14 +1,14 @@
 class_name BoardTileMap
 
 var _tiles: Array[Array]
-var _cached_tile_count: = 0
+var _cached_tile_count := 0
 
 func get_all_tiles() -> Array[Vector2i]:
 	var all_tiles: Array[Vector2i] = []
 	
 	for y in _tiles.size():
 		for x in _tiles[y].size():
-			var pos: = Vector2i(x, y)
+			var pos := Vector2i(x, y)
 			if has_tile(pos):
 				all_tiles.append(pos)
 	
@@ -27,8 +27,8 @@ func set_tiles(tile_positions: Array[Vector2i]) -> void:
 	assert(num_tiles() == tile_positions.size())
 
 func is_promotion_tile(pos: Vector2i, team: Team) -> bool:
-	var y_modifier: = -1 if team.is_player() else 1
-	var pawn_facing_dir: = Vector2i(0, y_modifier)
+	var y_modifier := -1 if team.is_player() else 1
+	var pawn_facing_dir := Vector2i(0, y_modifier)
 	return !has_tile(pos + pawn_facing_dir)
 
 func has_tile(coord: Vector2i) -> bool:

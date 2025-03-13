@@ -1,6 +1,6 @@
 class_name TilesGenerator
 
-const PRUNE_TILES: = true
+const PRUNE_TILES := true
 const CARDINAL_DIRECTIONS = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 
 static func generate_board_with_tiles(retries: int = 10) -> Board:
@@ -23,16 +23,16 @@ static func generate_board_with_tiles(retries: int = 10) -> Board:
 static func generate_raw_positions() -> Array[Vector2i]:
 	var raw_positions: Array[Vector2i] = []
 	
-	var noise: = FastNoiseLite.new()
+	var noise := FastNoiseLite.new()
 	noise.seed = randi()
 	noise.offset = Vector3(.5, .5, .5)
 	for y: int in Config.max_board_size:
 		for x: int in Config.max_board_size:
-			var val: = noise.get_noise_2d(x * Config.tile_generation_noise_scale, y * Config.tile_generation_noise_scale)
+			var val := noise.get_noise_2d(x * Config.tile_generation_noise_scale, y * Config.tile_generation_noise_scale)
 			val = (val + 1) / 2
 			# val should be boosted depending on how close it is to the center
-			var dist: = Vector2(x, y).distance_to(Vector2.ONE * Config.max_board_size / 2)
-			var normalized_dist: = dist / (Config.max_board_size * sqrt(2) / 2)
+			var dist := Vector2(x, y).distance_to(Vector2.ONE * Config.max_board_size / 2)
+			var normalized_dist := dist / (Config.max_board_size * sqrt(2) / 2)
 			val = val * (1 - normalized_dist)
 
 			if absf(val) > Config.tile_generation_threshold:
@@ -47,7 +47,7 @@ static func prune_positions(positions: Array[Vector2i]) -> Array[Vector2i]:
 	var pruned_positions: Array[Vector2i] = []
 	# Prune positions that are not cardinally adjacent to another tile
 	for tile_pos: Vector2i in positions:
-		var good_tile: = false
+		var good_tile := false
 		for cardinal_dir: Vector2i in CARDINAL_DIRECTIONS:
 			if positions.has(tile_pos + cardinal_dir):
 				good_tile = true
@@ -61,20 +61,20 @@ static func prune_positions(positions: Array[Vector2i]) -> Array[Vector2i]:
 
 static func normalize_positions(positions: Array[Vector2i]) -> Array[Vector2i]:
 	# Calculate average position
-	var avg_pos: = Vector2.ZERO
+	var avg_pos := Vector2.ZERO
 	for pos in positions:
 		avg_pos += Vector2(pos)
 	avg_pos /= positions.size()
 	
 	# Calculate the initial offset needed to center the tiles
-	var target_center: = Vector2(Config.max_board_size / 2, Config.max_board_size / 2)
-	var offset: = (target_center - avg_pos).round()
+	var target_center := Vector2(Config.max_board_size / 2, Config.max_board_size / 2)
+	var offset := (target_center - avg_pos).round()
 	
 	# Find the bounds after applying the offset
-	var min_pos: = Vector2i(INF, INF)
-	var max_pos: = Vector2i(-INF, -INF)
+	var min_pos := Vector2i(INF, INF)
+	var max_pos := Vector2i(-INF, -INF)
 	for pos in positions:
-		var new_pos: = Vector2i(pos) + Vector2i(offset)
+		var new_pos := Vector2i(pos) + Vector2i(offset)
 		min_pos.x = mini(min_pos.x, new_pos.x)
 		min_pos.y = mini(min_pos.y, new_pos.y)
 		max_pos.x = maxi(max_pos.x, new_pos.x)

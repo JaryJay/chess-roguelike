@@ -8,7 +8,7 @@ var _piece_nodes: Dictionary
 var _cached_king_positions: Dictionary = {}
 
 func spawn_piece(piece: Piece) -> PieceNode:
-	var piece_node: = create_piece_node(piece)
+	var piece_node := create_piece_node(piece)
 	piece_node.gen_id()
 	piece_node.name = "PN_%s_%s_%d" % [Piece.type_to_string(piece.type), piece.team, piece_node.id()]
 	assert(!has_piece_node(piece_node.id()))
@@ -44,7 +44,7 @@ func get_king_node(team: Team) -> PieceNode:
 		return _cached_king_positions[team]
 	
 	for piece_node: PieceNode in _piece_nodes.values():
-		var piece: = piece_node.piece()
+		var piece := piece_node.piece()
 		if piece.type == Piece.Type.KING and piece.team == team:
 			_cached_king_positions[team] = piece
 	
@@ -60,9 +60,9 @@ func get_all_piece_nodes() -> Array[PieceNode]:
 func _on_piece_node_selected(piece_node: PieceNode) -> void:
 	piece_node_selected.emit(piece_node)
 
-const piece_node_scene: = preload("res://frontend/pieces/piece_node.tscn")
+const piece_node_scene := preload("res://frontend/pieces/piece_node.tscn")
 
 static func create_piece_node(piece: Piece) -> PieceNode:
-	var piece_node: = piece_node_scene.instantiate() as PieceNode
+	var piece_node := piece_node_scene.instantiate() as PieceNode
 	piece_node.set_piece(piece)
 	return piece_node

@@ -1,9 +1,9 @@
 class_name Move
 
-const CHECK: = 2**1
-const CAPTURE: = 2**2
-const CASTLE_LEFT: = 2**3
-const CASTLE_RIGHT: = 2**4
+const CHECK := 2**1
+const CAPTURE := 2**2
+const CASTLE_LEFT := 2**3
+const CASTLE_RIGHT := 2**4
 
 var from: Vector2i
 var to: Vector2i
@@ -11,7 +11,7 @@ var to: Vector2i
 var info: int
 var promo_info: Piece.Type
 
-func _init(_from: Vector2i, _to: Vector2i, _info: = 0, _promo_info: = Piece.Type.UNSET) -> void:
+func _init(_from: Vector2i, _to: Vector2i, _info := 0, _promo_info := Piece.Type.UNSET) -> void:
 	from = _from
 	to = _to
 	info = _info

@@ -167,7 +167,7 @@ func _select_piece_node(piece_node: PieceNode) -> void:
 		selected_piece_node.set_selected(false)
 	selected_piece_node = piece_node
 	if piece_node:
-		var available_moves: = b.get_available_moves_from(piece_node.piece().pos)
+		var available_moves := b.get_available_moves_from(piece_node.piece().pos)
 		var tiles_to_highlight: Array[Vector2i] = []
 		for move: Move in available_moves:
 			tiles_to_highlight.append(move.to)
@@ -196,10 +196,10 @@ func end_ai_turn() -> void:
 
 func _on_ai_thread_move_found(move: Move) -> void:
 	# Create move action
-	var from: = move.from
-	var to: = move.to
-	var piece_id: = piece_nodes.get_piece_node_by_pos(from).id()
-	var captured_piece_id: = 0
+	var from := move.from
+	var to := move.to
+	var piece_id := piece_nodes.get_piece_node_by_pos(from).id()
+	var captured_piece_id := 0
 	if move.is_capture():
 		captured_piece_id = piece_nodes.get_piece_node_by_pos(to).id()
 	var move_action: MoveAction = MoveAction.new(piece_id, to, move.info, move.promo_info, captured_piece_id)
@@ -212,7 +212,7 @@ func _can_select(piece_node: PieceNode) -> bool:
 	return b.team_to_move == player_team and piece_node.piece().team == player_team
 
 func _can_capture(piece_node: PieceNode) -> bool:
-	var available_moves: = b.get_available_moves_from(selected_piece_node.piece().pos)
+	var available_moves := b.get_available_moves_from(selected_piece_node.piece().pos)
 	for move: Move in available_moves:
 		if move.is_capture() and move.to == piece_node.piece().pos:
 			return true
@@ -220,7 +220,7 @@ func _can_capture(piece_node: PieceNode) -> bool:
 	return false
 
 func _can_move_to(tile_node: TileNode) -> bool:
-	var available_moves: = b.get_available_moves_from(selected_piece_node.piece().pos)
+	var available_moves := b.get_available_moves_from(selected_piece_node.piece().pos)
 	for move: Move in available_moves:
 		if move.to == tile_node.pos():
 			return true
@@ -244,9 +244,9 @@ func perform_move_action(move_action: MoveAction) -> void:
 	# Handle promotions
 	if move_action.is_promotion():
 		# Get the new piece
-		var new_piece: = b.piece_map.get_piece(move_action.to)
+		var new_piece := b.piece_map.get_piece(move_action.to)
 		# Note: this is the position of the sprite, not the coordinates of the piece
-		var old_piece_position: = piece_node.position
+		var old_piece_position := piece_node.position
 		# Free old piece node
 		piece_nodes.free_piece_node(piece_node.id())
 		# Spawn new piece node

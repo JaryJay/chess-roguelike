@@ -2,10 +2,10 @@ class_name TileNodes extends Node2D
 
 signal tile_node_selected(tile_node: TileNode)
 
-const tile_node_scene: = preload("res://frontend/tile/tile_node.tscn")
+const tile_node_scene := preload("res://frontend/tile/tile_node.tscn")
 
 var _tile_nodes: Array[Array]
-var _cached_tile_count: = 0
+var _cached_tile_count := 0
 var _highlighted_tiles: Array[Vector2i] = []
 
 func get_all_tile_nodes() -> Array[TileNode]:
@@ -13,7 +13,7 @@ func get_all_tile_nodes() -> Array[TileNode]:
 	
 	for y in _tile_nodes.size():
 		for x in _tile_nodes[y].size():
-			var pos: = Vector2i(x, y)
+			var pos := Vector2i(x, y)
 			if has_tile_node(pos):
 				all_tile_nodes.append(pos)
 	

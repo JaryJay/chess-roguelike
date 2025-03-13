@@ -2,7 +2,7 @@ class_name PiecesGenerator
 
 ## Only the types that can be generated
 ## Note that the king is not included here
-const PIECE_TYPES: = [
+const PIECE_TYPES := [
 	Piece.Type.QUEEN,
 	Piece.Type.ROOK,
 	Piece.Type.BISHOP,
@@ -11,13 +11,13 @@ const PIECE_TYPES: = [
 ]
 
 static func arrange_piece_positions(board: Board, pieces: Array[Piece], team: Team) -> void:
-	var army_size: = pieces.size()
+	var army_size := pieces.size()
 	assert(board.tile_map.num_tiles() >= army_size, "Board does not have enough tiles")
 	# Get first x tiles, where x is army size
-	var tiles: = board.tile_map.get_all_tiles()
+	var tiles := board.tile_map.get_all_tiles()
 	tiles.shuffle()
 	tiles.sort_custom(sort_tiles_by_y)
-	var first_few_tiles: = tiles.slice(0, army_size) if team.is_enemy() else tiles.slice(-army_size)
+	var first_few_tiles := tiles.slice(0, army_size) if team.is_enemy() else tiles.slice(-army_size)
 	for i: int in army_size:
 		pieces[i].pos = first_few_tiles[i]
 
@@ -28,9 +28,9 @@ static func generate_army_randomly(credits: int, b: Board, team: Team) -> Array[
 	army.append(Piece.new(Piece.Type.KING, team, Vector2i(0, 0)))
 	
 	# Generate pieces
-	var remaining_credits: = credits
+	var remaining_credits := credits
 	while remaining_credits > 0:
-		var piece_type: = generate_piece_type(remaining_credits)
+		var piece_type := generate_piece_type(remaining_credits)
 		if piece_type == Piece.Type.UNSET: break
 		
 		remaining_credits -= PieceRules.get_rule(piece_type).credit_cost

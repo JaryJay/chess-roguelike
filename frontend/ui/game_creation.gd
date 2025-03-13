@@ -25,7 +25,7 @@ func _ready() -> void:
 	faction_name_label.self_modulate = Color.TRANSPARENT
 	faction_name_label.text = Config.factions[current_faction_idx].display_name
 	flavour_text_label.text = "[i]%s[/i]" % Config.factions[current_faction_idx].description
-	var tw: = create_tween().set_parallel(true)
+	var tw := create_tween().set_parallel(true)
 	tw.tween_property(flavour_text_label, "self_modulate", Color.WHITE, 0.3)
 	tw.tween_property(faction_name_label, "self_modulate", Color.WHITE, 0.3)
 
@@ -45,12 +45,12 @@ func _update_army_preview() -> void:
 func _on_faction_changed() -> void:
 	# Shift the slider to the selected faction
 	var faction_node: Node2D = faction_slider.get_child(current_faction_idx)
-	var slider_target_pos: = -faction_node.position + initial_slider_pos
-	var tw: = create_tween().set_parallel(true)
+	var slider_target_pos := -faction_node.position + initial_slider_pos
+	var tw := create_tween().set_parallel(true)
 	tw.tween_property(faction_slider, "position", slider_target_pos, 0.3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 
 	# Fade in the flavour text and faction name
-	var tw2: = create_tween()
+	var tw2 := create_tween()
 	tw2.tween_property(flavour_text_label, "self_modulate", Color.TRANSPARENT, 0.15)
 	tw2.parallel().tween_property(faction_name_label, "self_modulate", Color.TRANSPARENT, 0.15)
 	tw2.tween_callback(func():

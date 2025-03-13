@@ -4,7 +4,7 @@ signal selected
 
 var _sprite_pivot: Node2D
 
-var _initialized: = false
+var _initialized := false
 var _id: int
 var _piece: Piece
 
@@ -27,7 +27,7 @@ func set_piece(new_piece: Piece) -> void:
 
 func move_to(target_position: Vector2) -> void:
 	_is_moving = true
-	var tween: = create_tween()
+	var tween := create_tween()
 	tween.tween_property(self, "position", target_position + Vector2(0, -2), 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
 	tween.tween_property(self, "position", target_position, 0.05).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
 	tween.tween_callback(func(): _is_moving = false)
@@ -40,7 +40,7 @@ func init_team_sprites() -> void:
 	$SpritePivot.queue_free()
 	remove_child($SpritePivot)
 
-	var sprite_path: = "res://frontend/pieces/sprites/%s_sprites.tscn" % Piece.TYPE_TO_STRING[_piece.type]
+	var sprite_path := "res://frontend/pieces/sprites/%s_sprites.tscn" % Piece.TYPE_TO_STRING[_piece.type]
 	_sprite_pivot = load(sprite_path).instantiate()
 	_sprite_pivot.name = "SpritePivot"
 	add_child(_sprite_pivot)
@@ -83,23 +83,23 @@ func _on_area_2d_mouse_exited() -> void:
 func set_hovered(new_hovered: bool) -> void:
 	is_hovered = new_hovered
 	if is_hovered and !_is_moving:
-		var tween: = create_tween()
+		var tween := create_tween()
 		tween.tween_property(self, "position", Vector2(0, -1), 0.05).as_relative().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
 	elif !is_hovered and !_is_moving:
-		var tween: = create_tween()
+		var tween := create_tween()
 		tween.tween_property(self, "position", Vector2(0, 1), 0.05).as_relative().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
 
 func set_selected(new_selected: bool) -> void:
 	is_selected = new_selected
 	if is_selected and !_is_moving:
-		var tween: = create_tween()
+		var tween := create_tween()
 		tween.tween_property(self, "position", Vector2(0, -2), 0.05).as_relative().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
 		tween.tween_property(self, "position", Vector2(0, 2), 0.05).as_relative().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
 
 #endregion
 
 # Generating ids
-static var _next_id: = 1
+static var _next_id := 1
 func gen_id() -> void:
 	assert(!_initialized)
 	_id = _next_id

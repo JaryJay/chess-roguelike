@@ -54,7 +54,7 @@ func get_available_moves(b: Board) -> Array[Move]:
 	assert(type != Type.UNSET, "Type must be set")
 	assert(b.tile_map.has_tile(pos), "There should be a tile at the current piece position")
 	
-	var rule: = PieceRules.get_rule(type)
+	var rule := PieceRules.get_rule(type)
 	
 	var moves: Array[Move] = []
 	for move_ability: PieceMoveAbility in rule.moves:
@@ -74,7 +74,7 @@ func is_attacking_square(p: Vector2i, b: Board) -> bool:
 	assert(b.tile_map.has_tile(pos), "There should be a tile at the current piece position %.v" % pos)
 	assert(p != pos, "There should not be two pieces in the same position %.v" % pos)
 
-	var rule: = PieceRules.get_rule(type)
+	var rule := PieceRules.get_rule(type)
 	
 	if rule.tags.has("pawn"):
 		if _pawn_is_attacking_square(p, b):
@@ -92,15 +92,15 @@ const BOARD_LENGTH_UPPER_BOUND: int = 20
 func _king_get_additional_moves(_b: Board) -> Array[Move]:
 	return []
 
-const DIAGONALS_PLAYER: = [Vector2i(1, -1), Vector2i(1, -1)]
-const DIAGONALS_ENEMY: = [Vector2i(1, 1), Vector2i(1, 1)]
+const DIAGONALS_PLAYER := [Vector2i(1, -1), Vector2i(1, -1)]
+const DIAGONALS_ENEMY := [Vector2i(1, 1), Vector2i(1, 1)]
 
 func _pawn_get_additional_moves(b: Board) -> Array[Move]:
 	var available_moves: Array[Move] = []
 	
-	var facing_dir: = _get_pawn_facing_direction()
+	var facing_dir := _get_pawn_facing_direction()
 	
-	var forwards: = pos + facing_dir
+	var forwards := pos + facing_dir
 	if b.tile_map.has_tile(forwards) and not b.piece_map.has_piece(forwards):
 		available_moves.append(Move.new(pos, forwards))
 	
@@ -112,7 +112,7 @@ func _pawn_get_additional_moves(b: Board) -> Array[Move]:
 	
 	# Check for captures
 	for side: Vector2i in PAWN_SIDES:
-		var square: = pos + side + facing_dir
+		var square := pos + side + facing_dir
 		if b.piece_map.has_piece(square) and b.piece_map.get_piece(square).team.is_hostile_to(team):
 			available_moves.append(Move.new(pos, square, Move.CAPTURE))
 	
@@ -134,7 +134,7 @@ func _pawn_promotion_types() -> Array[Piece.Type]:
 #region is_attacking_square implementation
 
 func _pawn_is_attacking_square(p: Vector2i, _b: Board) -> bool:
-	var facing_dir: = _get_pawn_facing_direction()
+	var facing_dir := _get_pawn_facing_direction()
 	
 	for side: Vector2i in PAWN_SIDES:
 		if pos + facing_dir + side == p:
@@ -150,16 +150,16 @@ func _get_moves_along_rays(
 	ray_dirs: Array[Vector2i],
 	b: Board,
 	ray_length: int = BOARD_LENGTH_UPPER_BOUND,
-	enable_capture: = true,
+	enable_capture := true,
 ) -> Array[Move]:
 	var available_moves: Array[Move] = []
 	for dir: Vector2i in ray_dirs:
-		var next_pos: = pos
+		var next_pos := pos
 		for i in range(ray_length):
 			next_pos += dir
 			if not b.tile_map.has_tile(next_pos): break
 			if b.piece_map.has_piece(next_pos):
-				var piece: = b.piece_map.get_piece(next_pos)
+				var piece := b.piece_map.get_piece(next_pos)
 				if enable_capture and piece.team.is_hostile_to(team):
 					available_moves.append(Move.new(pos, next_pos, Move.CAPTURE))
 				break
@@ -167,13 +167,13 @@ func _get_moves_along_rays(
 	return available_moves
 
 func _get_pawn_facing_direction() -> Vector2i:
-	var y_modifier: = -1 if team.is_player() else 1
+	var y_modifier := -1 if team.is_player() else 1
 	return Vector2i(0, y_modifier)
 
-var PAWN_SIDES: = [Vector2i.LEFT, Vector2i.RIGHT]
+var PAWN_SIDES := [Vector2i.LEFT, Vector2i.RIGHT]
 
 func _is_in_direction(target: Vector2i, dir: Vector2i) -> bool:
-	var delta: = target - pos
+	var delta := target - pos
 	
 	# Handle straight moves
 	if dir.x == 0:
@@ -195,7 +195,7 @@ func _is_attacking_from_ray(
 	if not _is_in_direction(p, dir):
 		return false
 		
-	var next_pos: = pos
+	var next_pos := pos
 	for i in range(ray_length):
 		next_pos += dir
 		if next_pos == p:
@@ -225,7 +225,7 @@ func get_worth() -> float:
 	return 0
 
 func duplicate() -> Piece:
-	var new_piece: = Piece.new(type, team, pos, info)
+	var new_piece := Piece.new(type, team, pos, info)
 	assert(self.equals(new_piece), "%s != %s" % [self._to_string(), new_piece._to_string()])
 	return new_piece
 
