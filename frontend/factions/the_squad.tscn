@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://cl65ob1w6brjk"]
+
+[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="1_nq0dd"]
+
+[node name="TheSquad" type="Node2D"]
+
+[node name="Pawn" type="Sprite2D" parent="."]
+self_modulate = Color(0.588235, 0.588235, 0.588235, 1)
+position = Vector2(-72, -128)
+scale = Vector2(16, 16)
+texture = ExtResource("1_nq0dd")
+offset = Vector2(0, -1)
+region_enabled = true
+region_rect = Rect2(48, 40, 13, 16)
+
+[node name="Pawn2" type="Sprite2D" parent="."]
+position = Vector2(72, -112)
+scale = Vector2(16, 16)
+texture = ExtResource("1_nq0dd")
+offset = Vector2(0, -1)
+region_enabled = true
+region_rect = Rect2(48, 40, 13, 16)

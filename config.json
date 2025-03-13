@@ -43,8 +43,6 @@
 				"knight",
 				"knight",
 				"pawn",
-				"pawn",
-				"pawn",
 				"pawn"
 			]
 		},
@@ -68,14 +66,14 @@
 		{
 			"name": "novice",
 			"display_name": "Novice",
-			"description": "It's okay to be bad at chess.",
+			"description": "For noobs. It's okay to be bad at chess.",
 			"eval_randomness": 0.8,
 			"default_depth": 2
 		},
 		{
 			"name": "standard",
 			"display_name": "Standard",
-			"description": "A worthy challenge.",
+			"description": "A worthy opponent.",
 			"eval_randomness": 0.5,
 			"default_depth": 3
 		},

@@ -1,8 +1,46 @@
-[gd_scene load_steps=4 format=3 uid="uid://c133hj4l1vgu6"]
+[gd_scene load_steps=17 format=3 uid="uid://c133hj4l1vgu6"]
 
 [ext_resource type="Texture2D" uid="uid://bl0xqb50vkq8q" path="res://assets/ui/panel-030.png" id="1_6immy"]
 [ext_resource type="Script" uid="uid://nh2ecbxygfji" path="res://frontend/ui/game_creation.gd" id="1_hbw6a"]
-[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="3_kn228"]
+[ext_resource type="PackedScene" uid="uid://022xgnb2eaff" path="res://frontend/factions/monarchy.tscn" id="3_0lynk"]
+[ext_resource type="PackedScene" uid="uid://chm168jlmppv8" path="res://frontend/pieces/sprites/queen_sprites.tscn" id="3_rkkwd"]
+[ext_resource type="PackedScene" uid="uid://ccs0qt78cjm6l" path="res://frontend/factions/sharpshooters.tscn" id="4_rkkwd"]
+[ext_resource type="PackedScene" uid="uid://x8udnlohocwg" path="res://frontend/factions/military.tscn" id="5_vjqtv"]
+[ext_resource type="PackedScene" uid="uid://cl65ob1w6brjk" path="res://frontend/factions/the_squad.tscn" id="6_0lynk"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0lynk"]
+font_size = 48
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0lynk"]
+atlas = ExtResource("1_6immy")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rkkwd"]
+texture = SubResource("AtlasTexture_0lynk")
+texture_margin_left = 25.0
+texture_margin_top = 25.0
+texture_margin_right = 25.0
+texture_margin_bottom = 25.0
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0lynk"]
+load_path = "res://.godot/imported/pieces_sprite_sheet.png-b320056e40fecbe295f2b805f7ade72e.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rkkwd"]
+atlas = SubResource("CompressedTexture2D_0lynk")
+region = Rect2(48, 40, 13, 16)
+margin = Rect2(2, 4, 4, 6)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_vjqtv"]
+load_path = "res://.godot/imported/pieces_sprite_sheet.png-b320056e40fecbe295f2b805f7ade72e.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j2lke"]
+atlas = SubResource("CompressedTexture2D_vjqtv")
+region = Rect2(45, 62, 18, 18)
+margin = Rect2(0, 1, -0.5, 3)
+
+[sub_resource type="LabelSettings" id="LabelSettings_vjqtv"]
+font_size = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_rkkwd"]
 
 [node name="GameCreation" type="Node2D"]
 script = ExtResource("1_hbw6a")
@@ -16,6 +54,37 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.15
+anchor_right = 0.5
+anchor_bottom = 0.15
+offset_left = -502.0
+offset_top = -61.0
+offset_right = 502.0
+offset_bottom = 56.0
+grow_horizontal = 2
+theme_override_constants/separation = 10
+
+[node name="FactionNameLabel" type="Label" parent="CanvasLayer/Control/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Monarchy"
+label_settings = SubResource("LabelSettings_0lynk")
+horizontal_alignment = 1
+
+[node name="FlavourTextLabel" type="RichTextLabel" parent="CanvasLayer/Control/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.89059, 0.89059, 0.89059, 1)
+theme_override_font_sizes/italics_font_size = 20
+bbcode_enabled = true
+text = "[i]Flavour text[/i]"
+horizontal_alignment = 1
 
 [node name="Buttons" type="Control" parent="CanvasLayer/Control"]
 layout_mode = 1
@@ -70,39 +139,86 @@ grow_vertical = 0
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="Left" type="NinePatchRect" parent="CanvasLayer/Control/Divs"]
-self_modulate = Color(0.572988, 0.572988, 0.572988, 1)
-custom_minimum_size = Vector2(80, 80)
+[node name="Left" type="PanelContainer" parent="CanvasLayer/Control/Divs"]
+self_modulate = Color(0.572549, 0.572549, 0.572549, 1)
+custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-texture = ExtResource("1_6immy")
-patch_margin_left = 24
-patch_margin_top = 24
-patch_margin_right = 48
-patch_margin_bottom = 48
+theme_override_styles/panel = SubResource("StyleBoxTexture_rkkwd")
 
-[node name="Middle" type="NinePatchRect" parent="CanvasLayer/Control/Divs"]
-self_modulate = Color(0.572988, 0.572988, 0.572988, 1)
-custom_minimum_size = Vector2(80, 80)
+[node name="H" type="VBoxContainer" parent="CanvasLayer/Control/Divs/Left"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="DifficultyTitleLabel" type="Label" parent="CanvasLayer/Control/Divs/Left/H"]
+layout_mode = 2
+text = "Difficulty"
+
+[node name="H" type="HBoxContainer" parent="CanvasLayer/Control/Divs/Left/H"]
+custom_minimum_size = Vector2(0, 79)
+layout_mode = 2
+
+[node name="NoviceButton" type="Button" parent="CanvasLayer/Control/Divs/Left/H/H"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_vertical = 3
+toggle_mode = true
+button_pressed = true
+icon = SubResource("AtlasTexture_rkkwd")
+icon_alignment = 1
+expand_icon = true
+
+[node name="StandardButton" type="Button" parent="CanvasLayer/Control/Divs/Left/H/H"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_vertical = 3
+toggle_mode = true
+icon = SubResource("AtlasTexture_j2lke")
+icon_alignment = 1
+expand_icon = true
+
+[node name="DifficultyNameLabel" type="Label" parent="CanvasLayer/Control/Divs/Left/H"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Difficulty name"
+label_settings = SubResource("LabelSettings_vjqtv")
+
+[node name="DifficultyDescriptionLabel" type="Label" parent="CanvasLayer/Control/Divs/Left/H"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Difficulty description"
+label_settings = SubResource("LabelSettings_rkkwd")
+
+[node name="Main" type="PanelContainer" parent="CanvasLayer/Control/Divs"]
+self_modulate = Color(0.572549, 0.572549, 0.572549, 1)
+custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
-texture = ExtResource("1_6immy")
-patch_margin_left = 24
-patch_margin_top = 24
-patch_margin_right = 48
-patch_margin_bottom = 48
+theme_override_styles/panel = SubResource("StyleBoxTexture_rkkwd")
 
-[node name="Right" type="NinePatchRect" parent="CanvasLayer/Control/Divs"]
-self_modulate = Color(0.572988, 0.572988, 0.572988, 1)
-custom_minimum_size = Vector2(80, 80)
+[node name="H" type="VBoxContainer" parent="CanvasLayer/Control/Divs/Main"]
 layout_mode = 2
-size_flags_horizontal = 3
-texture = ExtResource("1_6immy")
-patch_margin_left = 24
-patch_margin_top = 24
-patch_margin_right = 48
-patch_margin_bottom = 48
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Divs/Main/H"]
+layout_mode = 2
+text = "Starting Army"
+
+[node name="ArmyPreviewParent" type="MarginContainer" parent="CanvasLayer/Control/Divs/Main/H"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ArmyPreview" type="Node2D" parent="CanvasLayer/Control/Divs/Main/H/ArmyPreviewParent"]
+unique_name_in_owner = true
+position = Vector2(90, 130)
+scale = Vector2(6, 6)
+
+[node name="Queen" parent="CanvasLayer/Control/Divs/Main/H/ArmyPreviewParent/ArmyPreview" instance=ExtResource("3_rkkwd")]
 
 [node name="StartButton" type="Button" parent="CanvasLayer/Control"]
 layout_mode = 1
@@ -118,97 +234,28 @@ offset_bottom = -20.0
 grow_horizontal = 0
 grow_vertical = 0
 size_flags_vertical = 0
-focus_neighbor_right = NodePath("../RightButton")
 text = "Start Game"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(960, 540)
 
 [node name="FactionSlider" type="Node2D" parent="."]
-position = Vector2(960, 540)
+editor_description = "The factions shown here are temporary. At runtime, they are replaced with instances of the scenes under frontend/factions -- this way, modders can create their own factions and have them show up in this menu"
+position = Vector2(960, 608)
 
-[node name="Monarchy" type="Node2D" parent="FactionSlider"]
+[node name="Monarchy" parent="FactionSlider" instance=ExtResource("3_0lynk")]
 
-[node name="Queen" type="Sprite2D" parent="FactionSlider/Monarchy"]
-self_modulate = Color(0.589096, 0.589096, 0.589096, 1)
-position = Vector2(109, -78)
-scale = Vector2(16, 16)
-texture = ExtResource("3_kn228")
-centered = false
-offset = Vector2(-6.5, -14)
-region_enabled = true
-region_rect = Rect2(48, 83, 13, 21)
-
-[node name="King" type="Sprite2D" parent="FactionSlider/Monarchy"]
-position = Vector2(-51, -62)
-scale = Vector2(16, 16)
-texture = ExtResource("3_kn228")
-centered = false
-offset = Vector2(-6.5, -16)
-region_enabled = true
-region_rect = Rect2(78, 81, 13, 23)
-
-[node name="Sharpshooters" type="Node2D" parent="FactionSlider"]
+[node name="Sharpshooters" parent="FactionSlider" instance=ExtResource("4_rkkwd")]
 position = Vector2(650, 0)
 
-[node name="Rook" type="Sprite2D" parent="FactionSlider/Sharpshooters"]
-self_modulate = Color(0.588235, 0.588235, 0.588235, 1)
-position = Vector2(-51, -67)
-scale = Vector2(16, 16)
-texture = ExtResource("3_kn228")
-offset = Vector2(0, -2)
-region_enabled = true
-region_rect = Rect2(77, 39, 13, 17)
-
-[node name="Bishop" type="Sprite2D" parent="FactionSlider/Sharpshooters"]
-position = Vector2(125, -62)
-scale = Vector2(16, 16)
-texture = ExtResource("3_kn228")
-centered = false
-offset = Vector2(-6.5, -12)
-region_enabled = true
-region_rect = Rect2(95, 61, 13, 19)
-
-[node name="Military" type="Node2D" parent="FactionSlider"]
+[node name="Military" parent="FactionSlider" instance=ExtResource("5_vjqtv")]
 position = Vector2(1300, 0)
 
-[node name="Knight" type="Sprite2D" parent="FactionSlider/Military"]
-self_modulate = Color(0.588235, 0.588235, 0.588235, 1)
-position = Vector2(117, -66)
-scale = Vector2(16, 16)
-texture = ExtResource("3_kn228")
-offset = Vector2(-1, -2)
-region_enabled = true
-region_rect = Rect2(45, 63, 17, 17)
-
-[node name="Knight2" type="Sprite2D" parent="FactionSlider/Military"]
-position = Vector2(-75, -50)
-scale = Vector2(16, 16)
-texture = ExtResource("3_kn228")
-offset = Vector2(-1, -2)
-region_enabled = true
-region_rect = Rect2(45, 63, 17, 17)
-
-[node name="TheSquad" type="Node2D" parent="FactionSlider"]
+[node name="TheSquad" parent="FactionSlider" instance=ExtResource("6_0lynk")]
 position = Vector2(1950, 0)
-
-[node name="Pawn" type="Sprite2D" parent="FactionSlider/TheSquad"]
-self_modulate = Color(0.588235, 0.588235, 0.588235, 1)
-position = Vector2(-87, -83)
-scale = Vector2(16, 16)
-texture = ExtResource("3_kn228")
-offset = Vector2(0, -1)
-region_enabled = true
-region_rect = Rect2(48, 40, 13, 16)
-
-[node name="Pawn2" type="Sprite2D" parent="FactionSlider/TheSquad"]
-position = Vector2(57, -67)
-scale = Vector2(16, 16)
-texture = ExtResource("3_kn228")
-offset = Vector2(0, -1)
-region_enabled = true
-region_rect = Rect2(48, 40, 13, 16)
 
 [connection signal="pressed" from="CanvasLayer/Control/Buttons/LeftButton" to="." method="_on_left_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Buttons/RightButton" to="." method="_on_right_button_pressed"]
+[connection signal="toggled" from="CanvasLayer/Control/Divs/Left/H/H/NoviceButton" to="." method="_on_novice_button_toggled"]
+[connection signal="toggled" from="CanvasLayer/Control/Divs/Left/H/H/StandardButton" to="." method="_on_standard_button_toggled"]
 [connection signal="pressed" from="CanvasLayer/Control/StartButton" to="." method="_on_start_button_pressed"]

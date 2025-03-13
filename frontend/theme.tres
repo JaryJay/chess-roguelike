@@ -40,7 +40,7 @@ texture_margin_left = 20.0
 texture_margin_top = 20.0
 texture_margin_right = 20.0
 texture_margin_bottom = 20.0
-modulate_color = Color(0.593134, 0.593134, 0.593133, 1)
+modulate_color = Color(0.899258, 0.899258, 0.899258, 1)
 
 [resource]
 Button/font_sizes/font_size = 36

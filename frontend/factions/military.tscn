@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://x8udnlohocwg"]
+
+[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="1_naw0l"]
+
+[node name="Military" type="Node2D"]
+
+[node name="Knight" type="Sprite2D" parent="."]
+self_modulate = Color(0.588235, 0.588235, 0.588235, 1)
+position = Vector2(104, -120)
+scale = Vector2(16, 16)
+texture = ExtResource("1_naw0l")
+offset = Vector2(-1, -2)
+region_enabled = true
+region_rect = Rect2(45, 63, 17, 17)
+
+[node name="Knight2" type="Sprite2D" parent="."]
+position = Vector2(-88, -104)
+scale = Vector2(16, 16)
+texture = ExtResource("1_naw0l")
+offset = Vector2(-1, -2)
+region_enabled = true
+region_rect = Rect2(45, 63, 17, 17)
