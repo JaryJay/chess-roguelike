@@ -196,8 +196,8 @@ func estimate_move_strength(move: Move, board: Board) -> float:
 
 	# Pawn movement estimation
 	start_time = Time.get_ticks_msec()
-	if piece.type == Piece.Type.PAWN:
-		if move.to - move.from == Vector2i(0, 2):
+	if enemy_pieces.size() < 4 and piece.type == Piece.Type.PAWN:
+		if absi(move.to.y - move.from.y) == 2:
 			strength += 3.0
 		else:
 			strength += 2.0
@@ -238,7 +238,7 @@ func calculate_piece_worth(piece: Piece, board: Board) -> float:
 		var forward_dir: Vector2i = piece._get_pawn_facing_direction()
 		var forward_pos: Vector2i = piece.pos + forward_dir
 		while board.tile_map.has_tile(forward_pos):
-			if board.piece_map.has_piece(forward_pos) and board.piece_map.get_piece(forward_pos).team.is_hostile_to(piece.team):
+			if board.piece_map.has_piece(forward_pos):
 				is_blocked = true
 				break
 			forward_pos += forward_dir
