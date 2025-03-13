@@ -5,7 +5,13 @@ class_name Game extends Node2D
 @onready var game_over_layer: CanvasLayer = $GameOverLayer
 @onready var settings_layer: CanvasLayer = $SettingsLayer
 
-func _ready() -> void:
+var game_setup: GameSetup
+
+func init_with_game_setup(_game_setup: GameSetup) -> void:
+	self.game_setup = _game_setup
+	board.init_with_game_setup(_game_setup)
+
+func init_randomly() -> void:
 	board.init_randomly()
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -35,7 +41,7 @@ func _on_restart_button_pressed() -> void:
 	board = load("res://frontend/board/board_node.tscn").instantiate()
 	add_child(board)
 	board.game_over.connect(_on_board_node_game_over)
-	board.init_randomly()
+	board.init_with_game_setup(game_setup)
 	game_over_layer.hide()
 	settings_layer.hide()
 

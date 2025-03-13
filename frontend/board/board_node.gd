@@ -31,6 +31,43 @@ func _ready() -> void:
 		ai_thread1.init(ABSearchAIV4.new())
 	ai_thread2.init(ABSearchAIV4.new())
 
+func init_with_game_setup(game_setup: GameSetup) -> void:
+	assert(is_node_ready(), "BoardNode is not added to the tree")
+	if state == BoardNodeState.INITIALIZED:
+		state = BoardNodeState.NOT_INITIALIZED
+		# Reset UI elements
+		for piece_node: PieceNode in piece_nodes.get_all_piece_nodes():
+			piece_node.queue_free()
+		for tile_node: TileNode in tile_nodes.get_all_tile_nodes():
+			tile_node.queue_free()
+		# AI thread is stateless, so we don't need to reset it
+		promotion_ui.hide()
+		input_state = InputState.NONE
+		selected_piece_node = null
+		temp_move_action = null
+	
+	# Generate board with tiles and pieces
+	b = TilesGenerator.generate_board_with_tiles()
+	b = PiecesGenerator.populate_board_with_player_types(b, game_setup.faction.piece_types, 1150)
+	
+	# Create UI elements
+	tile_nodes.create_tile_nodes(b.tile_map.get_all_tiles())
+	var pieces := b.piece_map.get_all_pieces()
+	for piece in pieces:
+		var piece_node := piece_nodes.spawn_piece(piece)
+		assert(b.piece_map.has_piece(piece_node.piece().pos))
+		assert(b.piece_map.get_piece(piece_node.piece().pos) == piece_node.piece())
+	
+	assert(piece_nodes.get_all_piece_nodes().size() == pieces.size(), "Did not spawn all pieces")
+	state = BoardNodeState.INITIALIZED
+
+	# Trigger AI's first move
+	if ai_vs_ai_mode:
+		if b.team_to_move == Team.PLAYER:
+			ai_thread1.process_board(b)
+		else:
+			ai_thread2.process_board(b)
+
 func init_randomly() -> void:
 	assert(is_node_ready(), "BoardNode is not added to the tree")
 	if state == BoardNodeState.INITIALIZED:
@@ -86,6 +123,7 @@ func _on_piece_node_selected(piece_node: PieceNode) -> void:
 			return
 	
 	if _can_select(piece_node):
+		promotion_ui.hide()
 		_select_piece_node(piece_node)
 	else:
 		_select_piece_node(null)
@@ -106,6 +144,8 @@ func _on_tile_node_selected(tile_node: TileNode) -> void:
 				perform_move_action(move_action)
 				end_player_turn()
 			return
+	
+	promotion_ui.hide()
 	_select_piece_node(null)
 
 func _on_promotion_ui_promotion_chosen(promotion_type: Piece.Type) -> void:

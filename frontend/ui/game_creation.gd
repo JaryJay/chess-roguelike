@@ -13,8 +13,6 @@ var game_setup: GameSetup = GameSetup.new()
 func _ready() -> void:
 	for child in faction_slider.get_children():
 		child.queue_free()
-	for child in army_preview.get_children():
-		child.queue_free()
 
 	for i in Config.factions.size():
 		var faction: Faction = Config.factions[i]
@@ -33,6 +31,16 @@ func _ready() -> void:
 
 	game_setup.difficulty = Config.difficulties[0]
 	_on_difficulty_changed()
+	_update_army_preview()
+
+func _update_army_preview() -> void:
+	for child in army_preview.get_children():
+		child.queue_free()
+	for i in range(Config.factions[current_faction_idx].piece_types.size() - 1, -1, -1):
+		var piece_type: Piece.Type = Config.factions[current_faction_idx].piece_types[i]
+		var piece_node: Node2D = load("res://frontend/pieces/sprites/%s_sprites.tscn" % Piece.TYPE_TO_STRING[piece_type]).instantiate()
+		piece_node.position = Vector2((i % 10) * 16, (i / 10) * 16)
+		army_preview.add_child(piece_node)
 
 func _on_faction_changed() -> void:
 	# Shift the slider to the selected faction
@@ -52,14 +60,7 @@ func _on_faction_changed() -> void:
 	tw2.tween_property(flavour_text_label, "self_modulate", Color.WHITE, 0.15)
 	tw2.parallel().tween_property(faction_name_label, "self_modulate", Color.WHITE, 0.15)
 
-	# Update army preview
-	for child in army_preview.get_children():
-		child.queue_free()
-	for i in range(Config.factions[current_faction_idx].piece_types.size() - 1, -1, -1):
-		var piece_type: Piece.Type = Config.factions[current_faction_idx].piece_types[i]
-		var piece_node: Node2D = load("res://frontend/pieces/sprites/%s_sprites.tscn" % Piece.TYPE_TO_STRING[piece_type]).instantiate()
-		piece_node.position = Vector2((i % 10) * 16, (i / 10) * 16)
-		army_preview.add_child(piece_node)
+	_update_army_preview()
 
 func _on_right_button_pressed() -> void:
 	current_faction_idx = (current_faction_idx + 1) % num_factions
@@ -75,6 +76,7 @@ func _on_start_button_pressed() -> void:
 
 	var game: Game = load("res://frontend/game.tscn").instantiate()
 	get_tree().root.add_child(game)
+	game.init_with_game_setup(game_setup)
 	queue_free()
 
 func _on_difficulty_changed() -> void:
