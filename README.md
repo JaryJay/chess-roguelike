@@ -19,3 +19,6 @@ Optionally, you can specify the config and pieces paths:
 ```bash
 python main.py --config-path ../custom_config.json --pieces-path ../custom_pieces.json
 ```
+
+> [!TIP]
+> If any of these commands don't work, e.g. you get a "command not found: pip" error, try using `pip3` and `python3` instead of `pip` and `python`, respectively.
