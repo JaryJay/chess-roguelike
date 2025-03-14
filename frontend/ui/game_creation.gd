@@ -38,9 +38,10 @@ func _update_army_preview() -> void:
 		child.queue_free()
 	for i in range(Config.factions[current_faction_idx].piece_types.size() - 1, -1, -1):
 		var piece_type: Piece.Type = Config.factions[current_faction_idx].piece_types[i]
-		var piece_node: Node2D = load("res://frontend/pieces/sprites/%s_sprites.tscn" % Piece.TYPE_TO_STRING[piece_type]).instantiate()
-		piece_node.position = Vector2((i % 10) * 16, (i / 10) * 16)
-		army_preview.add_child(piece_node)
+		var piece_sprite_2d: PieceSprite2D = PieceSprite2D.new()
+		piece_sprite_2d.white_texture = load("res://frontend/pieces/textures/%s_white.tres" % Piece.TYPE_TO_STRING[piece_type])
+		piece_sprite_2d.position = Vector2((i % 10) * 16, (i / 10) * 16)
+		army_preview.add_child(piece_sprite_2d)
 
 func _on_faction_changed() -> void:
 	# Shift the slider to the selected faction

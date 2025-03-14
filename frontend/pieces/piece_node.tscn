@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://b2krh8hced454"]
+[gd_scene load_steps=5 format=3 uid="uid://b2krh8hced454"]
 
 [ext_resource type="Script" uid="uid://608wmmxqw80c" path="res://frontend/pieces/piece_node.gd" id="1_flxqp"]
+[ext_resource type="Script" uid="uid://fw7gwivhmbco" path="res://frontend/pieces/piece_sprite_2d.gd" id="2_2n7nr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_25au2"]
 size = Vector2(16, 16)
@@ -21,8 +22,11 @@ debug_color = Color(0, 0.6, 0.701961, 0.211765)
 [node name="Button" type="TouchScreenButton" parent="."]
 shape = SubResource("RectangleShape2D_q5l1u")
 
-[node name="SpritePivot" type="Marker2D" parent="."]
+[node name="PieceSprite2D" type="Sprite2D" parent="."]
 editor_description = "This is the node that piece sprites will replace."
+position = Vector2(0, -5)
+script = ExtResource("2_2n7nr")
+metadata/_custom_type_script = "uid://fw7gwivhmbco"
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

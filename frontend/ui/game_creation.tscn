@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bl0xqb50vkq8q" path="res://assets/ui/panel-030.png" id="1_6immy"]
 [ext_resource type="Script" uid="uid://nh2ecbxygfji" path="res://frontend/ui/game_creation.gd" id="1_hbw6a"]
 [ext_resource type="PackedScene" uid="uid://022xgnb2eaff" path="res://frontend/factions/monarchy.tscn" id="3_0lynk"]
-[ext_resource type="PackedScene" uid="uid://chm168jlmppv8" path="res://frontend/pieces/sprites/queen_sprites.tscn" id="3_rkkwd"]
+[ext_resource type="Script" uid="uid://fw7gwivhmbco" path="res://frontend/pieces/piece_sprite_2d.gd" id="3_vjqtv"]
 [ext_resource type="PackedScene" uid="uid://ccs0qt78cjm6l" path="res://frontend/factions/sharpshooters.tscn" id="4_rkkwd"]
 [ext_resource type="PackedScene" uid="uid://x8udnlohocwg" path="res://frontend/factions/military.tscn" id="5_vjqtv"]
 [ext_resource type="PackedScene" uid="uid://cl65ob1w6brjk" path="res://frontend/factions/the_squad.tscn" id="6_0lynk"]
@@ -218,7 +218,9 @@ unique_name_in_owner = true
 position = Vector2(90, 130)
 scale = Vector2(6, 6)
 
-[node name="Queen" parent="CanvasLayer/Control/Divs/Main/H/ArmyPreviewParent/ArmyPreview" instance=ExtResource("3_rkkwd")]
+[node name="PieceSprite2D" type="Sprite2D" parent="CanvasLayer/Control/Divs/Main/H/ArmyPreviewParent/ArmyPreview"]
+script = ExtResource("3_vjqtv")
+metadata/_custom_type_script = "uid://fw7gwivhmbco"
 
 [node name="StartButton" type="Button" parent="CanvasLayer/Control"]
 layout_mode = 1

@@ -1,24 +1,26 @@
-[gd_scene load_steps=2 format=3 uid="uid://022xgnb2eaff"]
+[gd_scene load_steps=4 format=3 uid="uid://022xgnb2eaff"]
 
-[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="1_uunty"]
+[ext_resource type="Texture2D" uid="uid://beevllaubek5f" path="res://frontend/pieces/textures/queen_white.tres" id="1_jqifa"]
+[ext_resource type="Script" uid="uid://fw7gwivhmbco" path="res://frontend/pieces/piece_sprite_2d.gd" id="2_iaho2"]
+[ext_resource type="Texture2D" uid="uid://c3lglntwkebc8" path="res://frontend/pieces/textures/king_white.tres" id="4_jqifa"]
 
 [node name="Monarchy" type="Node2D"]
 
 [node name="Queen" type="Sprite2D" parent="."]
 self_modulate = Color(0.589096, 0.589096, 0.589096, 1)
-position = Vector2(88, -128)
+position = Vector2(88, -208)
 scale = Vector2(16, 16)
-texture = ExtResource("1_uunty")
-centered = false
-offset = Vector2(-6.5, -14)
-region_enabled = true
+texture = ExtResource("1_jqifa")
 region_rect = Rect2(48, 83, 13, 21)
+script = ExtResource("2_iaho2")
+white_texture = ExtResource("1_jqifa")
+metadata/_custom_type_script = "uid://fw7gwivhmbco"
 
 [node name="King" type="Sprite2D" parent="."]
-position = Vector2(-72, -112)
+position = Vector2(-72, -192)
 scale = Vector2(16, 16)
-texture = ExtResource("1_uunty")
-centered = false
-offset = Vector2(-6.5, -16)
-region_enabled = true
+texture = ExtResource("4_jqifa")
 region_rect = Rect2(78, 81, 13, 23)
+script = ExtResource("2_iaho2")
+white_texture = ExtResource("4_jqifa")
+metadata/_custom_type_script = "uid://fw7gwivhmbco"

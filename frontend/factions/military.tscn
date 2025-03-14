@@ -1,22 +1,25 @@
-[gd_scene load_steps=2 format=3 uid="uid://x8udnlohocwg"]
+[gd_scene load_steps=3 format=3 uid="uid://x8udnlohocwg"]
 
-[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="1_naw0l"]
+[ext_resource type="Texture2D" uid="uid://xspvbonlidrc" path="res://frontend/pieces/textures/knight_white.tres" id="1_c74yf"]
+[ext_resource type="Script" uid="uid://fw7gwivhmbco" path="res://frontend/pieces/piece_sprite_2d.gd" id="2_jxlj1"]
 
 [node name="Military" type="Node2D"]
 
 [node name="Knight" type="Sprite2D" parent="."]
 self_modulate = Color(0.588235, 0.588235, 0.588235, 1)
-position = Vector2(104, -120)
+position = Vector2(104, -208)
 scale = Vector2(16, 16)
-texture = ExtResource("1_naw0l")
-offset = Vector2(-1, -2)
-region_enabled = true
+texture = ExtResource("1_c74yf")
 region_rect = Rect2(45, 63, 17, 17)
+script = ExtResource("2_jxlj1")
+white_texture = ExtResource("1_c74yf")
+metadata/_custom_type_script = "uid://fw7gwivhmbco"
 
 [node name="Knight2" type="Sprite2D" parent="."]
-position = Vector2(-88, -104)
+position = Vector2(-88, -192)
 scale = Vector2(16, 16)
-texture = ExtResource("1_naw0l")
-offset = Vector2(-1, -2)
-region_enabled = true
+texture = ExtResource("1_c74yf")
 region_rect = Rect2(45, 63, 17, 17)
+script = ExtResource("2_jxlj1")
+white_texture = ExtResource("1_c74yf")
+metadata/_custom_type_script = "uid://fw7gwivhmbco"

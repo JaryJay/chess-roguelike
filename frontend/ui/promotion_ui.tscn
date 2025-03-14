@@ -1,33 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://cnvljhd8dw2q7"]
+[gd_scene load_steps=6 format=3 uid="uid://cnvljhd8dw2q7"]
 
 [ext_resource type="Script" uid="uid://8vohsc8wdwyw" path="res://frontend/ui/promotion_ui.gd" id="1_w5mbw"]
-[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="2_w8cx3"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xywnf"]
-atlas = ExtResource("2_w8cx3")
-region = Rect2(47, 82, 15, 22)
-margin = Rect2(1, 0, 1, 0)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_7imha"]
-atlas = ExtResource("2_w8cx3")
-region = Rect2(76, 38, 15, 18)
-margin = Rect2(1, 2, 1, 4)
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_th0oh"]
-load_path = "res://.godot/imported/pieces_sprite_sheet.png-b320056e40fecbe295f2b805f7ade72e.ctex"
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hbmh1"]
-atlas = SubResource("CompressedTexture2D_th0oh")
-region = Rect2(95, 60, 13, 20)
-margin = Rect2(1, 0, 2, 1)
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_21ah4"]
-load_path = "res://.godot/imported/pieces_sprite_sheet.png-b320056e40fecbe295f2b805f7ade72e.ctex"
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_a6pn8"]
-atlas = SubResource("CompressedTexture2D_21ah4")
-region = Rect2(45, 62, 18, 18)
-margin = Rect2(0, 1, -0.5, 3)
+[ext_resource type="Texture2D" uid="uid://beevllaubek5f" path="res://frontend/pieces/textures/queen_white.tres" id="2_5k18q"]
+[ext_resource type="Texture2D" uid="uid://iehu274lcwh5" path="res://frontend/pieces/textures/rook_white.tres" id="3_g0g74"]
+[ext_resource type="Texture2D" uid="uid://f8pp8df8kycc" path="res://frontend/pieces/textures/bishop_white.tres" id="4_bnyn0"]
+[ext_resource type="Texture2D" uid="uid://xspvbonlidrc" path="res://frontend/pieces/textures/knight_white.tres" id="5_ca7ds"]
 
 [node name="PromotionUI" type="ColorRect"]
 anchors_preset = 15
@@ -46,28 +23,28 @@ offset_bottom = 414.0
 [node name="QueenButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-icon = SubResource("AtlasTexture_xywnf")
+icon = ExtResource("2_5k18q")
 icon_alignment = 1
 expand_icon = true
 
 [node name="RookButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-icon = SubResource("AtlasTexture_7imha")
+icon = ExtResource("3_g0g74")
 icon_alignment = 1
 expand_icon = true
 
 [node name="BishopButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-icon = SubResource("AtlasTexture_hbmh1")
+icon = ExtResource("4_bnyn0")
 icon_alignment = 1
 expand_icon = true
 
 [node name="KnightButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-icon = SubResource("AtlasTexture_a6pn8")
+icon = ExtResource("5_ca7ds")
 icon_alignment = 1
 expand_icon = true
 

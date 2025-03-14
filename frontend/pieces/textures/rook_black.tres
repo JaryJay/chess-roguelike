@@ -1,0 +1,9 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://dlj74hn4bc26i"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tgp3r"]
+load_path = "res://.godot/imported/pieces_sprite_sheet.png-b320056e40fecbe295f2b805f7ade72e.ctex"
+
+[resource]
+atlas = SubResource("CompressedTexture2D_tgp3r")
+region = Rect2(91, 39, 13, 17)
+margin = Rect2(3, 7, 6, 7)

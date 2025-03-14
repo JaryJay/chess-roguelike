@@ -2,7 +2,7 @@ class_name PieceNode extends Node2D
 
 signal selected
 
-var _sprite_pivot: Node2D
+@onready var piece_sprite_2d: PieceSprite2D = $PieceSprite2D
 
 var _initialized := false
 var _id: int
@@ -36,21 +36,17 @@ func init_team_sprites() -> void:
 	assert(_initialized)
 	assert(_piece)
 
-	# $SpritePivot is the placeholder sprite node, we can remove it
-	$SpritePivot.queue_free()
-	remove_child($SpritePivot)
-
-	var sprite_path := "res://frontend/pieces/sprites/%s_sprites.tscn" % Piece.TYPE_TO_STRING[_piece.type]
-	_sprite_pivot = load(sprite_path).instantiate()
-	_sprite_pivot.name = "SpritePivot"
-	add_child(_sprite_pivot)
+	var white_texture_path := "res://frontend/pieces/textures/%s_white.tres" % Piece.TYPE_TO_STRING[_piece.type]
+	var black_texture_path := "res://frontend/pieces/textures/%s_black.tres" % Piece.TYPE_TO_STRING[_piece.type]
+	var white_texture: Texture2D = load(white_texture_path)
+	var black_texture: Texture2D = load(black_texture_path)
+	piece_sprite_2d.white_texture = white_texture
+	piece_sprite_2d.black_texture = black_texture
 
 	if piece().team.is_player():
-		# Hide black sprite
-		_sprite_pivot.get_node("B").hide()
+		piece_sprite_2d.color = PieceSprite2D.PieceColor.WHITE
 	elif piece().team.is_enemy():
-		# Hide white sprite
-		_sprite_pivot.get_node("W").hide()
+		piece_sprite_2d.color = PieceSprite2D.PieceColor.BLACK
 	else:
 		assert(false, "Unknown team %s" % piece().team._key)
 

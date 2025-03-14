@@ -1,23 +1,24 @@
-[gd_scene load_steps=2 format=3 uid="uid://ccs0qt78cjm6l"]
+[gd_scene load_steps=4 format=3 uid="uid://ccs0qt78cjm6l"]
 
-[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="1_bxyb1"]
+[ext_resource type="Texture2D" uid="uid://iehu274lcwh5" path="res://frontend/pieces/textures/rook_white.tres" id="1_34fr3"]
+[ext_resource type="Script" uid="uid://fw7gwivhmbco" path="res://frontend/pieces/piece_sprite_2d.gd" id="2_ya3mv"]
+[ext_resource type="Texture2D" uid="uid://f8pp8df8kycc" path="res://frontend/pieces/textures/bishop_white.tres" id="3_33bw6"]
 
 [node name="Sharpshooters" type="Node2D"]
 
 [node name="Rook" type="Sprite2D" parent="."]
 self_modulate = Color(0.588235, 0.588235, 0.588235, 1)
-position = Vector2(-88, -120)
+position = Vector2(-72, -208)
 scale = Vector2(16, 16)
-texture = ExtResource("1_bxyb1")
-offset = Vector2(0, -2)
-region_enabled = true
-region_rect = Rect2(77, 39, 13, 17)
+texture = ExtResource("1_34fr3")
+script = ExtResource("2_ya3mv")
+white_texture = ExtResource("1_34fr3")
+metadata/_custom_type_script = "uid://fw7gwivhmbco"
 
 [node name="Bishop" type="Sprite2D" parent="."]
-position = Vector2(88, -112)
+position = Vector2(88, -192)
 scale = Vector2(16, 16)
-texture = ExtResource("1_bxyb1")
-centered = false
-offset = Vector2(-6.5, -12)
-region_enabled = true
-region_rect = Rect2(95, 61, 13, 19)
+texture = ExtResource("3_33bw6")
+script = ExtResource("2_ya3mv")
+white_texture = ExtResource("3_33bw6")
+metadata/_custom_type_script = "uid://fw7gwivhmbco"
