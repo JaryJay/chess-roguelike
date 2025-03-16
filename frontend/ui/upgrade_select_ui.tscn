@@ -1,6 +1,13 @@
-[gd_scene format=3 uid="uid://b3qdrbapth2jx"]
+[gd_scene load_steps=4 format=3 uid="uid://b3qdrbapth2jx"]
+
+[ext_resource type="PackedScene" uid="uid://dwhjrskm4sy2b" path="res://frontend/ui/upgrade_option.tscn" id="1_c0i67"]
+[ext_resource type="Script" uid="uid://dt24gq7pr0a26" path="res://frontend/ui/upgrade_select_ui.gd" id="1_qpauv"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_svqyl"]
+font_size = 48
 
 [node name="UpgradeSelectUI" type="CanvasLayer"]
+script = ExtResource("1_qpauv")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -9,3 +16,40 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.15
+anchor_right = 0.5
+anchor_bottom = 0.15
+offset_left = -334.0
+offset_top = -61.0
+offset_right = 334.0
+offset_bottom = 56.0
+grow_horizontal = 2
+text = "Choose an upgrade"
+label_settings = SubResource("LabelSettings_svqyl")
+horizontal_alignment = 1
+
+[node name="H" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 0.25
+anchor_right = 0.85
+anchor_bottom = 0.885
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="UpgradeOption1" parent="Control/H" instance=ExtResource("1_c0i67")]
+layout_mode = 2
+
+[node name="UpgradeOption2" parent="Control/H" instance=ExtResource("1_c0i67")]
+layout_mode = 2
+
+[node name="UpgradeOption3" parent="Control/H" instance=ExtResource("1_c0i67")]
+layout_mode = 2

@@ -1,0 +1,57 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwhjrskm4sy2b"]
+
+[ext_resource type="Script" uid="uid://b0f6jcrlpk6v1" path="res://frontend/ui/upgrade_option.gd" id="1_eb70p"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_kbmfj"]
+font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_eb70p"]
+font_size = 26
+
+[node name="UpgradeOption" type="AspectRatioContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+ratio = 0.7
+script = ExtResource("1_eb70p")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+self_modulate = Color(0, 0, 0, 0.552941)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="V" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="NameLabel" type="Label" parent="PanelContainer/MarginContainer/V"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 98)
+layout_mode = 2
+text = "Upgrade Name"
+label_settings = SubResource("LabelSettings_kbmfj")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DescriptionLabel" type="Label" parent="PanelContainer/MarginContainer/V"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 2
+text = "Description"
+label_settings = SubResource("LabelSettings_eb70p")
+vertical_alignment = 1
+
+[node name="ChooseButton" type="Button" parent="PanelContainer/MarginContainer/V"]
+layout_mode = 2
+text = "Choose"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/V/ChooseButton" to="." method="_on_choose_button_pressed"]
