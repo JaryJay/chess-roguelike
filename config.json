@@ -68,28 +68,32 @@
 			"display_name": "Novice",
 			"description": "For noobs. It's okay to be bad at chess.",
 			"eval_randomness": 0.8,
-			"default_depth": 2
+			"default_depth": 3,
+			"enemy_credits": 1200
 		},
 		{
 			"name": "standard",
 			"display_name": "Standard",
 			"description": "A worthy opponent.",
 			"eval_randomness": 0.5,
-			"default_depth": 3
+			"default_depth": 3,
+			"enemy_credits": 1400
 		},
 		{
 			"name": "master",
 			"display_name": "Master",
 			"description": "The proving ground.",
 			"eval_randomness": 0.2,
-			"default_depth": 4
+			"default_depth": 4,
+			"enemy_credits": 1500
 		},
 		{
 			"name": "grandmaster",
 			"display_name": "Grandmaster",
 			"description": "You know your stuff.",
 			"eval_randomness": 0.0,
-			"default_depth": 4
+			"default_depth": 4,
+			"enemy_credits": 1600
 		}
 	]
 }

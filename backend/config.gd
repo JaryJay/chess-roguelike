@@ -43,7 +43,7 @@ static func load_config() -> void:
 		factions.append(Faction.new(faction["name"], faction["display_name"], faction["description"], piece_types))
 
 	for difficulty: Dictionary in config["difficulties"]:
-		difficulties.append(Difficulty.new(difficulty["name"], difficulty["display_name"], difficulty["description"], difficulty["eval_randomness"], difficulty["default_depth"]))
+		difficulties.append(Difficulty.new(difficulty["name"], difficulty["display_name"], difficulty["description"], difficulty["eval_randomness"], difficulty["default_depth"], difficulty["enemy_credits"]))
 
 	loaded = true
 	print("Config loaded")

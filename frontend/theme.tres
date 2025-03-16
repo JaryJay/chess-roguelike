@@ -1,6 +1,7 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://b77ghk37wd1xx"]
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://b77ghk37wd1xx"]
 
 [ext_resource type="Texture2D" uid="uid://lwm6cqto5saj" path="res://assets/ui/panel-transparent-center-009.png" id="1_yuknu"]
+[ext_resource type="Texture2D" uid="uid://bl0xqb50vkq8q" path="res://assets/ui/panel-030.png" id="2_urbn3"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_dnjfv"]
 load_path = "res://.godot/imported/panel-transparent-center-009.png-111575f8205292ff7cbdcc25ad2fb6b6.ctex"
@@ -42,6 +43,13 @@ texture_margin_right = 20.0
 texture_margin_bottom = 20.0
 modulate_color = Color(0.899258, 0.899258, 0.899258, 1)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_urbn3"]
+texture = ExtResource("2_urbn3")
+texture_margin_left = 25.0
+texture_margin_top = 25.0
+texture_margin_right = 25.0
+texture_margin_bottom = 25.0
+
 [resource]
 Button/font_sizes/font_size = 36
 Button/styles/disabled = SubResource("StyleBoxTexture_3f1aj")
@@ -50,3 +58,4 @@ Button/styles/hover = SubResource("StyleBoxTexture_t0h1v")
 Button/styles/normal = SubResource("StyleBoxTexture_27tw2")
 Button/styles/pressed = SubResource("StyleBoxTexture_dxptr")
 Label/font_sizes/font_size = 36
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_urbn3")

@@ -1,6 +1,5 @@
-[gd_scene load_steps=17 format=3 uid="uid://c133hj4l1vgu6"]
+[gd_scene load_steps=14 format=3 uid="uid://c133hj4l1vgu6"]
 
-[ext_resource type="Texture2D" uid="uid://bl0xqb50vkq8q" path="res://assets/ui/panel-030.png" id="1_6immy"]
 [ext_resource type="Script" uid="uid://nh2ecbxygfji" path="res://frontend/ui/game_creation.gd" id="1_hbw6a"]
 [ext_resource type="PackedScene" uid="uid://022xgnb2eaff" path="res://frontend/factions/monarchy.tscn" id="3_0lynk"]
 [ext_resource type="Script" uid="uid://fw7gwivhmbco" path="res://frontend/pieces/piece_sprite_2d.gd" id="3_vjqtv"]
@@ -10,16 +9,6 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_0lynk"]
 font_size = 48
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0lynk"]
-atlas = ExtResource("1_6immy")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rkkwd"]
-texture = SubResource("AtlasTexture_0lynk")
-texture_margin_left = 25.0
-texture_margin_top = 25.0
-texture_margin_right = 25.0
-texture_margin_bottom = 25.0
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0lynk"]
 load_path = "res://.godot/imported/pieces_sprite_sheet.png-b320056e40fecbe295f2b805f7ade72e.ctex"
@@ -140,11 +129,10 @@ theme_override_constants/separation = 20
 alignment = 1
 
 [node name="Left" type="PanelContainer" parent="CanvasLayer/Control/Divs"]
-self_modulate = Color(0.572549, 0.572549, 0.572549, 1)
+self_modulate = Color(0.529412, 0.529412, 0.529412, 1)
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxTexture_rkkwd")
 
 [node name="H" type="VBoxContainer" parent="CanvasLayer/Control/Divs/Left"]
 layout_mode = 2
@@ -192,12 +180,11 @@ text = "Difficulty description"
 label_settings = SubResource("LabelSettings_rkkwd")
 
 [node name="Main" type="PanelContainer" parent="CanvasLayer/Control/Divs"]
-self_modulate = Color(0.572549, 0.572549, 0.572549, 1)
+self_modulate = Color(0.529412, 0.529412, 0.529412, 1)
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
-theme_override_styles/panel = SubResource("StyleBoxTexture_rkkwd")
 
 [node name="H" type="VBoxContainer" parent="CanvasLayer/Control/Divs/Main"]
 layout_mode = 2
