@@ -1,0 +1,126 @@
+[
+	{
+		"type": "swap",
+		"display_name": "Horseplay",
+		"description": "Lose 1 pawn to gain 1 knight.",
+		"remove_types": [
+			"pawn"
+		],
+		"add_types": [
+			"knight"
+		]
+	},
+	{
+		"type": "swap",
+		"display_name": "Diagonal dominance",
+		"description": "Lose 1 pawn to gain 1 bishop.",
+		"remove_types": [
+			"pawn"
+		],
+		"add_types": [
+			"bishop"
+		]
+	},
+	{
+		"type": "swap",
+		"display_name": "Find a friend",
+		"description": "Gain 1 pawn.",
+		"add_types": [
+			"pawn"
+		]
+	},
+	{
+		"type": "swap",
+		"display_name": "Knight's retirement plan",
+		"description": "Lose 1 knight to gain 3 pawns.",
+		"remove_types": [
+			"knight"
+		],
+		"add_types": [
+			"pawn"
+		]
+	},
+	{
+		"type": "swap",
+		"display_name": "Bishop's retirement plan",
+		"description": "Lose 1 bishop to gain 3 pawns.",
+		"remove_types": [
+			"bishop"
+		],
+		"add_types": [
+			"pawn"
+		]
+	},
+	{
+		"type": "swap",
+		"display_name": "Pawn lottery",
+		"description": "Gamble: Gain either 0 or 2 pawns.",
+		"add_types": [
+			"pawn"
+		]
+	},
+	{
+		"type": "swap",
+		"display_name": "Tower swap",
+		"description": "Lose 1 bishop to gain 1 rook.",
+		"remove_types": [
+			"bishop"
+		],
+		"add_types": [
+			"rook"
+		]
+	},
+	{
+		"type": "swap",
+		"display_name": "Usurp the throne",
+		"description": "Lose 1 rook and 1 bishop to gain 1 queen and 1 pawn.",
+		"remove_types": [
+			"rook",
+			"bishop"
+		],
+		"add_types": [
+			"queen",
+			"pawn"
+		]
+	},
+	{
+		"type": "swap",
+		"display_name": "Queen's coronation",
+		"description": "Lose 1 rook and 2 pawns to gain 1 queen.",
+		"remove_types": [
+			"rook",
+			"pawn"
+		],
+		"add_types": [
+			"queen"
+		]
+	},
+	{
+		"type": "swap",
+		"display_name": "Mitosis",
+		"description": "Lose 1 rook to gain 2 bishops.",
+		"remove_types": [
+			"rook"
+		],
+		"add_types": [
+			"bishop"
+		]
+	},
+	{
+		"type": "swap",
+		"display_name": "Blind swap",
+		"description": "Gamble: Lose 2 pawns to gain either 1 bishop or 1 rook.",
+		"add_types": [
+			"bishop",
+			"rook"
+		]
+	},
+	{
+		"type": "swap",
+		"display_name": "Miracle of life",
+		"description": "If you have a queen, gain 2 pawns.",
+		"add_types": [
+			"pawn"
+		]
+	}
+]

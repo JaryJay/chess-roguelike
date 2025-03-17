@@ -7,6 +7,7 @@ func _ready() -> void:
 	version_label.text = "v%s" % version
 	Config.load_config()
 	PieceRules.load_pieces()
+	Upgrades.load_upgrades()
 
 func _on_new_game_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://frontend/ui/game_creation.tscn")
