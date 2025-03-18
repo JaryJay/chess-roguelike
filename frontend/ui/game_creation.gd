@@ -73,6 +73,7 @@ func _on_left_button_pressed() -> void:
 
 func _on_start_button_pressed() -> void:
 	game_setup.faction = Config.factions[current_faction_idx]
+	game_setup.piece_types.append_array(game_setup.faction.piece_types)
 	game_setup.enemy_credits = game_setup.difficulty.enemy_credits
 
 	var game: Game = load("res://frontend/game.tscn").instantiate()

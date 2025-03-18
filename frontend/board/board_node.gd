@@ -48,7 +48,7 @@ func init_with_game_setup(game_setup: GameSetup) -> void:
 	
 	# Generate board with tiles and pieces
 	b = TilesGenerator.generate_board_with_tiles()
-	b = PiecesGenerator.populate_board_with_player_types(b, game_setup.faction.piece_types, game_setup.enemy_credits)
+	b = PiecesGenerator.populate_board_with_player_types(b, game_setup.piece_types, game_setup.enemy_credits)
 	
 	# Create UI elements
 	tile_nodes.create_tile_nodes(b.tile_map.get_all_tiles())

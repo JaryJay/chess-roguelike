@@ -4,8 +4,10 @@ class_name Game extends Node2D
 @onready var game_over_label: Label = $GameOverLayer/Rect/H/Label
 @onready var game_over_layer: CanvasLayer = $GameOverLayer
 @onready var settings_layer: CanvasLayer = $SettingsLayer
+@onready var upgrade_select_ui: UpgradeSelectUI = $UpgradeSelectUI
 
 var game_setup: GameSetup
+var saved_game_result: Match.Result
 
 func init_with_game_setup(_game_setup: GameSetup) -> void:
 	self.game_setup = _game_setup
@@ -20,6 +22,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _on_board_node_game_over(game_result: Match.Result) -> void:
+	saved_game_result = game_result
 	if game_result == Match.Result.WIN:
 		game_over_label.text = "You win!"
 	elif game_result == Match.Result.LOSE:
@@ -38,12 +41,27 @@ func _on_restart_button_pressed() -> void:
 		piece_node.remove_from_group("piece_nodes")
 	for tile_node: TileNode in get_tree().get_nodes_in_group("tile_nodes"):
 		tile_node.remove_from_group("tile_nodes")
+	game_over_layer.hide()
+	settings_layer.hide()
+	
+	if saved_game_result == Match.Result.WIN:
+		game_setup.enemy_credits += 100
+		upgrade_select_ui.show()
+		upgrade_select_ui.generate_upgrades(game_setup)
+	else:
+		get_tree().change_scene_to_file("res://frontend/ui/game_creation.tscn")
+		queue_free()
+
+func _on_upgrade_select_ui_upgrade_chosen(upgrade: Upgrade) -> void:
+	upgrade.apply(game_setup)
+	upgrade_select_ui.hide()
+	recreate_board()
+
+func recreate_board() -> void:
 	board = load("res://frontend/board/board_node.tscn").instantiate()
 	add_child(board)
 	board.game_over.connect(_on_board_node_game_over)
 	board.init_with_game_setup(game_setup)
-	game_over_layer.hide()
-	settings_layer.hide()
 
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()

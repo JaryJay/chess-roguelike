@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b0f6jcrlpk6v1" path="res://frontend/ui/upgrade_option.gd" id="1_eb70p"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_kbmfj"]
-font_size = 30
+font_size = 26
 
 [sub_resource type="LabelSettings" id="LabelSettings_eb70p"]
 font_size = 26
@@ -49,6 +49,7 @@ size_flags_vertical = 2
 text = "Description"
 label_settings = SubResource("LabelSettings_eb70p")
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="ChooseButton" type="Button" parent="PanelContainer/MarginContainer/V"]
 layout_mode = 2

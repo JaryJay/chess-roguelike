@@ -24,7 +24,7 @@ func generate_upgrades(game_setup: GameSetup, num_upgrades: int = 3) -> void:
 		var upgrade_ui: UpgradeOption = load("res://frontend/ui/upgrade_option.tscn").instantiate()
 		upgrades_container.add_child(upgrade_ui)
 		upgrade_ui.init(upgrade)
-		upgrade_ui.chosen.connect(_on_upgrade_chosen.bind(upgrade))
+		upgrade_ui.chosen.connect(_on_upgrade_chosen)
 
 func _on_upgrade_chosen(upgrade: Upgrade) -> void:
 	upgrade_chosen.emit(upgrade)

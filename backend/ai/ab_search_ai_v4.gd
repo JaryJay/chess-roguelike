@@ -6,14 +6,14 @@ const ENABLE_PERFORMANCE_ANALYSIS := false
 var _root_timing: Dictionary
 
 func get_move(board: Board) -> Move:
-	var depth := 3
+	var depth := 2
 	if board.piece_map.get_all_pieces().size() <= 4:
-		depth = 5
-	elif board.piece_map.get_all_pieces().size() <= 5:
 		depth = 4
+	elif board.piece_map.get_all_pieces().size() <= 5:
+		depth = 3
 	elif board.piece_map.get_team_pieces(Team.PLAYER).size() <= 2 or \
 		board.piece_map.get_team_pieces(Team.ENEMY_AI).size() <= 3:
-		depth = 4
+		depth = 3
 	
 	var total_time := Time.get_ticks_msec()
 	_root_timing = {
