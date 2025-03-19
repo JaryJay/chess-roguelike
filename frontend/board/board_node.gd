@@ -239,6 +239,10 @@ func perform_move_action(move_action: MoveAction) -> void:
 	
 	# Handle captures
 	if move_action.is_capture():
+		var captured_piece_node: PieceNode = piece_nodes.get_piece_node(move_action.captured_piece_id)
+		var capture_particles: Node2D = preload("res://frontend/vfx/capture_particles.tscn").instantiate()
+		add_child(capture_particles)
+		capture_particles.position = captured_piece_node.position + Vector2(0, 5)
 		piece_nodes.free_piece_node(move_action.captured_piece_id)
 	
 	# Handle promotions
