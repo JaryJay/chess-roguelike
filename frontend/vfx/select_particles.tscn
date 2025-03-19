@@ -1,0 +1,51 @@
+[gd_scene load_steps=9 format=3 uid="uid://ely3mt3txr6e"]
+
+[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="1_vh4c2"]
+[ext_resource type="Script" uid="uid://d0g2hrn68fqrd" path="res://frontend/vfx/one_shot_particles.gd" id="2_52aa6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_37vmm"]
+atlas = ExtResource("1_vh4c2")
+region = Rect2(0, 0, 1, 1)
+
+[sub_resource type="Gradient" id="Gradient_vh4c2"]
+offsets = PackedFloat32Array(0, 0.0790598, 0.405983, 1)
+colors = PackedColorArray(0.939774, 0.880222, 0.820165, 0.556863, 0.980392, 0.960784, 0.941176, 1, 0.974688, 0.949618, 0.924444, 0.969235, 0.914947, 0.832683, 0.74922, 0.647059)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_52aa6"]
+gradient = SubResource("Gradient_vh4c2")
+
+[sub_resource type="Curve" id="Curve_aa2rv"]
+_data = [Vector2(0, 0.0306586), 0.0, 0.0, 0, 0, Vector2(0.048583, 1), 0.0, 0.0, 0, 0, Vector2(0.396761, 1), -0.72922, -0.72922, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_nhs1x"]
+curve = SubResource("Curve_aa2rv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_75b4p"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1, 0.5, 1)
+emission_shape = 1
+emission_sphere_radius = 5.0
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, -1, 0)
+spread = 35.0
+initial_velocity_min = 60.15
+initial_velocity_max = 82.71
+angular_velocity_min = -30.0
+angular_velocity_max = 30.0
+gravity = Vector3(0, 98, 0)
+scale_curve = SubResource("CurveTexture_nhs1x")
+color_ramp = SubResource("GradientTexture1D_52aa6")
+
+[node name="CaptureParticles" type="GPUParticles2D"]
+emitting = false
+amount = 5
+texture = SubResource("AtlasTexture_37vmm")
+lifetime = 0.4
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_75b4p")
+script = ExtResource("2_52aa6")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

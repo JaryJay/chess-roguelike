@@ -98,6 +98,10 @@ func set_selected(new_selected: bool) -> void:
 		tw.tween_property(self, "rotation", 0.0, 0.05)
 		tw.tween_property(self, "scale", Vector2.ONE, 0.05)
 
+		var particles: OneShotParticles = load("res://frontend/vfx/select_particles.tscn").instantiate()
+		particles.position = position + Vector2(0, 6)
+		get_tree().root.add_child(particles)
+
 func calculate_target_position() -> Vector2:
 	return (Vector2(_piece.pos) - Vector2.ONE * Config.max_board_size * 0.5) * 16
 
