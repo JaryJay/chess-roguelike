@@ -3,9 +3,9 @@ class_name PieceNodes extends Node2D
 signal piece_node_selected(piece_node: PieceNode)
 
 ## Dictionary from int to PieceNode
-var _piece_nodes: Dictionary
+var _piece_nodes: Dictionary[int, PieceNode] = {}
 ## Dictionary from Team to PieceNode
-var _cached_king_positions: Dictionary = {}
+var _cached_king_positions: Dictionary[Team, PieceNode] = {}
 
 func spawn_piece(piece: Piece, animate: bool = false) -> PieceNode:
 	var piece_node := create_piece_node(piece)
@@ -62,7 +62,7 @@ func get_king_node(team: Team) -> PieceNode:
 	for piece_node: PieceNode in _piece_nodes.values():
 		var piece := piece_node.piece()
 		if piece.type == Piece.Type.KING and piece.team == team:
-			_cached_king_positions[team] = piece
+			_cached_king_positions[team] = piece_node
 	
 	return _cached_king_positions[team]
 
