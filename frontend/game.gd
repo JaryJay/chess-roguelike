@@ -9,6 +9,8 @@ class_name Game extends Node2D
 var game_setup: GameSetup
 var saved_game_result: Match.Result
 
+var wins_this_run: int = 0
+
 func init_with_game_setup(_game_setup: GameSetup) -> void:
 	self.game_setup = _game_setup
 	board.init_with_game_setup(_game_setup)
@@ -24,7 +26,11 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_board_node_game_over(game_result: Match.Result) -> void:
 	saved_game_result = game_result
 	if game_result == Match.Result.WIN:
-		game_over_label.text = "You win!"
+		wins_this_run += 1
+		if wins_this_run == 1:
+			game_over_label.text = "You win!\n1 win this run"
+		else:
+			game_over_label.text = "You win!\n%s wins this run" % wins_this_run
 		var particles: OneShotParticles = load("res://frontend/vfx/capture_particles.tscn").instantiate()
 		particles.position = board.piece_nodes.get_king_node(Team.ENEMY_AI).position
 		get_tree().root.add_child(particles)
