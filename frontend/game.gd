@@ -25,6 +25,9 @@ func _on_board_node_game_over(game_result: Match.Result) -> void:
 	saved_game_result = game_result
 	if game_result == Match.Result.WIN:
 		game_over_label.text = "You win!"
+		var particles: OneShotParticles = load("res://frontend/vfx/capture_particles.tscn").instantiate()
+		particles.position = board.piece_nodes.get_king_node(Team.ENEMY_AI).position
+		get_tree().root.add_child(particles)
 	elif game_result == Match.Result.LOSE:
 		game_over_label.text = "You lose!"
 	elif game_result == Match.Result.DRAW_STALEMATE:
@@ -33,7 +36,10 @@ func _on_board_node_game_over(game_result: Match.Result) -> void:
 		game_over_label.text = "Draw! Insufficient material"
 	elif game_result == Match.Result.DRAW_THREEFOLD_REPETITION:
 		game_over_label.text = "Draw! Threefold repetition"
-	game_over_layer.show()
+	
+	var tw := create_tween()
+	tw.tween_interval(0.4)
+	tw.tween_callback(game_over_layer.show)
 
 func _on_continue_button_pressed() -> void:
 	board.queue_free()
