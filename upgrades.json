@@ -68,13 +68,6 @@
 			{
 				"remove_types": [],
 				"add_types": [
-					"pawn"
-				],
-				"weight": 1
-			},
-			{
-				"remove_types": [],
-				"add_types": [
 					"pawn",
 					"pawn"
 				],
