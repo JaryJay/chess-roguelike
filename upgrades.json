@@ -37,6 +37,8 @@
 			"knight"
 		],
 		"add_types": [
+			"pawn",
+			"pawn",
 			"pawn"
 		]
 	},
@@ -48,15 +50,36 @@
 			"bishop"
 		],
 		"add_types": [
+			"pawn",
+			"pawn",
 			"pawn"
 		]
 	},
 	{
-		"type": "swap",
+		"type": "gamble",
 		"display_name": "Pawn lottery",
 		"description": "Gamble: Gain either 0 or 2 pawns.",
-		"add_types": [
-			"pawn"
+		"possibilities": [
+			{
+				"remove_types": [],
+				"add_types": [],
+				"weight": 1
+			},
+			{
+				"remove_types": [],
+				"add_types": [
+					"pawn"
+				],
+				"weight": 1
+			},
+			{
+				"remove_types": [],
+				"add_types": [
+					"pawn",
+					"pawn"
+				],
+				"weight": 1
+			}
 		]
 	},
 	{
@@ -89,6 +112,7 @@
 		"description": "Lose 1 rook and 2 pawns to gain 1 queen.",
 		"remove_types": [
 			"rook",
+			"pawn",
 			"pawn"
 		],
 		"add_types": [
@@ -103,23 +127,47 @@
 			"rook"
 		],
 		"add_types": [
+			"bishop",
 			"bishop"
 		]
 	},
 	{
-		"type": "swap",
+		"type": "gamble",
 		"display_name": "Blind swap",
 		"description": "Gamble: Lose 2 pawns to gain either 1 bishop or 1 rook.",
-		"add_types": [
-			"bishop",
-			"rook"
+		"possibilities": [
+			{
+				"remove_types": [
+					"pawn",
+					"pawn"
+				],
+				"add_types": [
+					"bishop"
+				],
+				"weight": 1
+			},
+			{
+				"remove_types": [
+					"pawn",
+					"pawn"
+				],
+				"add_types": [
+					"rook"
+				],
+				"weight": 1
+			}
 		]
 	},
 	{
 		"type": "swap",
 		"display_name": "Miracle of life",
 		"description": "If you have a queen, gain 2 pawns.",
+		"remove_types": [
+			"queen"
+		],
 		"add_types": [
+			"queen",
+			"pawn",
 			"pawn"
 		]
 	}

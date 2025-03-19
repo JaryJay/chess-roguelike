@@ -1,4 +1,4 @@
-class_name BasicUpgrade extends Upgrade
+class_name SwapUpgrade extends Upgrade
 
 @export var remove_types: Array[String]
 @export var add_types: Array[String]
