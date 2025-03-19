@@ -39,7 +39,8 @@ func create_tile_nodes(tile_positions: Array[Vector2i]) -> void:
 		tile_node.modulate = Color.TRANSPARENT
 		tile_node.position += Vector2(0, -10)
 		var tw := tile_node.create_tween().set_parallel().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
-		tw.tween_interval((tile_pos.x + tile_pos.y) * 0.03)
+		var n := tile_pos.x + tile_pos.y
+		tw.tween_interval(pow(n / 14.0, 3) * 0.8 + n * 0.05)
 		tw.chain().tween_property(tile_node, "scale", Vector2.ONE, 0.2)
 		tw.tween_property(tile_node, "modulate", Color.WHITE, 0.2)
 		tw.tween_property(tile_node, "position", Vector2(0, 10), 0.2).as_relative()

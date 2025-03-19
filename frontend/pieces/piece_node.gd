@@ -79,18 +79,27 @@ func _on_area_2d_mouse_exited() -> void:
 func set_hovered(new_hovered: bool) -> void:
 	is_hovered = new_hovered
 	if is_hovered and !_is_moving:
-		var tween := create_tween()
-		tween.tween_property(self, "position", Vector2(0, -1), 0.05).as_relative().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
+		var tw := create_tween()
+		tw.tween_property(self, "position", Vector2(0, -1), 0.05).as_relative().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
 	elif !is_hovered and !_is_moving:
-		var tween := create_tween()
-		tween.tween_property(self, "position", Vector2(0, 1), 0.05).as_relative().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
+		var tw := create_tween()
+		tw.tween_property(self, "position", Vector2(0, 1), 0.05).as_relative().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
 
 func set_selected(new_selected: bool) -> void:
 	is_selected = new_selected
 	if is_selected and !_is_moving:
-		var tween := create_tween()
-		tween.tween_property(self, "position", Vector2(0, -2), 0.05).as_relative().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
-		tween.tween_property(self, "position", Vector2(0, 2), 0.05).as_relative().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
+		var tw := create_tween().set_parallel().set_trans(Tween.TRANS_QUAD)
+		tw.set_ease(Tween.EASE_OUT)
+		tw.tween_property(self, "position", Vector2(0, -2), 0.05).as_relative()
+		tw.tween_property(self, "rotation", randf_range(-0.05, 0.05), 0.05)
+		tw.tween_property(self, "scale", Vector2.ONE * 1.1, 0.05)
+		tw.set_ease(Tween.EASE_IN)
+		tw.chain().tween_property(self, "position", calculate_target_position(), 0.05)
+		tw.tween_property(self, "rotation", 0.0, 0.05)
+		tw.tween_property(self, "scale", Vector2.ONE, 0.05)
+
+func calculate_target_position() -> Vector2:
+	return (Vector2(_piece.pos) - Vector2.ONE * Config.max_board_size * 0.5) * 16
 
 #endregion
 

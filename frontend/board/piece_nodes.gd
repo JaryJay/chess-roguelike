@@ -14,7 +14,7 @@ func spawn_piece(piece: Piece, animate: bool = false) -> PieceNode:
 	assert(!has_piece_node(piece_node.id()))
 	add_child(piece_node)
 	piece_node.selected.connect(_on_piece_node_selected.bind(piece_node))
-	var target_position := (Vector2(piece.pos) - Vector2.ONE * Config.max_board_size * 0.5) * 16
+	var target_position := piece_node.calculate_target_position()
 	piece_node.position = target_position
 	_piece_nodes[piece_node.id()] = piece_node
 
@@ -22,11 +22,15 @@ func spawn_piece(piece: Piece, animate: bool = false) -> PieceNode:
 		piece_node.scale = Vector2.ONE * 0.8
 		piece_node.modulate = Color.TRANSPARENT
 		piece_node.position += Vector2(0, -10)
+		piece_node.rotation = randf_range(-0.4, 0.4)
 		var tw := piece_node.create_tween().set_parallel().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CUBIC)
-		tw.tween_interval((piece.pos.x + piece.pos.y) * 0.03 + 0.1)
+		var n := piece.pos.x + piece.pos.y
+		tw.tween_interval(pow(n / 14.0, 3) * 0.8 + n * 0.05 + 0.15)
 		tw.chain().tween_property(piece_node, "scale", Vector2.ONE, 0.2)
 		tw.tween_property(piece_node, "modulate", Color.WHITE, 0.1)
-		tw.tween_property(piece_node, "position", target_position, 0.2)
+		tw.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BOUNCE)
+		tw.tween_property(piece_node, "position", target_position, 0.3)
+		tw.tween_property(piece_node, "rotation", 0.0, 0.3)
 
 	return piece_node
 
