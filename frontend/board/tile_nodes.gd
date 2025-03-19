@@ -33,7 +33,17 @@ func create_tile_nodes(tile_positions: Array[Vector2i]) -> void:
 		tile_node.selected.connect(_on_tile_node_selected.bind(tile_node))
 		_tile_nodes[tile_pos.y][tile_pos.x] = tile_node
 		_cached_tile_count += 1
-		
+
+		# Animate tile node
+		tile_node.scale = Vector2.ONE * 0.4
+		tile_node.modulate = Color.TRANSPARENT
+		tile_node.position += Vector2(0, -10)
+		var tw := tile_node.create_tween().set_parallel().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+		tw.tween_interval((tile_pos.x + tile_pos.y) * 0.03)
+		tw.chain().tween_property(tile_node, "scale", Vector2.ONE, 0.2)
+		tw.tween_property(tile_node, "modulate", Color.WHITE, 0.2)
+		tw.tween_property(tile_node, "position", Vector2(0, 10), 0.2).as_relative()
+
 	assert(num_tile_nodes() == tile_positions.size())
 
 func highlight_tiles(tiles: Array[Vector2i]) -> void:

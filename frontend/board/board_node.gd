@@ -54,7 +54,7 @@ func init_with_game_setup(game_setup: GameSetup) -> void:
 	tile_nodes.create_tile_nodes(b.tile_map.get_all_tiles())
 	var pieces := b.piece_map.get_all_pieces()
 	for piece in pieces:
-		var piece_node := piece_nodes.spawn_piece(piece)
+		var piece_node := piece_nodes.spawn_piece(piece, true)
 		assert(b.piece_map.has_piece(piece_node.piece().pos))
 		assert(b.piece_map.get_piece(piece_node.piece().pos) == piece_node.piece())
 	
@@ -91,7 +91,7 @@ func init_randomly() -> void:
 	tile_nodes.create_tile_nodes(b.tile_map.get_all_tiles())
 	var pieces := b.piece_map.get_all_pieces()
 	for piece in pieces:
-		var piece_node := piece_nodes.spawn_piece(piece)
+		var piece_node := piece_nodes.spawn_piece(piece, true)
 		assert(b.piece_map.has_piece(piece_node.piece().pos))
 		assert(b.piece_map.get_piece(piece_node.piece().pos) == piece_node.piece())
 	
