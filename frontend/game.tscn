@@ -81,10 +81,11 @@ text = "You win!"
 label_settings = SubResource("LabelSettings_pfcdr")
 horizontal_alignment = 1
 
-[node name="RestartButton" type="Button" parent="GameOverLayer/Rect/H"]
+[node name="ContinueButton" type="Button" parent="GameOverLayer/Rect/H"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
-text = "New Game"
+text = "Continue"
 
 [node name="SettingsLayer" type="CanvasLayer" parent="."]
 visible = false
@@ -123,7 +124,7 @@ alignment = 1
 [node name="RestartButton" type="Button" parent="SettingsLayer/Rect/H"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "Restart"
+text = "Restart Run"
 
 [node name="QuitButton" type="Button" parent="SettingsLayer/Rect/H"]
 layout_mode = 2
@@ -140,7 +141,7 @@ visible = false
 
 [connection signal="game_over" from="BoardNode" to="." method="_on_board_node_game_over"]
 [connection signal="pressed" from="UILayer/SettingsButton" to="." method="_on_settings_button_pressed"]
-[connection signal="pressed" from="GameOverLayer/Rect/H/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="GameOverLayer/Rect/H/ContinueButton" to="." method="_on_continue_button_pressed"]
 [connection signal="pressed" from="SettingsLayer/Rect/H/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="SettingsLayer/Rect/H/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="SettingsLayer/Rect/H/BackButton" to="." method="_on_back_button_pressed"]

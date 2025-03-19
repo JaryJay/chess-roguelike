@@ -35,7 +35,7 @@ func _on_board_node_game_over(game_result: Match.Result) -> void:
 		game_over_label.text = "Draw! Threefold repetition"
 	game_over_layer.show()
 
-func _on_restart_button_pressed() -> void:
+func _on_continue_button_pressed() -> void:
 	board.queue_free()
 	for piece_node: PieceNode in get_tree().get_nodes_in_group("piece_nodes"):
 		piece_node.remove_from_group("piece_nodes")
@@ -51,6 +51,10 @@ func _on_restart_button_pressed() -> void:
 	else:
 		get_tree().change_scene_to_file("res://frontend/ui/game_creation.tscn")
 		queue_free()
+
+func _on_restart_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://frontend/ui/game_creation.tscn")
+	queue_free()
 
 func _on_upgrade_select_ui_upgrade_chosen(upgrade: Upgrade) -> void:
 	upgrade.apply(game_setup)
