@@ -45,7 +45,7 @@ func _on_restart_button_pressed() -> void:
 	settings_layer.hide()
 	
 	if saved_game_result == Match.Result.WIN:
-		game_setup.enemy_credits += 100
+		game_setup.enemy_credits += game_setup.difficulty.enemy_credit_increment
 		upgrade_select_ui.show()
 		upgrade_select_ui.generate_upgrades(game_setup)
 	else:
