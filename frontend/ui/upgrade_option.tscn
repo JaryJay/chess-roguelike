@@ -44,6 +44,7 @@ vertical_alignment = 1
 
 [node name="DescriptionLabel" type="Label" parent="PanelContainer/MarginContainer/V"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_vertical = 2
 text = "Description"
