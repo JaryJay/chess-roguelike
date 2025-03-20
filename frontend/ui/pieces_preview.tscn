@@ -1,9 +1,19 @@
-[gd_scene format=3 uid="uid://bxr14c6j6qojj"]
+[gd_scene load_steps=2 format=3 uid="uid://bxr14c6j6qojj"]
 
-[node name="PiecesPreview" type="Control"]
-layout_mode = 3
+[ext_resource type="Script" uid="uid://2qvfqvglu5rg" path="res://frontend/ui/pieces_preview.gd" id="1_kcvj6"]
+
+[node name="PiecesPreview" type="FlowContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/h_separation = -24
+script = ExtResource("1_kcvj6")
+
+[node name="PieceTextureRectTemplate" type="TextureRect" parent="."]
+visible = false
+custom_minimum_size = Vector2(100, 128)
+layout_mode = 2
+expand_mode = 4
+stretch_mode = 5

@@ -6,6 +6,9 @@ signal upgrade_chosen(upgrade: Upgrade)
 
 func generate_upgrades(game_setup: GameSetup, num_upgrades: int = 3) -> void:
 	assert(is_node_ready(), "UpgradeSelectUI must be ready before generating upgrades")
+
+	%PiecesPreview.set_piece_types(game_setup.piece_types)
+
 	for child: Node in upgrades_container.get_children():
 		child.queue_free()
 	

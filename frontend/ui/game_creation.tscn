@@ -1,8 +1,8 @@
 [gd_scene load_steps=14 format=3 uid="uid://c133hj4l1vgu6"]
 
 [ext_resource type="Script" uid="uid://nh2ecbxygfji" path="res://frontend/ui/game_creation.gd" id="1_hbw6a"]
+[ext_resource type="PackedScene" uid="uid://bxr14c6j6qojj" path="res://frontend/ui/pieces_preview.tscn" id="2_0lynk"]
 [ext_resource type="PackedScene" uid="uid://022xgnb2eaff" path="res://frontend/factions/monarchy.tscn" id="3_0lynk"]
-[ext_resource type="Script" uid="uid://fw7gwivhmbco" path="res://frontend/pieces/piece_sprite_2d.gd" id="3_vjqtv"]
 [ext_resource type="PackedScene" uid="uid://ccs0qt78cjm6l" path="res://frontend/factions/sharpshooters.tscn" id="4_rkkwd"]
 [ext_resource type="PackedScene" uid="uid://x8udnlohocwg" path="res://frontend/factions/military.tscn" id="5_vjqtv"]
 [ext_resource type="PackedScene" uid="uid://cl65ob1w6brjk" path="res://frontend/factions/the_squad.tscn" id="6_0lynk"]
@@ -193,21 +193,18 @@ layout_mode = 2
 layout_mode = 2
 text = "Starting Army"
 
-[node name="ArmyPreviewParent" type="MarginContainer" parent="CanvasLayer/Control/Divs/Main/H"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Divs/Main/H"]
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="ArmyPreview" type="Node2D" parent="CanvasLayer/Control/Divs/Main/H/ArmyPreviewParent"]
+[node name="PiecesPreview" parent="CanvasLayer/Control/Divs/Main/H/MarginContainer" instance=ExtResource("2_0lynk")]
 unique_name_in_owner = true
-position = Vector2(90, 130)
-scale = Vector2(6, 6)
-
-[node name="PieceSprite2D" type="Sprite2D" parent="CanvasLayer/Control/Divs/Main/H/ArmyPreviewParent/ArmyPreview"]
-script = ExtResource("3_vjqtv")
-metadata/_custom_type_script = "uid://fw7gwivhmbco"
+custom_minimum_size = Vector2(0, 67)
+layout_mode = 2
 
 [node name="StartButton" type="Button" parent="CanvasLayer/Control"]
 layout_mode = 1

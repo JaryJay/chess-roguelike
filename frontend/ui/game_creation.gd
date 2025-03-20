@@ -5,7 +5,7 @@ extends Node2D
 @onready var initial_slider_pos: Vector2 = faction_slider.position
 @onready var faction_name_label: Label = %FactionNameLabel
 @onready var flavour_text_label: RichTextLabel = %FlavourTextLabel
-@onready var army_preview: Node2D = %ArmyPreview
+@onready var pieces_preview: PiecesPreview = %PiecesPreview
 
 var current_faction_idx: int = 0
 var game_setup: GameSetup = GameSetup.new()
@@ -34,14 +34,7 @@ func _ready() -> void:
 	_update_army_preview()
 
 func _update_army_preview() -> void:
-	for child in army_preview.get_children():
-		child.queue_free()
-	for i in range(Config.factions[current_faction_idx].piece_types.size() - 1, -1, -1):
-		var piece_type: Piece.Type = Config.factions[current_faction_idx].piece_types[i]
-		var piece_sprite_2d: PieceSprite2D = PieceSprite2D.new()
-		piece_sprite_2d.white_texture = load("res://frontend/pieces/textures/%s_white.tres" % Piece.TYPE_TO_STRING[piece_type])
-		piece_sprite_2d.position = Vector2((i % 10) * 16, (i / 10) * 16)
-		army_preview.add_child(piece_sprite_2d)
+	pieces_preview.set_piece_types(Config.factions[current_faction_idx].piece_types)
 
 func _on_faction_changed() -> void:
 	# Shift the slider to the selected faction
