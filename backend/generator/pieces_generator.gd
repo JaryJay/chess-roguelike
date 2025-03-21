@@ -15,9 +15,9 @@ static func arrange_piece_positions(board: Board, pieces: Array[Piece], team: Te
 	assert(board.tile_map.num_tiles() >= army_size, "Board does not have enough tiles")
 	# Get first x tiles, where x is army size
 	var tiles := board.tile_map.get_all_tiles()
-	tiles.shuffle()
 	tiles.sort_custom(sort_tiles_by_y)
 	var first_few_tiles := tiles.slice(0, army_size) if team.is_enemy() else tiles.slice(-army_size)
+	first_few_tiles.shuffle()
 	for i: int in army_size:
 		pieces[i].pos = first_few_tiles[i]
 
