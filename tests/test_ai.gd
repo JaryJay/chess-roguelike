@@ -1,6 +1,18 @@
 class_name TestAI extends Node
 
+@export var wait_before_running: = true
+
 func _ready() -> void:
+	if wait_before_running:
+		var timer: Timer = Timer.new()
+		timer.wait_time = 1.0
+		timer.timeout.connect(run_tests)
+		add_child(timer)
+		timer.start()
+	else:
+		run_tests()
+
+func run_tests() -> void:
 	Config.load_config()
 	PieceRules.load_pieces()
 
