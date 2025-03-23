@@ -1,10 +1,10 @@
 # Chess Roguelike
-A chess-inspired roguelike.
-
-## Demo
 
 
-https://github.com/user-attachments/assets/793644e1-53ef-47c5-b73c-5c37caa6e59c
+
+https://github.com/user-attachments/assets/5930ae58-650e-414a-9a91-b714346dfd5b
+
+
 
 
 ## Running
