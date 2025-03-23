@@ -22,6 +22,17 @@ func init(new_pos: Vector2i) -> void:
 	$Label.text = "%s,%s" % [_pos.x, _pos.y]
 	position = (Vector2(_pos) - Vector2.ONE * Config.max_board_size * 0.5) * 16
 
+func animate_flash(intensity: float = 1.2, duration: float = 0.4, delay: float = 0.0) -> void:
+	# Because darker squares are less visible, we need to make them flash brighter
+	if (_pos.x + _pos.y) % 2 == 1:
+		intensity *= 1.1
+	
+	var tw := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
+	if delay > 0.0:
+		tw.tween_interval(delay)
+	tw.tween_property(self, "modulate", Color(intensity, intensity, intensity, 1), duration * 0.5)
+	tw.tween_property(self, "modulate", Color.WHITE, duration * 0.5)
+
 # This only works for mouse_and_keyboard
 func _unhandled_input(event: InputEvent) -> void:
 	if Settings.INPUT_MODE != "mouse_and_keyboard": return

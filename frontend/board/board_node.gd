@@ -106,6 +106,8 @@ func init_randomly() -> void:
 			ai_thread2.process_board(b)
 
 func _on_piece_node_selected(piece_node: PieceNode) -> void:
+	var tile_node: TileNode = tile_nodes.get_tile_node(piece_node.piece().pos)
+	tile_node.animate_flash(1.1)
 	if ai_vs_ai_mode: return
 		
 	if b.team_to_move == player_team and selected_piece_node:
@@ -129,6 +131,7 @@ func _on_piece_node_selected(piece_node: PieceNode) -> void:
 		_select_piece_node(null)
 
 func _on_tile_node_selected(tile_node: TileNode) -> void:
+	tile_node.animate_flash(1.1)
 	if ai_vs_ai_mode: return
 		
 	if b.team_to_move == player_team and selected_piece_node:
@@ -205,14 +208,8 @@ func _on_game_over(game_result: Match.Result) -> void:
 		get_tree().root.add_child(particles)
 
 		for tile_node: TileNode in tile_nodes.get_all_tile_nodes():
-			var tw := tile_node.create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
-			# Wait longer the further away the tile is from the king
 			var distance := tile_node.pos().distance_to(defeated_king_node.piece().pos)
-			tw.tween_interval(distance ** 2 * 0.01 + distance * 0.07)
-			tw.tween_property(tile_node, "position", tile_node.position + Vector2(0, -3), 0.2)
-			tw.parallel().tween_property(tile_node, "scale", Vector2.ONE * 0.95, 0.2)
-			tw.tween_property(tile_node, "position", tile_node.position, 0.2).set_ease(Tween.EASE_IN)
-			tw.parallel().tween_property(tile_node, "scale", Vector2.ONE, 0.2).set_ease(Tween.EASE_IN)
+			tile_node.animate_flash(1.2, 0.4, distance * 0.10)
 
 
 func _on_ai_thread_move_found(move: Move) -> void:
@@ -285,6 +282,10 @@ func perform_move_action(move_action: MoveAction) -> void:
 		piece_node.move_to(tile_nodes.get_tile_node(move_action.to).position)
 	
 	piece_node.set_piece(b.piece_map.get_piece(move_action.to))
+	
+	# Animate target tile color
+	var tile_node: TileNode = tile_nodes.get_tile_node(move_action.to)
+	tile_node.animate_flash(1.2)
 	
 	# For each other piece node, set piece to be the new piece in the new board
 	for p: PieceNode in piece_nodes.get_all_piece_nodes():
