@@ -1,0 +1,61 @@
+[gd_scene load_steps=11 format=3 uid="uid://cpxuxoqe4o0t7"]
+
+[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="1_5rmms"]
+[ext_resource type="Script" uid="uid://d0g2hrn68fqrd" path="res://frontend/vfx/one_shot_particles.gd" id="2_bxqd2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_37vmm"]
+atlas = ExtResource("1_5rmms")
+region = Rect2(0, 0, 1, 1)
+
+[sub_resource type="Gradient" id="Gradient_bxqd2"]
+colors = PackedColorArray(0.505344, 0.505344, 0.505344, 1, 0.35771, 0.374659, 0.373965, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_8t1fk"]
+gradient = SubResource("Gradient_bxqd2")
+
+[sub_resource type="Gradient" id="Gradient_5rmms"]
+offsets = PackedFloat32Array(0, 0.175214, 1)
+colors = PackedColorArray(0.921569, 0.886275, 0.847059, 0.529412, 0.980392, 0.960784, 0.941176, 0.286275, 0.976471, 0.94902, 0.92549, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bxqd2"]
+gradient = SubResource("Gradient_5rmms")
+
+[sub_resource type="Curve" id="Curve_8t1fk"]
+_data = [Vector2(0, 0.0306586), 0.0, 0.0, 0, 0, Vector2(0.048583, 1), 0.0, 0.0, 0, 0, Vector2(0.396761, 1), -0.72922, -0.72922, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_rglms"]
+curve = SubResource("Curve_8t1fk")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_68fwx"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1, 0.5, 1)
+emission_shape = 3
+emission_box_extents = Vector3(5, 1, 0)
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, -1, 0)
+spread = 35.0
+initial_velocity_min = 20.0
+initial_velocity_max = 30.0
+angular_velocity_min = -30.0
+angular_velocity_max = 30.0
+gravity = Vector3(0, 45, 0)
+scale_min = 2.0
+scale_max = 4.0
+scale_curve = SubResource("CurveTexture_rglms")
+color_ramp = SubResource("GradientTexture1D_bxqd2")
+color_initial_ramp = SubResource("GradientTexture1D_8t1fk")
+
+[node name="DustParticles" type="GPUParticles2D"]
+emitting = false
+amount = 4
+texture = SubResource("AtlasTexture_37vmm")
+lifetime = 0.4
+one_shot = true
+explosiveness = 1.0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_68fwx")
+script = ExtResource("2_bxqd2")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

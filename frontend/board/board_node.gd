@@ -257,9 +257,12 @@ func perform_move_action(move_action: MoveAction) -> void:
 		piece_node = piece_nodes.spawn_piece(new_piece)
 		# put it back in the old position. It will be moved to the new position later
 		piece_node.position = old_piece_position
+
+		piece_node.move_to(tile_nodes.get_tile_node(move_action.to).position, true)
+	else:
+		# Update piece position in the UI
+		piece_node.move_to(tile_nodes.get_tile_node(move_action.to).position)
 	
-	# Update piece position in the UI
-	piece_node.move_to(tile_nodes.get_tile_node(move_action.to).position)
 	piece_node.set_piece(b.piece_map.get_piece(move_action.to))
 	
 	# For each other piece node, set piece to be the new piece in the new board

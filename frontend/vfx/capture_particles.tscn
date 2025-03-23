@@ -8,15 +8,15 @@ atlas = ExtResource("1_6yku5")
 region = Rect2(0, 0, 1, 1)
 
 [sub_resource type="Gradient" id="Gradient_5xgqv"]
-offsets = PackedFloat32Array(0.465812, 0.551282)
+offsets = PackedFloat32Array(0.282051, 0.747863)
 colors = PackedColorArray(0.667081, 0.709647, 0.935419, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_5bl5w"]
 gradient = SubResource("Gradient_5xgqv")
 
 [sub_resource type="Gradient" id="Gradient_unqsa"]
-offsets = PackedFloat32Array(0, 0.0619658, 0.538462, 0.995726)
-colors = PackedColorArray(1, 1, 1, 0.0392157, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0.631373)
+offsets = PackedFloat32Array(0, 0.0619658, 0.517094, 1)
+colors = PackedColorArray(1, 1, 1, 0.0392157, 1, 1, 1, 1, 1, 1, 1, 1, 0.920995, 0.920995, 0.920995, 0.631373)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_hysa7"]
 gradient = SubResource("Gradient_unqsa")
@@ -41,6 +41,8 @@ initial_velocity_max = 56.39
 angular_velocity_min = -30.0
 angular_velocity_max = 30.0
 gravity = Vector3(0, 98, 0)
+scale_min = 1.6
+scale_max = 2.2
 scale_curve = SubResource("CurveTexture_y34ql")
 color_ramp = SubResource("GradientTexture1D_hysa7")
 color_initial_ramp = SubResource("GradientTexture1D_5bl5w")

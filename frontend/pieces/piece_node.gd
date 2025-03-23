@@ -25,10 +25,23 @@ func set_piece(new_piece: Piece) -> void:
 		assert(_piece.type == new_piece.type, "%s != %s" % [_piece.type, new_piece.type])
 	_piece = new_piece
 
-func move_to(target_position: Vector2) -> void:
+func move_to(target_position: Vector2, is_promotion: bool = false) -> void:
 	_is_moving = true
+
+	if is_promotion:
+		var promotion_particles: Node2D = preload("res://frontend/vfx/promotion_particles.tscn").instantiate()
+		promotion_particles.local_coords = true
+		add_child(promotion_particles)
+		promotion_particles.position = Vector2(0, 5)
+
 	var tween := create_tween()
 	tween.tween_property(self, "position", target_position + Vector2(0, -2), 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
+	tween.tween_callback(func():
+		var dust_particles: Node2D = preload("res://frontend/vfx/dust_particles.tscn").instantiate()
+		dust_particles.local_coords = true
+		add_child(dust_particles)
+		dust_particles.position = Vector2(0, 8)
+	)
 	tween.tween_property(self, "position", target_position, 0.05).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
 	tween.tween_callback(func(): _is_moving = false)
 

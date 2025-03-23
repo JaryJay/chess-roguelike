@@ -1,0 +1,70 @@
+[gd_scene load_steps=13 format=3 uid="uid://trr0jrq43fw6"]
+
+[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="1_mhqc2"]
+[ext_resource type="Script" uid="uid://d0g2hrn68fqrd" path="res://frontend/vfx/one_shot_particles.gd" id="2_3rikr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_37vmm"]
+atlas = ExtResource("1_mhqc2")
+region = Rect2(72, 0, 2, 16)
+
+[sub_resource type="Gradient" id="Gradient_mhqc2"]
+offsets = PackedFloat32Array(0.143162, 0.816239)
+colors = PackedColorArray(0.893531, 0.909199, 0.980763, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3rikr"]
+gradient = SubResource("Gradient_mhqc2")
+
+[sub_resource type="Gradient" id="Gradient_i75bs"]
+offsets = PackedFloat32Array(0, 0.0619658, 0.538462, 0.995726)
+colors = PackedColorArray(1, 1, 1, 0.0392157, 1, 1, 1, 0.886275, 1, 1, 1, 0.815686, 1, 1, 1, 0.631373)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_s4bcc"]
+gradient = SubResource("Gradient_i75bs")
+
+[sub_resource type="Curve" id="Curve_48174"]
+_data = [Vector2(0, 0.025738), 0.0, 0.0, 0, 0, Vector2(0.192308, 0.512869), 2.65171, 2.65171, 0, 0, Vector2(0.720648, 0.650643), -1.57283, -1.57283, 0, 0, Vector2(1, 0), -2.63157, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_tpj67"]
+_data = [Vector2(0, 0.345572), 0.0, 0.0, 0, 0, Vector2(0.402834, 0.690008), 0.0, 0.0, 0, 0, Vector2(1, 0.8081), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_u24yd"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_8fy8u"]
+curve_x = SubResource("Curve_48174")
+curve_y = SubResource("Curve_tpj67")
+curve_z = SubResource("Curve_u24yd")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hth2l"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(6, 3, 0)
+angle_min = 1.07288e-05
+angle_max = 1.07288e-05
+direction = Vector3(0, -1, 0)
+spread = 0.0
+initial_velocity_min = 20.0
+initial_velocity_max = 50.0
+angular_velocity_min = -1.60933e-05
+angular_velocity_max = -1.60933e-05
+gravity = Vector3(0, 34, 0)
+scale_curve = SubResource("CurveXYZTexture_8fy8u")
+color_ramp = SubResource("GradientTexture1D_s4bcc")
+color_initial_ramp = SubResource("GradientTexture1D_3rikr")
+anim_offset_max = 0.4836
+
+[node name="PromotionParticles" type="GPUParticles2D"]
+emitting = false
+amount = 24
+texture = SubResource("AtlasTexture_37vmm")
+lifetime = 0.7
+one_shot = true
+explosiveness = 0.92
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_hth2l")
+script = ExtResource("2_3rikr")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

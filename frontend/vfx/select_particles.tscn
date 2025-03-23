@@ -38,7 +38,7 @@ gravity = Vector3(0, 98, 0)
 scale_curve = SubResource("CurveTexture_nhs1x")
 color_ramp = SubResource("GradientTexture1D_52aa6")
 
-[node name="CaptureParticles" type="GPUParticles2D"]
+[node name="SelectParticles" type="GPUParticles2D"]
 emitting = false
 amount = 5
 texture = SubResource("AtlasTexture_37vmm")
