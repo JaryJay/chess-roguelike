@@ -68,9 +68,9 @@
 			"display_name": "Novice",
 			"description": "For noobs. It's okay to be bad at chess.",
 			"eval_randomness": 0.8,
-			"default_depth": 3,
-			"enemy_credits": 1000,
-			"enemy_credit_increment": 120
+			"default_depth": 2,
+			"enemy_credits": 800,
+			"enemy_credit_increment": 100
 		},
 		{
 			"name": "standard",
