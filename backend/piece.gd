@@ -100,14 +100,12 @@ func _pawn_get_additional_moves(b: Board) -> Array[Move]:
 	
 	var facing_dir := _get_pawn_facing_direction()
 	
-	var forwards := pos + facing_dir
-	if b.tile_map.has_tile(forwards) and not b.piece_map.has_piece(forwards):
-		available_moves.append(Move.new(pos, forwards))
-	
 	# If info = 0, we have never moved
 	if info == 0:
+		# 1 or 2 squares forward, no captures allowed
 		available_moves.append_array(_get_moves_along_rays([facing_dir], b, 2, false))
 	else:
+		# 1 forward, no captures allowed
 		available_moves.append_array(_get_moves_along_rays([facing_dir], b, 1, false))
 	
 	# Check for captures
