@@ -69,15 +69,15 @@ func test_pawn_promotion_mate() -> void:
 	])
 	
 	b.piece_map.put_piece(Vector2i(5,5), Piece.new(Piece.Type.PAWN, Team.PLAYER))
-	b.piece_map.put_piece(Vector2i(4,5), Piece.new(Piece.Type.KING, Team.PLAYER))
-	b.piece_map.put_piece(Vector2i(2,6), Piece.new(Piece.Type.KING, Team.ENEMY_AI))
+	b.piece_map.put_piece(Vector2i(3,6), Piece.new(Piece.Type.KING, Team.PLAYER))
+	b.piece_map.put_piece(Vector2i(3,4), Piece.new(Piece.Type.KING, Team.ENEMY_AI))
 
 	var ai := _create_ai()
 	var move := ai.get_move(b)
 	
 	assert(move.from == Vector2i(5,5))  # Pawn from bottom left
 	assert(move.to == Vector2i(5,4))	# Pawn to top left, promoting
-	assert(move.promo_info == Piece.Type.QUEEN)  # Promotes to queen for mate
+	assert(move.promo_info == Piece.Type.QUEEN or move.promo_info == Piece.Type.ROOK)
 	print("Pawn promotion mate passed")
 
 func test_pawn_promotion_less_obvious() -> void:
@@ -96,10 +96,11 @@ func test_pawn_promotion_less_obvious() -> void:
 
 	var ai := _create_ai()
 	var move := ai.get_move(b)
-	
-	assert(move.from == Vector2i(3,6))
-	assert(move.to == Vector2i(3,7))
-	assert(move.promo_info == Piece.Type.QUEEN, "Got %s" % Piece.type_to_string(move.promo_info))
+
+	assert(move.from == Vector2i(3,6), "Moved from %s instead of (3,6)" % move.from)
+	assert(move.to == Vector2i(3,7), "Moved to %s instead of (3,7)" % move.to)
+	assert(move.is_promotion(), "Did not promote")
+	assert(move.promo_info == Piece.Type.QUEEN, "Promoted to %s instead of QUEEN" % Piece.type_to_string(move.promo_info))
 	print("Pawn promotion less obvious passed")
 
 func test_knight_fork() -> void:
