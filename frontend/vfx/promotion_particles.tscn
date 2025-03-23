@@ -5,7 +5,7 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_37vmm"]
 atlas = ExtResource("1_mhqc2")
-region = Rect2(72, 0, 2, 16)
+region = Rect2(0, 0, 1, 1)
 
 [sub_resource type="Gradient" id="Gradient_mhqc2"]
 offsets = PackedFloat32Array(0.143162, 0.816239)
@@ -22,11 +22,12 @@ colors = PackedColorArray(1, 1, 1, 0.0392157, 1, 1, 1, 0.886275, 1, 1, 1, 0.8156
 gradient = SubResource("Gradient_i75bs")
 
 [sub_resource type="Curve" id="Curve_48174"]
-_data = [Vector2(0, 0.025738), 0.0, 0.0, 0, 0, Vector2(0.192308, 0.512869), 2.65171, 2.65171, 0, 0, Vector2(0.720648, 0.650643), -1.57283, -1.57283, 0, 0, Vector2(1, 0), -2.63157, 0.0, 0, 0]
+_data = [Vector2(0, 0.025738), 0.0, 0.0, 0, 0, Vector2(0.11336, 1), 0.0, 0.0, 0, 0, Vector2(0.81579, 1), -0.0578749, -0.0578749, 0, 0, Vector2(1, 0.0306586), -3.81973, 0.0, 0, 0]
 point_count = 4
 
 [sub_resource type="Curve" id="Curve_tpj67"]
-_data = [Vector2(0, 0.345572), 0.0, 0.0, 0, 0, Vector2(0.402834, 0.690008), 0.0, 0.0, 0, 0, Vector2(1, 0.8081), 0.0, 0.0, 0, 0]
+_limits = [0.0, 14.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.404858, 14), 0.0, 0.0, 0, 0, Vector2(1, 0), -4.15756, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="Curve" id="Curve_u24yd"]
