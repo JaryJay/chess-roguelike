@@ -210,6 +210,10 @@ func _on_game_over(game_result: Match.Result) -> void:
 		for tile_node: TileNode in tile_nodes.get_all_tile_nodes():
 			var distance := tile_node.pos().distance_to(defeated_king_node.piece().pos)
 			tile_node.animate_flash(1.2, 0.4, distance * 0.10)
+		
+		GameCamera.get_instance().shake(0.5, 3)
+	else:
+		GameCamera.get_instance().shake(0.3, 2)
 
 
 func _on_ai_thread_move_found(move: Move) -> void:
@@ -258,10 +262,14 @@ func perform_move_action(move_action: MoveAction) -> void:
 	# Handle captures
 	if move_action.is_capture():
 		var captured_piece_node: PieceNode = piece_nodes.get_piece_node(move_action.captured_piece_id)
+		var shake_intensity := minf(2.0, captured_piece_node.piece().get_worth() * 0.15)
+		GameCamera.get_instance().shake(0.2, shake_intensity)
 		var capture_particles: Node2D = preload("res://frontend/vfx/capture_particles.tscn").instantiate()
 		add_child(capture_particles)
 		capture_particles.position = captured_piece_node.position + Vector2(0, 5)
 		piece_nodes.free_piece_node(move_action.captured_piece_id)
+	elif move_action.is_check():
+		GameCamera.get_instance().shake(0.2, 2.0)
 	
 	# Handle promotions
 	if move_action.is_promotion():

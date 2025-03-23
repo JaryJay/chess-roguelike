@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bb0qxkgwbx5xc"]
+[gd_scene load_steps=8 format=3 uid="uid://bb0qxkgwbx5xc"]
 
 [ext_resource type="Script" uid="uid://bmw6lvpdpokau" path="res://frontend/game.gd" id="1_qfs6o"]
 [ext_resource type="PackedScene" uid="uid://b0v2ttp4dudf4" path="res://frontend/board/board_node.tscn" id="2_b7sum"]
+[ext_resource type="PackedScene" uid="uid://ciq1rdvbmn1wg" path="res://frontend/camera/game_camera.tscn" id="3_bh0d3"]
 [ext_resource type="Texture2D" uid="uid://bl0xqb50vkq8q" path="res://assets/ui/panel-030.png" id="3_dry2n"]
 [ext_resource type="PackedScene" uid="uid://b3qdrbapth2jx" path="res://frontend/ui/upgrade_select_ui.tscn" id="4_g2u0c"]
 
@@ -17,9 +18,7 @@ script = ExtResource("1_qfs6o")
 
 [node name="BoardNode" parent="." instance=ExtResource("2_b7sum")]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0, -10.485)
-zoom = Vector2(7.5, 7.5)
+[node name="GameCamera" parent="." instance=ExtResource("3_bh0d3")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_xnp5u")

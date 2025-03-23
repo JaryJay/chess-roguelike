@@ -41,7 +41,7 @@ func _on_board_node_game_over(game_result: Match.Result) -> void:
 		game_over_label.text = "Draw! Threefold repetition"
 	
 	var tw := create_tween()
-	tw.tween_interval(0.4)
+	tw.tween_interval(1.0)
 	tw.tween_callback(game_over_layer.show)
 
 func _on_continue_button_pressed() -> void:
