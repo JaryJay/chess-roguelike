@@ -178,13 +178,13 @@ func _select_piece_node(piece_node: PieceNode) -> void:
 
 func end_player_turn() -> void:
 	if b.is_match_over():
-		game_over.emit(b.get_match_result())
+		_on_game_over(b.get_match_result())
 		return
 	ai_thread2.process_board(b)
 
 func end_ai_turn() -> void:
 	if b.is_match_over():
-		game_over.emit(b.get_match_result())
+		_on_game_over(b.get_match_result())
 		return
 	
 	if ai_vs_ai_mode:
@@ -193,6 +193,27 @@ func end_ai_turn() -> void:
 			ai_thread1.process_board(b)
 		else:
 			ai_thread2.process_board(b)
+
+func _on_game_over(game_result: Match.Result) -> void:
+	game_over.emit(game_result)
+	if game_result == Match.Result.WIN or game_result == Match.Result.LOSE:
+		var defeated_team: Team = b.team_to_move
+		var defeated_king_node: PieceNode = piece_nodes.get_king_node(defeated_team)
+		
+		var particles: OneShotParticles = load("res://frontend/vfx/capture_particles.tscn").instantiate()
+		particles.position = defeated_king_node.position
+		get_tree().root.add_child(particles)
+
+		for tile_node: TileNode in tile_nodes.get_all_tile_nodes():
+			var tw := tile_node.create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
+			# Wait longer the further away the tile is from the king
+			var distance := tile_node.pos().distance_to(defeated_king_node.piece().pos)
+			tw.tween_interval(distance ** 2 * 0.01 + distance * 0.07)
+			tw.tween_property(tile_node, "position", tile_node.position + Vector2(0, -3), 0.2)
+			tw.parallel().tween_property(tile_node, "scale", Vector2.ONE * 0.95, 0.2)
+			tw.tween_property(tile_node, "position", tile_node.position, 0.2).set_ease(Tween.EASE_IN)
+			tw.parallel().tween_property(tile_node, "scale", Vector2.ONE, 0.2).set_ease(Tween.EASE_IN)
+
 
 func _on_ai_thread_move_found(move: Move) -> void:
 	# Create move action

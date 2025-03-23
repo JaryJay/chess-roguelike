@@ -31,9 +31,6 @@ func _on_board_node_game_over(game_result: Match.Result) -> void:
 			game_over_label.text = "You win!\n1 win this run"
 		else:
 			game_over_label.text = "You win!\n%s wins this run" % wins_this_run
-		var particles: OneShotParticles = load("res://frontend/vfx/capture_particles.tscn").instantiate()
-		particles.position = board.piece_nodes.get_king_node(Team.ENEMY_AI).position
-		get_tree().root.add_child(particles)
 	elif game_result == Match.Result.LOSE:
 		game_over_label.text = "You lose!"
 	elif game_result == Match.Result.DRAW_STALEMATE:
