@@ -15,7 +15,7 @@ func get_all_tile_nodes() -> Array[TileNode]:
 		for x in _tile_nodes[y].size():
 			var pos := Vector2i(x, y)
 			if has_tile_node(pos):
-				all_tile_nodes.append(pos)
+				all_tile_nodes.append(get_tile_node(pos))
 	
 	return all_tile_nodes
 
@@ -24,7 +24,7 @@ func create_tile_nodes(tile_positions: Array[Vector2i]) -> void:
 	for y in _tile_nodes.size():
 		_tile_nodes[y] = []
 		_tile_nodes[y].resize(Config.max_board_size)
-		_tile_nodes[y].fill(false)
+		_tile_nodes[y].fill(null)
 	
 	for tile_pos: Vector2i in tile_positions:
 		var tile_node: TileNode = tile_node_scene.instantiate()
