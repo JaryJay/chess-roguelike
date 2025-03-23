@@ -8,7 +8,7 @@ var team_to_move: Team
 var turn_number: int = 1
 ## Dictionary from int to int. Maps position hashes to the repetition count
 var position_counts: Dictionary = {}
-var is_threefold_repetition: bool = false
+var _match_result: Match.Result = Match.Result.UNCOMPUTED
 
 func _init() -> void:
 	tile_map = BoardTileMap.new()
@@ -28,7 +28,7 @@ func has_available_moves_from(from: Vector2i) -> bool:
 	var piece := piece_map.get_piece(from)
 	var moves := piece.get_available_moves(self)
 	for move: Move in moves:
-		var filtered_moves := filter_out_illegal_moves_and_tag_check_moves([move])
+		var filtered_moves := _filter_out_illegal_moves_and_tag_check_moves([move])
 		if !filtered_moves.is_empty():
 			return true
 	return false
@@ -37,10 +37,10 @@ func get_available_moves_from(from: Vector2i) -> Array[Move]:
 	assert(piece_map.has_piece(from), "Must be a piece there")
 	var piece := piece_map.get_piece(from)
 	var moves := piece.get_available_moves(self)
-	moves = filter_out_illegal_moves_and_tag_check_moves(moves)
+	moves = _filter_out_illegal_moves_and_tag_check_moves(moves)
 	return moves
 
-func filter_out_illegal_moves_and_tag_check_moves(moves: Array[Move]) -> Array[Move]:
+func _filter_out_illegal_moves_and_tag_check_moves(moves: Array[Move]) -> Array[Move]:
 	# Filter out all illegal moves
 	for i in range(moves.size() - 1, -1, -1):
 		var move := moves[i]
@@ -70,7 +70,6 @@ func filter_out_illegal_moves_and_tag_check_moves(moves: Array[Move]) -> Array[M
 	# moves = moves.filter(
 	return moves
 
-
 func perform_move(move: Move, allow_illegal: bool = false) -> Board:
 	var current_team_to_move := team_to_move
 	
@@ -83,6 +82,7 @@ func perform_move(move: Move, allow_illegal: bool = false) -> Board:
 		assert(!piece_map.has_piece(move.to), "There must not be a piece at the destination if it's not a capture")
 	
 	var next_board := duplicate()
+	next_board._match_result = Match.Result.UNCOMPUTED
 	next_board.team_to_move = Team.PLAYER if current_team_to_move == Team.ENEMY_AI else Team.ENEMY_AI
 	next_board.turn_number = turn_number + 1
 	
@@ -110,10 +110,7 @@ func perform_move(move: Move, allow_illegal: bool = false) -> Board:
 	var pos_hash = next_board.hash()
 	var new_count = next_board.position_counts.get(pos_hash, 0) + 1
 	next_board.position_counts[pos_hash] = new_count
-	# Set threefold repetition flag if count reaches 3
-	if new_count >= 3:
-		next_board.is_threefold_repetition = true
-	
+
 	if !allow_illegal:
 		assert(!next_board.is_team_in_check(current_team_to_move), "A move cannot put your own team in check")
 	
@@ -132,27 +129,51 @@ func is_team_in_check(team: Team) -> bool:
 	return false
 
 func is_match_over() -> bool:
-	# Check for threefold repetition first
-	if is_threefold_repetition:
-		return true
+	return get_match_result() != Match.Result.IN_PROGRESS
+
+func get_match_result() -> Match.Result:
+	if _match_result == Match.Result.UNCOMPUTED:
+		_match_result = _compute_match_result()
+		assert(_match_result != Match.Result.UNCOMPUTED, "Match result was not computed")
+	return _match_result
+
+#region: match result computation
+
+func _compute_match_result() -> Match.Result:
+	assert(_match_result == Match.Result.UNCOMPUTED, "Match result was already computed")
 	
-	var pieces := piece_map.get_all_pieces()
+	# Check for threefold repetition
+	if position_counts.get(self.hash(), 0) >= 3:
+		return Match.Result.DRAW_THREEFOLD_REPETITION
 	
 	# Check for insufficient material
-	if _is_insufficient_material(pieces):
-		return true
+	if _is_insufficient_material():
+		return Match.Result.DRAW_INSUFFICIENT_MATERIAL
 	
-	# Check for any valid moves, return early if we find one
-	# This is equivalent to checking if get_available_moves().is_empty()
+	# Check for any legal moves
+	var pieces := piece_map.get_all_pieces()
+	var has_legal_moves := false
 	for piece: Piece in pieces:
 		if piece.team != team_to_move:
 			continue
 		if has_available_moves_from(piece.pos):
-			return false
-			
-	return true
+			has_legal_moves = true
+			break
+	
+	# If no legal moves, determine if it's checkmate or stalemate
+	if !has_legal_moves:
+		if is_team_in_check(team_to_move):
+			if team_to_move == Team.PLAYER:
+				return Match.Result.LOSE
+			else:
+				return Match.Result.WIN
+		else:
+			return Match.Result.DRAW_STALEMATE
+	
+	return Match.Result.IN_PROGRESS
 
-func _is_insufficient_material(pieces: Array[Piece]) -> bool:
+func _is_insufficient_material() -> bool:
+	var pieces := piece_map.get_all_pieces()
 	# Filter out kings first since we know there are exactly two
 	var non_king_pieces := pieces.filter(func(p): return p.type != Piece.Type.KING)
 	
@@ -187,25 +208,10 @@ func _is_insufficient_material(pieces: Array[Piece]) -> bool:
 	
 	return false
 
-func get_game_result() -> Match.Result:
-	assert(is_match_over(), "Match is not over")
-	
-	# Check for threefold repetition first
-	if is_threefold_repetition:
-		return Match.Result.DRAW_THREEFOLD_REPETITION
-	
-	# Check for insufficient material
-	if _is_insufficient_material(piece_map.get_all_pieces()):
-		return Match.Result.DRAW_INSUFFICIENT_MATERIAL
-	
-	# Then check for other conditions
-	if is_team_in_check(team_to_move):
-		if team_to_move == Team.PLAYER:
-			return Match.Result.LOSE
-		else:
-			return Match.Result.WIN
-	else:
-		return Match.Result.DRAW_STALEMATE
+#endregion
+
+
+#region: object methods
 
 func duplicate() -> Board:
 	var new_board := Board.new()
@@ -216,7 +222,7 @@ func duplicate() -> Board:
 	new_board.team_to_move = team_to_move
 	new_board.turn_number = turn_number
 	new_board.position_counts = position_counts.duplicate()
-	new_board.is_threefold_repetition = is_threefold_repetition
+	new_board._match_result = _match_result
 	return new_board
 
 func hash() -> int:
@@ -242,3 +248,5 @@ func hash() -> int:
 	
 	# Convert first 4 bytes to integer
 	return hash_bytes.decode_s32(0)
+
+#endregion

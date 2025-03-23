@@ -56,8 +56,7 @@ func _get_best_result(board: Board, depth: int, alpha: float, beta: float, is_ro
 	if is_root:
 		_root_timing["get_moves"] = Time.get_ticks_msec() - start_time
 	
-	if moves.is_empty():
-		return Result.new(-INF if board.team_to_move == Team.PLAYER else INF, null)
+	assert(!moves.is_empty(), "No moves found for board %s, but is_match_over() is %s" % [board.to_string(), board.is_match_over()])
 	
 	start_time = Time.get_ticks_msec()
 	sort_moves_by_strength_desc(moves, board)
@@ -105,9 +104,19 @@ func _get_best_result(board: Board, depth: int, alpha: float, beta: float, is_ro
 
 func evaluate(board: Board) -> float:
 	if board.is_match_over():
-		if board.is_team_in_check(board.team_to_move):
-			return -INF if board.team_to_move == Team.PLAYER else INF
-		return 0 # Stalemate
+		var match_result: Match.Result = board.get_match_result()
+		assert(match_result != Match.Result.IN_PROGRESS)
+		if match_result == Match.Result.DRAW_INSUFFICIENT_MATERIAL:
+			return 0
+		if match_result == Match.Result.DRAW_THREEFOLD_REPETITION:
+			return 0
+		if match_result == Match.Result.DRAW_STALEMATE:
+			return 0
+		if match_result == Match.Result.WIN:
+			return INF
+		if match_result == Match.Result.LOSE:
+			return -INF
+		assert(false, "Unexpected match result %s" % match_result)
 	
 	var start_time := Time.get_ticks_msec()
 	

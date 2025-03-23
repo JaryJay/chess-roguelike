@@ -178,13 +178,13 @@ func _select_piece_node(piece_node: PieceNode) -> void:
 
 func end_player_turn() -> void:
 	if b.is_match_over():
-		game_over.emit(b.get_game_result())
+		game_over.emit(b.get_match_result())
 		return
 	ai_thread2.process_board(b)
 
 func end_ai_turn() -> void:
 	if b.is_match_over():
-		game_over.emit(b.get_game_result())
+		game_over.emit(b.get_match_result())
 		return
 	
 	if ai_vs_ai_mode:

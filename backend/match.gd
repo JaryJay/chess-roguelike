@@ -1,6 +1,8 @@
 class_name Match
 
 enum Result {
+	UNCOMPUTED,
+	IN_PROGRESS,
 	WIN,
 	LOSE,
 	DRAW_STALEMATE,
