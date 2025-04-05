@@ -21,6 +21,7 @@ func run_tests() -> void:
 	test_pawn_promotion_mate()
 	test_pawn_promotion_less_obvious()
 	test_knight_fork()
+	test_obvious_pawn_capture()
 	
 	get_tree().quit()
 
@@ -138,6 +139,28 @@ func test_knight_fork() -> void:
 	assert(move.from == Vector2i(2,4))  # Knight from current position
 	assert(move.to == Vector2i(4,3))    # Knight to forking square
 	print("Knight fork passed")
+
+func test_obvious_pawn_capture() -> void:
+	var b := Board.new()
+	b.team_to_move = Team.PLAYER
+	b.tile_map.set_tiles([
+		Vector2i(2,2), Vector2i(3,2), Vector2i(4,2), Vector2i(5,2),
+		Vector2i(2,3), Vector2i(3,3), Vector2i(4,3), Vector2i(5,3),
+		Vector2i(2,4), Vector2i(3,4), Vector2i(4,4), Vector2i(5,4),
+		Vector2i(2,5), Vector2i(3,5), Vector2i(4,5), Vector2i(5,5),
+	])
+	
+	b.piece_map.put_piece(Vector2i(2,4), Piece.new(Piece.Type.KING, Team.PLAYER))
+	b.piece_map.put_piece(Vector2i(4,2), Piece.new(Piece.Type.KING, Team.ENEMY_AI))
+	b.piece_map.put_piece(Vector2i(3,4), Piece.new(Piece.Type.PAWN, Team.ENEMY_AI))
+
+	var ai := _create_ai()
+	var move := ai.get_move(b)
+
+	assert(move.from == Vector2i(2,4))
+	assert(move.is_capture())
+	assert(move.to == Vector2i(3,4))
+	print("Obvious pawn capture passed")
 
 func _create_ai() -> AbstractAI:
 	return ABSearchAIV4.new()
