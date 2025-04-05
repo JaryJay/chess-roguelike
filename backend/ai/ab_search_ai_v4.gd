@@ -80,7 +80,7 @@ func _get_best_result(board: Board, depth: int, alpha: float, beta: float, is_ro
 			if result.evaluation >= best_result.evaluation:
 				best_result = Result.new(result.evaluation, move)
 				alpha = result.evaluation
-			if beta <= alpha:
+			if alpha <= beta:
 				break
 		return best_result
 	else:
