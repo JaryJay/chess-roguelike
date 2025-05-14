@@ -29,9 +29,13 @@ func _ready() -> void:
 	assert(Config.loaded, "Config not loaded!")
 	if ai_vs_ai_mode:
 		ai_thread1.init(ABSearchAIV4.new())
-	ai_thread2.init(ABSearchAIV4.new())
+	ai_thread2.init(ABSearchAIV5.new())
 
 func init_with_game_setup(game_setup: GameSetup) -> void:
+	if ai_vs_ai_mode:
+		init_randomly()
+		return
+
 	assert(is_node_ready(), "BoardNode is not added to the tree")
 	if state == BoardNodeState.INITIALIZED:
 		state = BoardNodeState.NOT_INITIALIZED
