@@ -3,6 +3,7 @@ class_name Board
 var tile_map: BoardTileMap
 var piece_map: BoardPieceMap
 var team_to_move: Team
+var previous_boards: Array[Board] = []
 
 # The following fields are not included in the hash
 var turn_number: int = 1
@@ -85,6 +86,12 @@ func perform_move(move: Move, allow_illegal: bool = false) -> Board:
 	next_board._match_result = Match.Result.UNCOMPUTED
 	next_board.team_to_move = Team.PLAYER if current_team_to_move == Team.ENEMY_AI else Team.ENEMY_AI
 	next_board.turn_number = turn_number + 1
+	
+	# Store this board in the next board's history
+	next_board.previous_boards = previous_boards.duplicate()
+	next_board.previous_boards.push_front(self)
+	if next_board.previous_boards.size() > 5:
+		next_board.previous_boards.pop_back()
 	
 	next_board.piece_map.remove_piece(piece_to_move.pos)
 	if move.is_capture():
@@ -223,6 +230,7 @@ func duplicate() -> Board:
 	new_board.turn_number = turn_number
 	new_board.position_counts = position_counts.duplicate()
 	new_board._match_result = _match_result
+	new_board.previous_boards = previous_boards.duplicate()
 	return new_board
 
 func hash() -> int:
