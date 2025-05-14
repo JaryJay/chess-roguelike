@@ -1,5 +1,0 @@
-[node name="WhiteAIThread" type="Node" parent="."]
-script = ExtResource("path_to_ai_thread_script")
-
-[node name="BlackAIThread" type="Node" parent="."]
-script = ExtResource("path_to_ai_thread_script") 
