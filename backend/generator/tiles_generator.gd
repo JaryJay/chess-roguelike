@@ -3,7 +3,7 @@ class_name TilesGenerator
 const PRUNE_TILES := true
 const CARDINAL_DIRECTIONS = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 
-static func generate_board_with_tiles(retries: int = 10) -> Board:
+static func generate_board_with_tiles(min_tiles: int, retries: int = 10) -> Board:
 	var board := Board.new()
 	
 	for retry in retries:
@@ -11,7 +11,7 @@ static func generate_board_with_tiles(retries: int = 10) -> Board:
 		var pruned_positions := prune_positions(positions)
 		var normalized_positions := normalize_positions(pruned_positions)
 		
-		if normalized_positions.size() >= 20:
+		if normalized_positions.size() >= min_tiles:
 			board.tile_map.set_tiles(normalized_positions)
 			return board
 			

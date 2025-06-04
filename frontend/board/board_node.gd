@@ -51,7 +51,8 @@ func init_with_game_setup(game_setup: GameSetup) -> void:
 		temp_move_action = null
 	
 	# Generate board with tiles and pieces
-	b = TilesGenerator.generate_board_with_tiles()
+	var min_tiles := maxi(20, floori(game_setup.piece_types.size() * 2.25))
+	b = TilesGenerator.generate_board_with_tiles(min_tiles)
 	b = PiecesGenerator.populate_board_with_player_types(b, game_setup.piece_types, game_setup.enemy_credits)
 	
 	# Create UI elements
@@ -88,7 +89,7 @@ func init_randomly() -> void:
 		temp_move_action = null
 	
 	# Generate board with tiles and pieces
-	b = TilesGenerator.generate_board_with_tiles()
+	b = TilesGenerator.generate_board_with_tiles(20)
 	b = PiecesGenerator.populate_board(b, 1150)  # Use existing credit amount
 	
 	# Create UI elements
