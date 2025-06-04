@@ -6,14 +6,9 @@ func _init(_deterministic: bool = false) -> void:
 	deterministic = _deterministic
 
 func get_move(board: Board) -> Move:
-	var depth := 2
+	var depth := 3
 	if board.piece_map.get_all_pieces().size() <= 4:
 		depth = 4
-	elif board.piece_map.get_all_pieces().size() <= 5:
-		depth = 3
-	elif board.piece_map.get_team_pieces(Team.PLAYER).size() <= 2 or \
-		board.piece_map.get_team_pieces(Team.ENEMY_AI).size() <= 3:
-		depth = 3
 	
 	var result := _get_best_result(board, depth, -INF, INF)
 	return result.move
