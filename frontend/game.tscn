@@ -42,6 +42,7 @@ process_material = ExtResource("2_uh1ml")
 [node name="BoardNode" parent="." instance=ExtResource("2_b7sum")]
 
 [node name="GameCamera" parent="." instance=ExtResource("3_bh0d3")]
+position = Vector2(0, -9)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_xnp5u")
