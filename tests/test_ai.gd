@@ -24,6 +24,7 @@ func run_tests() -> void:
 	test_obvious_pawn_capture()
 	test_obvious_recapture()
 	test_react_to_forced_checkmate()
+	test_lots_of_pieces()
 	
 	get_tree().quit()
 
@@ -198,6 +199,25 @@ func test_react_to_forced_checkmate() -> void:
 	assert(b.get_match_result() == Match.Result.WIN)
 	
 	print("React to forced checkmate passed")
+
+func test_lots_of_pieces() -> void:
+	var b := create_board_from_grid("""
+  r.q
+.n.p..k
+r......
+..PPPQP
+P..P.P.
+PPRN..P
+  PKPP
+""")
+	b.team_to_move = Team.ENEMY_AI
+
+	var ai := _create_ai()
+	var move := ai.get_move(b)
+	
+	# Basically we just want to make sure the AI doesn't sacrifice random pieces for no reason
+	assert(!move.is_capture(), "There are no safe pieces to capture")
+	print("Test lots of pieces passed")
 
 func _create_ai() -> AbstractAI:
 	return ABSearchAIV5.new(true)
