@@ -13,13 +13,48 @@ const PIECE_TYPES := [
 static func arrange_piece_positions(board: Board, pieces: Array[Piece], team: Team) -> void:
 	var army_size := pieces.size()
 	assert(board.tile_map.num_tiles() >= army_size, "Board does not have enough tiles")
-	# Get first x tiles, where x is army size
+	
+	# Get all tiles and sort by y
 	var tiles := board.tile_map.get_all_tiles()
 	tiles.sort_custom(sort_tiles_by_y)
-	var first_few_tiles := tiles.slice(0, army_size) if team.is_enemy() else tiles.slice(-army_size)
+	
+	# Determine back row(s) for the team
+	var king: Piece = null
+	for p in pieces:
+		if p.type == Piece.Type.KING:
+			king = p
+			break
+	assert(king != null, "Army must contain a king")
+	
+	var king_row_y: int
+	var king_row_tiles: Array[Vector2i] = []
+	
+	if team.is_enemy():
+		# Enemy: use the first row(s)
+		king_row_y = tiles[0].y
+		for t in tiles:
+			if t.y == king_row_y:
+				king_row_tiles.append(t)
+	else:
+		# Player: use the last row(s)
+		king_row_y = tiles[-1].y
+		for t in tiles:
+			if t.y == king_row_y:
+				king_row_tiles.append(t)
+	
+	assert(king_row_tiles.size() > 0, "No tiles found for king's back row")
+	king.pos = king_row_tiles.pick_random()
+	
+	# Remove king's tile from available tiles
+	var available_tiles := tiles.duplicate()
+	available_tiles.erase(king.pos)
+	
+	# Arrange rest of pieces
+	var non_king_pieces := pieces.filter(func(p: Piece): return p != king)
+	var first_few_tiles := available_tiles.slice(0, non_king_pieces.size()) if team.is_enemy() else available_tiles.slice(-non_king_pieces.size())
 	first_few_tiles.shuffle()
-	for i: int in army_size:
-		pieces[i].pos = first_few_tiles[i]
+	for i: int in non_king_pieces.size():
+		non_king_pieces[i].pos = first_few_tiles[i]
 
 static func generate_army_randomly(credits: int, b: Board, team: Team) -> Array[Piece]:
 	var army: Array[Piece] = []
