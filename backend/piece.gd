@@ -153,7 +153,7 @@ func _get_moves_along_rays(
 	var available_moves: Array[Move] = []
 	for dir: Vector2i in ray_dirs:
 		var next_pos := pos
-		for i in range(ray_length):
+		for i in range(mini(ray_length, Config.max_board_size)):
 			next_pos += dir
 			if not b.tile_map.has_tile(next_pos): break
 			if b.piece_map.has_piece(next_pos):
@@ -194,7 +194,7 @@ func _is_attacking_from_ray(
 		return false
 		
 	var next_pos := pos
-	for i in range(ray_length):
+	for i in range(mini(ray_length, Config.max_board_size)):
 		next_pos += dir
 		if next_pos == p:
 			return true

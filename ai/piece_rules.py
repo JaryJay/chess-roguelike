@@ -46,8 +46,9 @@ class PieceRules:
             if "moves" in piece_data:
                 for move_data in piece_data["moves"]:
                     dir_array = move_data["dir"]
+                    dist = move_data["dist"] if "dist" in move_data else 0xFFFFFFFF
                     direction = Vector2i(dir_array[0], dir_array[1])
-                    moves.append(PieceMoveAbility(direction, move_data["dist"]))
+                    moves.append(PieceMoveAbility(direction, dist))
             
             # Create and store rule
             cls.piece_type_to_rules[piece_type] = PieceRule(tags, moves, credit_cost)

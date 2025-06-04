@@ -1,22 +1,16 @@
 {
-    "max_board_size": 8,
-    "tile_generation_threshold": 0.23,
-    "tile_generation_noise_scale": 7.0,
-    "ai": {
-        "max_moves_to_consider": 8
-    },
+	"max_board_size": 8,
+	"tile_generation_threshold": 0.23,
+	"tile_generation_noise_scale": 7.0,
+	"ai": {
+		"max_moves_to_consider": 10
+	},
 	"factions": [
 		{
 			"name": "monarchy",
 			"display_name": "Monarchy",
 			"description": "The only faction where you're not single.",
-			"piece_types": [
-				"queen",
-				"rook",
-				"knight",
-				"pawn",
-				"pawn"
-			]
+			"piece_types": ["queen", "rook", "knight", "pawn", "pawn"]
 		},
 		{
 			"name": "sharpshooters",
@@ -35,7 +29,7 @@
 		{
 			"name": "military",
 			"display_name": "Military",
-			"description":"Peace was never an option.",
+			"description": "Peace was never an option.",
 			"piece_types": [
 				"knight",
 				"knight",

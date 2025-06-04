@@ -32,8 +32,9 @@ static func load_pieces() -> void:
 		if pieces[piece_type].has("moves"):	
 			for move in pieces[piece_type]["moves"]:
 				var dir_array: Array = move["dir"]
+				var dist: int = move["dist"] if move.has("dist") else 0x7FFFFFFF
 				var dir := Vector2i(dir_array[0], dir_array[1])
-				moves.append(PieceMoveAbility.new(dir, move["dist"]))
+				moves.append(PieceMoveAbility.new(dir, dist))
 		
 		piece_type_to_rules[Piece.STRING_TO_TYPE[piece_type]] = PieceRule.new(tags, moves, credit_cost)
 
