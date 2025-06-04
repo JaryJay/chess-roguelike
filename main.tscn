@@ -1,7 +1,116 @@
-[gd_scene load_steps=5 format=3 uid="uid://c5f1dsko5aivp"]
+[gd_scene load_steps=8 format=3 uid="uid://c5f1dsko5aivp"]
 
 [ext_resource type="Script" uid="uid://bltechx2mha0j" path="res://main.gd" id="1_fdhfs"]
 [ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="1_y06v8"]
+
+[sub_resource type="Animation" id="Animation_0xm2m"]
+resource_name = "mm_large_square_anim"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot2/Square:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector2(620, 392), Vector2(68, 392)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot2/Square2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector2(-1104, 299), Vector2(-248, 299)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pivot/Square2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector2(1344, 1320), Vector2(515, 1320)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Pivot/Square:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector2(-351, 1191), Vector2(174, 1191)]
+}
+
+[sub_resource type="Animation" id="Animation_h2yge"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot2/Square:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(68, 392)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot2/Square2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-248, 299)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pivot/Square2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(515, 1320)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Pivot/Square:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(174, 1191)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h2yge"]
+_data = {
+&"RESET": SubResource("Animation_h2yge"),
+&"mm_large_square_anim": SubResource("Animation_0xm2m")
+}
 
 [sub_resource type="LabelSettings" id="LabelSettings_wu52y"]
 font_size = 96
@@ -11,6 +120,48 @@ font_size = 28
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_fdhfs")
+
+[node name="DecorLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Pivot" type="Node2D" parent="DecorLayer"]
+
+[node name="Square" type="Polygon2D" parent="DecorLayer/Pivot"]
+position = Vector2(174, 1191)
+scale = Vector2(39, 39)
+color = Color(0.184314, 0.2, 0.313726, 0.670588)
+antialiased = true
+polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
+
+[node name="Square2" type="Polygon2D" parent="DecorLayer/Pivot"]
+position = Vector2(515, 1320)
+scale = Vector2(39, 39)
+color = Color(0.780392, 0.772549, 0.764706, 0.670588)
+antialiased = true
+polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
+
+[node name="Pivot2" type="Node2D" parent="DecorLayer"]
+position = Vector2(1651, -565)
+
+[node name="Square" type="Polygon2D" parent="DecorLayer/Pivot2"]
+position = Vector2(68, 392)
+scale = Vector2(39, 39)
+color = Color(0.184314, 0.2, 0.313726, 0.670588)
+antialiased = true
+polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
+
+[node name="Square2" type="Polygon2D" parent="DecorLayer/Pivot2"]
+position = Vector2(-248, 299)
+scale = Vector2(39, 39)
+color = Color(0.780392, 0.772549, 0.764706, 0.670588)
+antialiased = true
+polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="DecorLayer"]
+libraries = {
+&"": SubResource("AnimationLibrary_h2yge")
+}
+autoplay = "mm_large_square_anim"
 
 [node name="UI" type="CanvasLayer" parent="."]
 

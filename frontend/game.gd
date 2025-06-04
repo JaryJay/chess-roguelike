@@ -2,8 +2,8 @@ class_name Game extends Node2D
 
 @onready var board: BoardNode = $BoardNode
 @onready var game_over_label: Label = $GameOverLayer/Rect/H/Label
-@onready var game_over_layer: CanvasLayer = $GameOverLayer
-@onready var settings_layer: CanvasLayer = $SettingsLayer
+@onready var game_over_rect: Control = $GameOverLayer/Rect
+@onready var settings_rect: Control = $SettingsLayer/Rect
 @onready var upgrade_select_ui: UpgradeSelectUI = $UpgradeSelectUI
 
 var game_setup: GameSetup
@@ -20,7 +20,10 @@ func init_randomly() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("open_settings"):
-		settings_layer.visible = !settings_layer.visible
+		if settings_rect.visible:
+			_close_settings()
+		else:
+			_open_settings()
 		get_viewport().set_input_as_handled()
 
 func _on_board_node_game_over(game_result: Match.Result) -> void:
@@ -40,9 +43,11 @@ func _on_board_node_game_over(game_result: Match.Result) -> void:
 	elif game_result == Match.Result.DRAW_THREEFOLD_REPETITION:
 		game_over_label.text = "Draw! Threefold repetition"
 	
+	game_over_rect.show()
+	game_over_rect.modulate.a = 0.0
 	var tw := create_tween()
-	tw.tween_interval(1.0)
-	tw.tween_callback(game_over_layer.show)
+	tw.tween_interval(0.4)
+	tw.tween_property(game_over_rect, "modulate:a", 1.0, 0.5).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
 
 func _on_continue_button_pressed() -> void:
 	board.queue_free()
@@ -50,8 +55,8 @@ func _on_continue_button_pressed() -> void:
 		piece_node.remove_from_group("piece_nodes")
 	for tile_node: TileNode in get_tree().get_nodes_in_group("tile_nodes"):
 		tile_node.remove_from_group("tile_nodes")
-	game_over_layer.hide()
-	settings_layer.hide()
+	game_over_rect.hide()
+	settings_rect.hide()
 	
 	if saved_game_result == Match.Result.WIN:
 		game_setup.enemy_credits += game_setup.difficulty.enemy_credit_increment
@@ -61,7 +66,7 @@ func _on_continue_button_pressed() -> void:
 		get_tree().change_scene_to_file("res://frontend/ui/game_creation.tscn")
 		queue_free()
 
-func _on_restart_button_pressed() -> void:
+func _on_concede_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://frontend/ui/game_creation.tscn")
 	queue_free()
 
@@ -79,8 +84,19 @@ func recreate_board() -> void:
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()
 
+func _open_settings() -> void:
+	settings_rect.show()
+	settings_rect.modulate.a = 0.0
+	var tw := create_tween()
+	tw.tween_property(settings_rect, "modulate:a", 1.0, 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
+
+func _close_settings() -> void:
+	var tw := create_tween()
+	tw.tween_property(settings_rect, "modulate:a", 0.0, 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
+	tw.tween_callback(settings_rect.hide)
+
 func _on_settings_button_pressed() -> void:
-	settings_layer.show()
+	_open_settings()
 
 func _on_back_button_pressed() -> void:
-	settings_layer.hide()
+	_close_settings()

@@ -1,11 +1,288 @@
-[gd_scene load_steps=14 format=3 uid="uid://c133hj4l1vgu6"]
+[gd_scene load_steps=23 format=3 uid="uid://c133hj4l1vgu6"]
 
 [ext_resource type="Script" uid="uid://nh2ecbxygfji" path="res://frontend/ui/game_creation.gd" id="1_hbw6a"]
 [ext_resource type="PackedScene" uid="uid://bxr14c6j6qojj" path="res://frontend/ui/pieces_preview.tscn" id="2_0lynk"]
+[ext_resource type="Material" uid="uid://0t2e58d2d0c" path="res://frontend/vfx/bg_dust_particle_process_material.tres" id="2_rkkwd"]
 [ext_resource type="PackedScene" uid="uid://022xgnb2eaff" path="res://frontend/factions/monarchy.tscn" id="3_0lynk"]
 [ext_resource type="PackedScene" uid="uid://ccs0qt78cjm6l" path="res://frontend/factions/sharpshooters.tscn" id="4_rkkwd"]
 [ext_resource type="PackedScene" uid="uid://x8udnlohocwg" path="res://frontend/factions/military.tscn" id="5_vjqtv"]
 [ext_resource type="PackedScene" uid="uid://cl65ob1w6brjk" path="res://frontend/factions/the_squad.tscn" id="6_0lynk"]
+
+[sub_resource type="Animation" id="Animation_0lynk"]
+resource_name = "square_anim"
+length = 25.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Moving/Rect2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 12.5),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector2(-297, 796), Vector2(2228, 796)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Moving/Rect1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 12.5),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector2(2218, 91), Vector2(-385, 91)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Moving/SmallRect1:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 12.5),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector2(1430, 210), Vector2(428, 210)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Moving/SmallRect2:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 12.5),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector2(376, 696), Vector2(1435, 696)]
+}
+
+[sub_resource type="Animation" id="Animation_rkkwd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Moving/Rect2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-297, 796)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Moving/Rect1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2218, 91)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Moving/SmallRect1:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1430, 210)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Moving/SmallRect2:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(376, 696)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vjqtv"]
+_data = {
+&"RESET": SubResource("Animation_rkkwd"),
+&"square_anim": SubResource("Animation_0lynk")
+}
+
+[sub_resource type="Gradient" id="Gradient_rkkwd"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0.780392, 0.772549, 0.764706, 0.121569)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rkkwd"]
+gradient = SubResource("Gradient_rkkwd")
+width = 32
+height = 32
+
+[sub_resource type="Animation" id="Animation_j2lke"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot2/Square3:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-627, 337)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot2/Square2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-105, 430)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pivot2/Square:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(211, 523)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Pivot/Square3:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(742, 1272)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Pivot/Square2:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(292, 1109)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Pivot/Square:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-49, 980)]
+}
+
+[sub_resource type="Animation" id="Animation_vjqtv"]
+resource_name = "large_square_anim"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot2/Square3:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector2(-1743, 337), Vector2(-627, 337)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot2/Square2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector2(588, 430), Vector2(-105, 430)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pivot2/Square:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector2(211, 198), Vector2(211, 523)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Pivot/Square3:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector2(1458, 1272), Vector2(742, 1272)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Pivot/Square2:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector2(-307, 1109), Vector2(292, 1109)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Pivot/Square:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector2(-49, 1399), Vector2(-49, 980)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_i1ldd"]
+_data = {
+&"RESET": SubResource("Animation_j2lke"),
+&"large_square_anim": SubResource("Animation_vjqtv")
+}
 
 [sub_resource type="LabelSettings" id="LabelSettings_0lynk"]
 font_size = 48
@@ -34,9 +311,112 @@ font_size = 20
 [node name="GameCreation" type="Node2D"]
 script = ExtResource("1_hbw6a")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="DecorLayer" type="CanvasLayer" parent="."]
+layer = -1
 
-[node name="Control" type="Control" parent="CanvasLayer"]
+[node name="Pivot" type="Node2D" parent="DecorLayer"]
+
+[node name="Square" type="Polygon2D" parent="DecorLayer/Pivot"]
+position = Vector2(-49, 1399)
+scale = Vector2(39, 39)
+color = Color(0.184314, 0.2, 0.313726, 0.670588)
+antialiased = true
+polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
+
+[node name="Square2" type="Polygon2D" parent="DecorLayer/Pivot"]
+position = Vector2(-307, 1109)
+scale = Vector2(39, 39)
+color = Color(0.780392, 0.772549, 0.764706, 0.670588)
+antialiased = true
+polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
+
+[node name="Square3" type="Polygon2D" parent="DecorLayer/Pivot"]
+position = Vector2(1458, 1272)
+scale = Vector2(39, 39)
+color = Color(0.780392, 0.772549, 0.764706, 0.670588)
+antialiased = true
+polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
+
+[node name="Pivot2" type="Node2D" parent="DecorLayer"]
+position = Vector2(1651, -565)
+
+[node name="Square" type="Polygon2D" parent="DecorLayer/Pivot2"]
+position = Vector2(211, 198)
+scale = Vector2(39, 39)
+color = Color(0.184314, 0.2, 0.313726, 0.670588)
+antialiased = true
+polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
+
+[node name="Square2" type="Polygon2D" parent="DecorLayer/Pivot2"]
+position = Vector2(588, 430)
+scale = Vector2(39, 39)
+color = Color(0.780392, 0.772549, 0.764706, 0.670588)
+antialiased = true
+polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
+
+[node name="Square3" type="Polygon2D" parent="DecorLayer/Pivot2"]
+position = Vector2(-1743, 337)
+scale = Vector2(39, 39)
+color = Color(0.184314, 0.2, 0.313726, 0.670588)
+antialiased = true
+polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
+
+[node name="Moving" type="Node2D" parent="DecorLayer"]
+
+[node name="Rect1" type="Polygon2D" parent="DecorLayer/Moving"]
+position = Vector2(2218, 91)
+scale = Vector2(16.38, 5.93)
+color = Color(0.780392, 0.772549, 0.764706, 0.670588)
+antialiased = true
+polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
+
+[node name="SmallRect1" type="Polygon2D" parent="DecorLayer/Moving"]
+position = Vector2(1430, 210)
+scale = Vector2(13.23, 1.195)
+color = Color(0.184314, 0.2, 0.313726, 0.670588)
+antialiased = true
+polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
+
+[node name="Rect2" type="Polygon2D" parent="DecorLayer/Moving"]
+position = Vector2(-297, 796)
+scale = Vector2(16.38, 6)
+color = Color(0.184314, 0.2, 0.313726, 0.670588)
+antialiased = true
+polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
+
+[node name="SmallRect2" type="Polygon2D" parent="DecorLayer/Moving"]
+position = Vector2(376, 696)
+scale = Vector2(13.23, 1.195)
+color = Color(0.780392, 0.772549, 0.764706, 0.670588)
+antialiased = true
+polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="DecorLayer/Moving"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_vjqtv")
+}
+autoplay = "square_anim"
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="DecorLayer"]
+position = Vector2(-99, 202)
+amount = 14
+texture = SubResource("GradientTexture2D_rkkwd")
+lifetime = 4.0
+preprocess = 0.1
+explosiveness = 0.11
+randomness = 0.06
+process_material = ExtResource("2_rkkwd")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="DecorLayer"]
+libraries = {
+&"game_creation": SubResource("AnimationLibrary_i1ldd")
+}
+autoplay = "game_creation/large_square_anim"
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="UILayer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,7 +424,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control"]
+[node name="HBoxContainer" type="VBoxContainer" parent="UILayer/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -58,14 +438,14 @@ offset_bottom = 56.0
 grow_horizontal = 2
 theme_override_constants/separation = 10
 
-[node name="FactionNameLabel" type="Label" parent="CanvasLayer/Control/HBoxContainer"]
+[node name="FactionNameLabel" type="Label" parent="UILayer/Control/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Monarchy"
 label_settings = SubResource("LabelSettings_0lynk")
 horizontal_alignment = 1
 
-[node name="FlavourTextLabel" type="RichTextLabel" parent="CanvasLayer/Control/HBoxContainer"]
+[node name="FlavourTextLabel" type="RichTextLabel" parent="UILayer/Control/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -75,7 +455,7 @@ bbcode_enabled = true
 text = "[i]Flavour text[/i]"
 horizontal_alignment = 1
 
-[node name="Buttons" type="Control" parent="CanvasLayer/Control"]
+[node name="Buttons" type="Control" parent="UILayer/Control"]
 layout_mode = 1
 anchor_left = 0.29
 anchor_top = 0.4
@@ -86,7 +466,7 @@ offset_bottom = 49.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LeftButton" type="Button" parent="CanvasLayer/Control/Buttons"]
+[node name="LeftButton" type="Button" parent="UILayer/Control/Buttons"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -99,7 +479,7 @@ size_flags_vertical = 0
 focus_neighbor_right = NodePath("../RightButton")
 text = "<"
 
-[node name="RightButton" type="Button" parent="CanvasLayer/Control/Buttons"]
+[node name="RightButton" type="Button" parent="UILayer/Control/Buttons"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -115,7 +495,7 @@ size_flags_vertical = 0
 focus_neighbor_left = NodePath("../LeftButton")
 text = ">"
 
-[node name="Divs" type="HBoxContainer" parent="CanvasLayer/Control"]
+[node name="Divs" type="HBoxContainer" parent="UILayer/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.15
@@ -128,25 +508,25 @@ grow_vertical = 0
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="Left" type="PanelContainer" parent="CanvasLayer/Control/Divs"]
+[node name="Left" type="PanelContainer" parent="UILayer/Control/Divs"]
 self_modulate = Color(0.529412, 0.529412, 0.529412, 1)
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="H" type="VBoxContainer" parent="CanvasLayer/Control/Divs/Left"]
+[node name="H" type="VBoxContainer" parent="UILayer/Control/Divs/Left"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="DifficultyTitleLabel" type="Label" parent="CanvasLayer/Control/Divs/Left/H"]
+[node name="DifficultyTitleLabel" type="Label" parent="UILayer/Control/Divs/Left/H"]
 layout_mode = 2
 text = "Difficulty"
 
-[node name="H" type="HBoxContainer" parent="CanvasLayer/Control/Divs/Left/H"]
+[node name="H" type="HBoxContainer" parent="UILayer/Control/Divs/Left/H"]
 custom_minimum_size = Vector2(0, 79)
 layout_mode = 2
 
-[node name="NoviceButton" type="Button" parent="CanvasLayer/Control/Divs/Left/H/H"]
+[node name="NoviceButton" type="Button" parent="UILayer/Control/Divs/Left/H/H"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
@@ -157,7 +537,7 @@ icon = SubResource("AtlasTexture_rkkwd")
 icon_alignment = 1
 expand_icon = true
 
-[node name="StandardButton" type="Button" parent="CanvasLayer/Control/Divs/Left/H/H"]
+[node name="StandardButton" type="Button" parent="UILayer/Control/Divs/Left/H/H"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
@@ -167,33 +547,33 @@ icon = SubResource("AtlasTexture_j2lke")
 icon_alignment = 1
 expand_icon = true
 
-[node name="DifficultyNameLabel" type="Label" parent="CanvasLayer/Control/Divs/Left/H"]
+[node name="DifficultyNameLabel" type="Label" parent="UILayer/Control/Divs/Left/H"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Difficulty name"
 label_settings = SubResource("LabelSettings_vjqtv")
 
-[node name="DifficultyDescriptionLabel" type="Label" parent="CanvasLayer/Control/Divs/Left/H"]
+[node name="DifficultyDescriptionLabel" type="Label" parent="UILayer/Control/Divs/Left/H"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Difficulty description"
 label_settings = SubResource("LabelSettings_rkkwd")
 
-[node name="Main" type="PanelContainer" parent="CanvasLayer/Control/Divs"]
+[node name="Main" type="PanelContainer" parent="UILayer/Control/Divs"]
 self_modulate = Color(0.529412, 0.529412, 0.529412, 1)
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 
-[node name="H" type="VBoxContainer" parent="CanvasLayer/Control/Divs/Main"]
+[node name="H" type="VBoxContainer" parent="UILayer/Control/Divs/Main"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/Divs/Main/H"]
+[node name="Label" type="Label" parent="UILayer/Control/Divs/Main/H"]
 layout_mode = 2
 text = "Starting Army"
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Divs/Main/H"]
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/Control/Divs/Main/H"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 20
@@ -201,12 +581,12 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="PiecesPreview" parent="CanvasLayer/Control/Divs/Main/H/MarginContainer" instance=ExtResource("2_0lynk")]
+[node name="PiecesPreview" parent="UILayer/Control/Divs/Main/H/MarginContainer" instance=ExtResource("2_0lynk")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 67)
 layout_mode = 2
 
-[node name="StartButton" type="Button" parent="CanvasLayer/Control"]
+[node name="StartButton" type="Button" parent="UILayer/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -240,8 +620,8 @@ position = Vector2(1300, 0)
 [node name="TheSquad" parent="FactionSlider" instance=ExtResource("6_0lynk")]
 position = Vector2(1950, 0)
 
-[connection signal="pressed" from="CanvasLayer/Control/Buttons/LeftButton" to="." method="_on_left_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/Buttons/RightButton" to="." method="_on_right_button_pressed"]
-[connection signal="toggled" from="CanvasLayer/Control/Divs/Left/H/H/NoviceButton" to="." method="_on_novice_button_toggled"]
-[connection signal="toggled" from="CanvasLayer/Control/Divs/Left/H/H/StandardButton" to="." method="_on_standard_button_toggled"]
-[connection signal="pressed" from="CanvasLayer/Control/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="UILayer/Control/Buttons/LeftButton" to="." method="_on_left_button_pressed"]
+[connection signal="pressed" from="UILayer/Control/Buttons/RightButton" to="." method="_on_right_button_pressed"]
+[connection signal="toggled" from="UILayer/Control/Divs/Left/H/H/NoviceButton" to="." method="_on_novice_button_toggled"]
+[connection signal="toggled" from="UILayer/Control/Divs/Left/H/H/StandardButton" to="." method="_on_standard_button_toggled"]
+[connection signal="pressed" from="UILayer/Control/StartButton" to="." method="_on_start_button_pressed"]

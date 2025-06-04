@@ -1,10 +1,20 @@
-[gd_scene load_steps=8 format=3 uid="uid://bb0qxkgwbx5xc"]
+[gd_scene load_steps=11 format=3 uid="uid://bb0qxkgwbx5xc"]
 
 [ext_resource type="Script" uid="uid://bmw6lvpdpokau" path="res://frontend/game.gd" id="1_qfs6o"]
 [ext_resource type="PackedScene" uid="uid://b0v2ttp4dudf4" path="res://frontend/board/board_node.tscn" id="2_b7sum"]
+[ext_resource type="Material" uid="uid://0t2e58d2d0c" path="res://frontend/vfx/bg_dust_particle_process_material.tres" id="2_uh1ml"]
 [ext_resource type="PackedScene" uid="uid://ciq1rdvbmn1wg" path="res://frontend/camera/game_camera.tscn" id="3_bh0d3"]
 [ext_resource type="Texture2D" uid="uid://bl0xqb50vkq8q" path="res://assets/ui/panel-030.png" id="3_dry2n"]
 [ext_resource type="PackedScene" uid="uid://b3qdrbapth2jx" path="res://frontend/ui/upgrade_select_ui.tscn" id="4_g2u0c"]
+
+[sub_resource type="Gradient" id="Gradient_0lynk"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0.780392, 0.772549, 0.764706, 0.121569)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_pnr3g"]
+gradient = SubResource("Gradient_0lynk")
+width = 32
+height = 32
 
 [sub_resource type="Environment" id="Environment_xnp5u"]
 background_mode = 1
@@ -15,6 +25,19 @@ font_size = 80
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_qfs6o")
+
+[node name="DecorLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="DecorLayer"]
+position = Vector2(-99, 202)
+amount = 14
+texture = SubResource("GradientTexture2D_pnr3g")
+lifetime = 4.0
+preprocess = 0.1
+explosiveness = 0.11
+randomness = 0.06
+process_material = ExtResource("2_uh1ml")
 
 [node name="BoardNode" parent="." instance=ExtResource("2_b7sum")]
 
@@ -41,9 +64,9 @@ size_flags_vertical = 4
 text = "Settings"
 
 [node name="GameOverLayer" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="Rect" type="NinePatchRect" parent="GameOverLayer"]
+visible = false
 self_modulate = Color(0, 0, 0, 0.647059)
 anchors_preset = 15
 anchor_right = 1.0
@@ -54,6 +77,7 @@ offset_right = -100.0
 offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 0
 texture = ExtResource("3_dry2n")
 patch_margin_left = 24
 patch_margin_top = 24
@@ -87,9 +111,9 @@ size_flags_vertical = 4
 text = "Continue"
 
 [node name="SettingsLayer" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="Rect" type="NinePatchRect" parent="SettingsLayer"]
+visible = false
 self_modulate = Color(0, 0, 0, 0.647059)
 anchors_preset = 15
 anchor_right = 1.0
@@ -100,6 +124,7 @@ offset_right = -100.0
 offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 0
 texture = ExtResource("3_dry2n")
 patch_margin_left = 24
 patch_margin_top = 24
@@ -111,24 +136,30 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 580.0
-offset_right = -580.0
-offset_bottom = -309.0
+offset_left = 571.0
+offset_right = -571.0
+offset_bottom = -179.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 0
 theme_override_constants/separation = 20
 alignment = 1
 
+[node name="Label" type="Label" parent="SettingsLayer/Rect/H"]
+layout_mode = 2
+text = "Settings"
+label_settings = SubResource("LabelSettings_pfcdr")
+horizontal_alignment = 1
+
 [node name="BackButton" type="Button" parent="SettingsLayer/Rect/H"]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Back to Game"
 
-[node name="RestartButton" type="Button" parent="SettingsLayer/Rect/H"]
+[node name="ConcedeButton" type="Button" parent="SettingsLayer/Rect/H"]
 layout_mode = 2
 size_flags_vertical = 4
-text = "Restart Run"
+text = "Concede"
 
 [node name="QuitButton" type="Button" parent="SettingsLayer/Rect/H"]
 layout_mode = 2
@@ -142,6 +173,6 @@ visible = false
 [connection signal="pressed" from="UILayer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="GameOverLayer/Rect/H/ContinueButton" to="." method="_on_continue_button_pressed"]
 [connection signal="pressed" from="SettingsLayer/Rect/H/BackButton" to="." method="_on_back_button_pressed"]
-[connection signal="pressed" from="SettingsLayer/Rect/H/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="SettingsLayer/Rect/H/ConcedeButton" to="." method="_on_concede_button_pressed"]
 [connection signal="pressed" from="SettingsLayer/Rect/H/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="upgrade_chosen" from="UpgradeSelectUI" to="." method="_on_upgrade_select_ui_upgrade_chosen"]
