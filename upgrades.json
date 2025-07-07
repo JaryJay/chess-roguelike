@@ -30,29 +30,59 @@
 		]
 	},
 	{
-		"type": "swap",
+		"type": "gamble",
 		"display_name": "Knight's retirement plan",
-		"description": "Lose 1 knight to gain 3 pawns.",
-		"remove_types": [
-			"knight"
-		],
-		"add_types": [
-			"pawn",
-			"pawn",
-			"pawn"
+		"description": "Lose 1 knight to gain 2 to 3 pawns.",
+		"possibilities": [
+			{
+				"remove_types": [
+					"knight"
+				],
+				"add_types": [
+					"pawn",
+					"pawn"
+				],
+				"weight": 1
+			},
+			{
+				"remove_types": [
+					"knight"
+				],
+				"add_types": [
+					"pawn",
+					"pawn",
+					"pawn"
+				],
+				"weight": 1
+			}
 		]
 	},
 	{
-		"type": "swap",
+		"type": "gamble",
 		"display_name": "Bishop's retirement plan",
-		"description": "Lose 1 bishop to gain 3 pawns.",
-		"remove_types": [
-			"bishop"
-		],
-		"add_types": [
-			"pawn",
-			"pawn",
-			"pawn"
+		"description": "Lose 1 bishop to gain 2 to 3 pawns.",
+		"possibilities": [
+			{
+				"remove_types": [
+					"bishop"
+				],
+				"add_types": [
+					"pawn",
+					"pawn"
+				],
+				"weight": 1
+			},
+			{
+				"remove_types": [
+					"bishop"
+				],
+				"add_types": [
+					"pawn",
+					"pawn",
+					"pawn"
+				],
+				"weight": 1
+			}
 		]
 	},
 	{
@@ -70,6 +100,25 @@
 				"add_types": [
 					"pawn",
 					"pawn"
+				],
+				"weight": 1
+			}
+		]
+	},
+	{
+		"type": "gamble",
+		"display_name": "Schrödinger's Bishop",
+		"description": "Gamble: Gain either 0 or 1 bishop.",
+		"possibilities": [
+			{
+				"remove_types": [],
+				"add_types": [],
+				"weight": 1
+			},
+			{
+				"remove_types": [],
+				"add_types": [
+					"bishop"
 				],
 				"weight": 1
 			}
@@ -102,10 +151,9 @@
 	{
 		"type": "swap",
 		"display_name": "Queen's coronation",
-		"description": "Lose 1 rook and 2 pawns to gain 1 queen.",
+		"description": "Lose 1 rook and 1 pawn to gain 1 queen.",
 		"remove_types": [
 			"rook",
-			"pawn",
 			"pawn"
 		],
 		"add_types": [
@@ -114,7 +162,7 @@
 	},
 	{
 		"type": "swap",
-		"display_name": "Mitosis",
+		"display_name": "Mitosis I",
 		"description": "Lose 1 rook to gain 2 bishops.",
 		"remove_types": [
 			"rook"
@@ -122,6 +170,31 @@
 		"add_types": [
 			"bishop",
 			"bishop"
+		]
+	},
+	{
+		"type": "swap",
+		"display_name": "Mitosis II",
+		"description": "Lose 1 queen to gain 2 rooks.",
+		"remove_types": [
+			"queen"
+		],
+		"add_types": [
+			"rook",
+			"rook"
+		]
+	},
+	{
+		"type": "swap",
+		"display_name": "Cavalry",
+		"description": "Lose 2 pawns to gain 2 knights.",
+		"remove_types": [
+			"pawn",
+			"pawn"
+		],
+		"add_types": [
+			"knight",
+			"knight"
 		]
 	},
 	{
@@ -149,19 +222,6 @@
 				],
 				"weight": 1
 			}
-		]
-	},
-	{
-		"type": "swap",
-		"display_name": "Miracle of life",
-		"description": "If you have a queen, gain 2 pawns.",
-		"remove_types": [
-			"queen"
-		],
-		"add_types": [
-			"queen",
-			"pawn",
-			"pawn"
 		]
 	}
 ]
