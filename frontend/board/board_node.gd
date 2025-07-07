@@ -25,17 +25,15 @@ var input_state: InputState = InputState.NONE
 var selected_piece_node: PieceNode = null
 var temp_move_action: MoveAction = null
 
-func _ready() -> void:
+func init_with_game_setup(game_setup: GameSetup) -> void:
 	assert(Config.loaded, "Config not loaded!")
 	if ai_vs_ai_mode:
 		ai_thread1.init(ABSearchAIV4.new())
-	ai_thread2.init(ABSearchAIV5.new())
-
-func init_with_game_setup(game_setup: GameSetup) -> void:
-	if ai_vs_ai_mode:
+		ai_thread2.init(ABSearchAIV5.new())
 		init_randomly()
 		return
 
+	ai_thread2.init(ABSearchAIV5.new(game_setup.difficulty.eval_randomness))
 	assert(is_node_ready(), "BoardNode is not added to the tree")
 	if state == BoardNodeState.INITIALIZED:
 		state = BoardNodeState.NOT_INITIALIZED

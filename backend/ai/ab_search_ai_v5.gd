@@ -1,9 +1,11 @@
 class_name ABSearchAIV5 extends AbstractAI
 
-var deterministic: bool
+var eval_randomness: float
+var strength_estimation_randomness: float
 
-func _init(_deterministic: bool = false) -> void:
-	deterministic = _deterministic
+func _init(_eval_randomness: float = 0, _strength_randomness: float = 0) -> void:
+	eval_randomness = _eval_randomness
+	strength_estimation_randomness = _strength_randomness
 
 func get_move(board: Board) -> Move:
 	var depth := 3
@@ -85,7 +87,7 @@ func evaluate(board: Board) -> float:
 	# Penalize long sequences of moves that achieve the same outcome as a short sequence
 	eval *= 100.0 / float(board.turn_number + 100)
 
-	return eval
+	return eval + randf_range(-eval_randomness, eval_randomness)
 
 func sort_moves_by_strength_desc(moves: Array[Move], board: Board) -> void:
 	if moves.size() == 1:
@@ -142,10 +144,7 @@ func estimate_move_strength(move: Move, board: Board) -> float:
 		var new_distance := move.to.distance_to(enemy_king.pos)
 		strength += maxf(old_distance - new_distance, 0.0) * 1
 	
-	if !deterministic:
-		strength += randf_range(-0.05, 0.05)
-	
-	return strength
+	return strength + randf_range(-strength_estimation_randomness, strength_estimation_randomness)
 
 func calculate_piece_worth(piece: Piece, board: Board) -> float:
 	var base_worth := piece.get_worth()
