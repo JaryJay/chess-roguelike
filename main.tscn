@@ -3,6 +3,57 @@
 [ext_resource type="Script" uid="uid://bltechx2mha0j" path="res://main.gd" id="1_fdhfs"]
 [ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="1_y06v8"]
 
+[sub_resource type="Animation" id="Animation_h2yge"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot2/Square:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(68, 392)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot2/Square2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-248, 299)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pivot/Square2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(515, 1320)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Pivot/Square:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(174, 1191)]
+}
+
 [sub_resource type="Animation" id="Animation_0xm2m"]
 resource_name = "mm_large_square_anim"
 length = 0.4
@@ -53,57 +104,6 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(-2, -2),
 "update": 0,
 "values": [Vector2(-351, 1191), Vector2(174, 1191)]
-}
-
-[sub_resource type="Animation" id="Animation_h2yge"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Pivot2/Square:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(68, 392)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Pivot2/Square2:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-248, 299)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Pivot/Square2:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(515, 1320)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Pivot/Square:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(174, 1191)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_h2yge"]
@@ -206,10 +206,6 @@ layout_mode = 2
 disabled = true
 text = "Coming Soon"
 
-[node name="ExitButton" type="Button" parent="UI/Control/VBoxContainer"]
-layout_mode = 2
-text = "Exit Game"
-
 [node name="VersionLabel" type="Label" parent="UI/Control"]
 custom_minimum_size = Vector2(100, 48)
 layout_mode = 1
@@ -266,4 +262,3 @@ region_rect = Rect2(92, 80, 13, 24)
 position = Vector2(960, 540)
 
 [connection signal="pressed" from="UI/Control/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
-[connection signal="pressed" from="UI/Control/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
