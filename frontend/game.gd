@@ -58,13 +58,18 @@ func _on_continue_button_pressed() -> void:
 	game_over_rect.hide()
 	settings_rect.hide()
 	
-	if saved_game_result == Match.Result.WIN:
-		game_setup.enemy_credits += game_setup.difficulty.enemy_credit_increment
-		upgrade_select_ui.show()
-		upgrade_select_ui.generate_upgrades(game_setup)
-	else:
-		get_tree().change_scene_to_file("res://frontend/ui/game_creation.tscn")
-		queue_free()
+	match saved_game_result:
+		Match.Result.WIN:
+			game_setup.enemy_credits += game_setup.difficulty.enemy_credit_increment
+			upgrade_select_ui.show()
+			upgrade_select_ui.generate_upgrades(game_setup)
+		Match.Result.LOSE:
+			get_tree().change_scene_to_file("res://frontend/ui/game_creation.tscn")
+			queue_free()
+		_: # Draw
+			# Enemy gets stronger, but you don't get an upgrade
+			game_setup.enemy_credits += game_setup.difficulty.enemy_credit_increment
+			recreate_board()
 
 func _on_concede_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://frontend/ui/game_creation.tscn")
