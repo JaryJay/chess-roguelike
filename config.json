@@ -61,7 +61,7 @@
 			"name": "novice",
 			"display_name": "Novice",
 			"description": "For noobs. It's okay to be bad at chess.",
-			"eval_randomness": 0.8,
+			"eval_randomness": 0.9,
 			"default_depth": 2,
 			"enemy_credits": 800,
 			"enemy_credit_increment": 100
@@ -78,11 +78,11 @@
 		{
 			"name": "master",
 			"display_name": "Master",
-			"description": "The proving ground.",
+			"description": "The proving ground. You might get rolled.",
 			"eval_randomness": 0.2,
 			"default_depth": 4,
-			"enemy_credits": 1600,
-			"enemy_credit_increment": 160
+			"enemy_credits": 1500,
+			"enemy_credit_increment": 175
 		},
 		{
 			"name": "grandmaster",
