@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://0nftfbdusm7g"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0lynk"]
+load_path = "res://.godot/imported/pieces_sprite_sheet.png-b320056e40fecbe295f2b805f7ade72e.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rkkwd"]
+atlas = SubResource("CompressedTexture2D_0lynk")
+region = Rect2(48, 40, 13, 16)
+margin = Rect2(2, 4, 4, 6)
+
+[node name="novice" type="Button"]
+custom_minimum_size = Vector2(100, 100)
+size_flags_vertical = 3
+toggle_mode = true
+icon = SubResource("AtlasTexture_rkkwd")
+icon_alignment = 1
+expand_icon = true
