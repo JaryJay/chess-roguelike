@@ -131,6 +131,36 @@ static func populate_board(board: Board, credits: int, retries: int = 100) -> Bo
 	push_error("Failed to generate valid board after %d attempts" % retries)
 	return board
 
+static func populate_classic_board(board: Board) -> Board:
+	var new_board := board.duplicate()
+	new_board.piece_map = BoardPieceMap.new()
+
+	const back_row = [Piece.Type.ROOK, Piece.Type.KNIGHT, Piece.Type.BISHOP, Piece.Type.QUEEN, Piece.Type.KING, Piece.Type.BISHOP, Piece.Type.KNIGHT, Piece.Type.ROOK]
+
+	# Player pieces
+	for x in range(8):
+		# back row
+		var piece_type = back_row[x]
+		var piece = Piece.new(piece_type, Team.PLAYER, Vector2i(x, 7))
+		new_board.piece_map.put_piece(piece.pos, piece)
+		# pawns
+		piece_type = Piece.Type.PAWN
+		piece = Piece.new(piece_type, Team.PLAYER, Vector2i(x, 6))
+		new_board.piece_map.put_piece(piece.pos, piece)
+
+	# Enemy pieces
+	for x in range(8):
+		# back row
+		var piece_type = back_row[x]
+		var piece = Piece.new(piece_type, Team.ENEMY_AI, Vector2i(x, 0))
+		new_board.piece_map.put_piece(piece.pos, piece)
+		# pawns
+		piece_type = Piece.Type.PAWN
+		piece = Piece.new(piece_type, Team.ENEMY_AI, Vector2i(x, 1))
+		new_board.piece_map.put_piece(piece.pos, piece)
+
+	return new_board
+
 static func populate_board_with_player_types(board: Board, player_types: Array[Piece.Type], credits: int, retries: int = 100) -> Board:
 	for retry in retries:
 		var new_board := board.duplicate()

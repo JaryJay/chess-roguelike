@@ -92,3 +92,12 @@ static func normalize_positions(positions: Array[Vector2i]) -> Array[Vector2i]:
 		normalized_positions.append(Vector2i(pos) + Vector2i(offset))
 	
 	return normalized_positions
+
+static func generate_classic_board() -> Board:
+	var board := Board.new()
+	var positions: Array[Vector2i] = []
+	for y in range(8):
+		for x in range(8):
+			positions.append(Vector2i(x, y))
+	board.tile_map.set_tiles(positions)
+	return board

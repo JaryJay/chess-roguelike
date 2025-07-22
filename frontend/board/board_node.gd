@@ -313,3 +313,33 @@ func start_ai_vs_ai() -> void:
 
 func stop_ai_vs_ai() -> void:
 	ai_vs_ai_mode = false
+
+func init_classic_mode() -> void:
+	assert(is_node_ready(), "BoardNode is not added to the tree")
+	if state == BoardNodeState.INITIALIZED:
+		state = BoardNodeState.NOT_INITIALIZED
+		# Reset UI elements
+		for piece_node: PieceNode in piece_nodes.get_all_piece_nodes():
+			piece_node.queue_free()
+		for tile_node: TileNode in tile_nodes.get_all_tile_nodes():
+			tile_node.queue_free()
+		# AI thread is stateless, so we don't need to reset it
+		promotion_ui.hide()
+		input_state = InputState.NONE
+		selected_piece_node = null
+		temp_move_action = null
+
+	# Generate board with tiles and pieces
+	b = TilesGenerator.generate_classic_board()
+	b = PiecesGenerator.populate_classic_board(b)
+
+	# Create UI elements
+	tile_nodes.create_tile_nodes(b.tile_map.get_all_tiles())
+	var pieces := b.piece_map.get_all_pieces()
+	for piece in pieces:
+		var piece_node := piece_nodes.spawn_piece(piece, true)
+		assert(b.piece_map.has_piece(piece_node.piece().pos))
+		assert(b.piece_map.get_piece(piece_node.piece().pos) == piece_node.piece())
+
+	assert(piece_nodes.get_all_piece_nodes().size() == pieces.size(), "Did not spawn all pieces")
+	state = BoardNodeState.INITIALIZED
