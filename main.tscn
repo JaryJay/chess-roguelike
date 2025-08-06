@@ -201,6 +201,10 @@ theme_override_constants/separation = 20
 layout_mode = 2
 text = "New Game"
 
+[node name="ClassicGameButton" type="Button" parent="UI/Control/VBoxContainer"]
+layout_mode = 2
+text = "Classic Chess"
+
 [node name="AchievementsButton" type="Button" parent="UI/Control/VBoxContainer"]
 layout_mode = 2
 disabled = true
@@ -262,3 +266,4 @@ region_rect = Rect2(92, 80, 13, 24)
 position = Vector2(960, 540)
 
 [connection signal="pressed" from="UI/Control/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="UI/Control/VBoxContainer/ClassicGameButton" to="." method="_on_classic_game_button_pressed"]
