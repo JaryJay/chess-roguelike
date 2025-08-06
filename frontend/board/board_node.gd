@@ -34,79 +34,38 @@ func init_with_game_setup(game_setup: GameSetup) -> void:
 		return
 
 	ai_thread2.init(ABSearchAIV5.new(game_setup.difficulty.eval_randomness))
-	assert(is_node_ready(), "BoardNode is not added to the tree")
-	if state == BoardNodeState.INITIALIZED:
-		state = BoardNodeState.NOT_INITIALIZED
-		# Reset UI elements
-		for piece_node: PieceNode in piece_nodes.get_all_piece_nodes():
-			piece_node.queue_free()
-		for tile_node: TileNode in tile_nodes.get_all_tile_nodes():
-			tile_node.queue_free()
-		# AI thread is stateless, so we don't need to reset it
-		promotion_ui.hide()
-		input_state = InputState.NONE
-		selected_piece_node = null
-		temp_move_action = null
+	_reset_board_state()
 	
 	# Generate board with tiles and pieces
-	var min_tiles := maxi(20, floori(game_setup.piece_types.size() * 2.25))
-	b = TilesGenerator.generate_board_with_tiles(min_tiles)
-	b = PiecesGenerator.populate_board_with_player_types(b, game_setup.piece_types, game_setup.enemy_credits)
+	if game_setup.classic_mode:
+		b = TilesGenerator.generate_classic_board()
+		b = PiecesGenerator.populate_classic_board(b)
+	else:
+		var min_tiles := maxi(20, floori(game_setup.piece_types.size() * 2.25))
+		b = TilesGenerator.generate_board_with_tiles(min_tiles)
+		b = PiecesGenerator.populate_board_with_player_types(b, game_setup.piece_types, game_setup.enemy_credits)
 	
-	# Create UI elements
-	tile_nodes.create_tile_nodes(b.tile_map.get_all_tiles())
-	var pieces := b.piece_map.get_all_pieces()
-	for piece in pieces:
-		var piece_node := piece_nodes.spawn_piece(piece, true)
-		assert(b.piece_map.has_piece(piece_node.piece().pos))
-		assert(b.piece_map.get_piece(piece_node.piece().pos) == piece_node.piece())
-	
-	assert(piece_nodes.get_all_piece_nodes().size() == pieces.size(), "Did not spawn all pieces")
+	_create_board_ui()
 	state = BoardNodeState.INITIALIZED
 
 	# Trigger AI's first move
 	if ai_vs_ai_mode:
-		if b.team_to_move == Team.PLAYER:
-			ai_thread1.process_board(b)
-		else:
-			ai_thread2.process_board(b)
+		_trigger_ai_move()
 
 func init_randomly() -> void:
 	assert(is_node_ready(), "BoardNode is not added to the tree")
-	if state == BoardNodeState.INITIALIZED:
-		state = BoardNodeState.NOT_INITIALIZED
-		# Reset UI elements
-		for piece_node: PieceNode in piece_nodes.get_all_piece_nodes():
-			piece_node.queue_free()
-		for tile_node: TileNode in tile_nodes.get_all_tile_nodes():
-			tile_node.queue_free()
-		# AI thread is stateless, so we don't need to reset it
-		promotion_ui.hide()
-		input_state = InputState.NONE
-		selected_piece_node = null
-		temp_move_action = null
+	_reset_board_state()
 	
 	# Generate board with tiles and pieces
 	b = TilesGenerator.generate_board_with_tiles(20)
 	b = PiecesGenerator.populate_board(b, 1150)  # Use existing credit amount
 	
-	# Create UI elements
-	tile_nodes.create_tile_nodes(b.tile_map.get_all_tiles())
-	var pieces := b.piece_map.get_all_pieces()
-	for piece in pieces:
-		var piece_node := piece_nodes.spawn_piece(piece, true)
-		assert(b.piece_map.has_piece(piece_node.piece().pos))
-		assert(b.piece_map.get_piece(piece_node.piece().pos) == piece_node.piece())
-	
-	assert(piece_nodes.get_all_piece_nodes().size() == pieces.size(), "Did not spawn all pieces")
+	_create_board_ui()
 	state = BoardNodeState.INITIALIZED
 
 	# Trigger AI's first move
 	if ai_vs_ai_mode:
-		if b.team_to_move == Team.PLAYER:
-			ai_thread1.process_board(b)
-		else:
-			ai_thread2.process_board(b)
+		_trigger_ai_move()
 
 func _on_piece_node_selected(piece_node: PieceNode) -> void:
 	var tile_node: TileNode = tile_nodes.get_tile_node(piece_node.piece().pos)
@@ -314,8 +273,9 @@ func start_ai_vs_ai() -> void:
 func stop_ai_vs_ai() -> void:
 	ai_vs_ai_mode = false
 
-func init_classic_mode() -> void:
-	assert(is_node_ready(), "BoardNode is not added to the tree")
+#region helper functions
+
+func _reset_board_state() -> void:
 	if state == BoardNodeState.INITIALIZED:
 		state = BoardNodeState.NOT_INITIALIZED
 		# Reset UI elements
@@ -329,10 +289,7 @@ func init_classic_mode() -> void:
 		selected_piece_node = null
 		temp_move_action = null
 
-	# Generate board with tiles and pieces
-	b = TilesGenerator.generate_classic_board()
-	b = PiecesGenerator.populate_classic_board(b)
-
+func _create_board_ui() -> void:
 	# Create UI elements
 	tile_nodes.create_tile_nodes(b.tile_map.get_all_tiles())
 	var pieces := b.piece_map.get_all_pieces()
@@ -340,6 +297,13 @@ func init_classic_mode() -> void:
 		var piece_node := piece_nodes.spawn_piece(piece, true)
 		assert(b.piece_map.has_piece(piece_node.piece().pos))
 		assert(b.piece_map.get_piece(piece_node.piece().pos) == piece_node.piece())
-
+	
 	assert(piece_nodes.get_all_piece_nodes().size() == pieces.size(), "Did not spawn all pieces")
-	state = BoardNodeState.INITIALIZED
+
+func _trigger_ai_move() -> void:
+	if b.team_to_move == Team.PLAYER:
+		ai_thread1.process_board(b)
+	else:
+		ai_thread2.process_board(b)
+
+#endregion

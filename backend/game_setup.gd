@@ -2,6 +2,8 @@ class_name GameSetup
 
 # Starting conditions
 
+var classic_mode: bool = false
+
 var faction: Faction = null
 var difficulty: Difficulty = null
 
