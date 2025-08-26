@@ -52,6 +52,9 @@ func get_all_pieces() -> Array[Piece]:
 	
 	return all_pieces
 
+func size() -> int:
+	return _pieces.size()
+
 func get_team_pieces(team: Team) -> Array[Piece]:
 	var team_pieces: Array[Piece] = []
 	for piece: Piece in get_all_pieces():

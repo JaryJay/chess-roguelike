@@ -217,6 +217,24 @@ func _is_insufficient_material() -> bool:
 
 #endregion
 
+#region: helper methods
+## Whether the square is under attack by the attacking team
+func is_square_under_attack(pos: Vector2i, attacking_team: Team) -> bool:
+	var pieces := piece_map.get_team_pieces(attacking_team)
+	for piece in pieces:
+		if piece.is_attacking_square(pos, self):
+			return true
+	
+	return false
+
+func get_pieces_attacking_square(pos: Vector2i, attacking_team: Team) -> Array[Piece]:
+	var pieces := piece_map.get_team_pieces(attacking_team)
+	var attacking_pieces: Array[Piece] = []
+	for piece in pieces:
+		if piece.is_attacking_square(pos, self):
+			attacking_pieces.append(piece)
+	return attacking_pieces
+#endregion
 
 #region: object methods
 

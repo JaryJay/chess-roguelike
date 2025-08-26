@@ -130,6 +130,9 @@ func estimate_move_strength(move: Move, board: Board) -> float:
 	if move.is_check():
 		strength += 4.0
 
+	# Defensive move estimation
+	strength += _evaluate_defensive_move(move, piece, board, opposing_team)
+
 	# Pawn movement estimation
 	if enemy_pieces.size() < 4 and piece.type == Piece.Type.PAWN:
 		if absi(move.to.y - move.from.y) == 2:
@@ -153,6 +156,7 @@ func calculate_piece_worth(piece: Piece, board: Board) -> float:
 	var opposing_team: Team = Team.ENEMY_AI if piece.team == Team.PLAYER else Team.PLAYER
 	var enemy_pieces := board.piece_map.get_team_pieces(opposing_team)
 	var only_king_left := enemy_pieces.size() == 1
+	var is_early_game := board.piece_map.size() >= 20
 
 	if piece.type == Piece.Type.PAWN:
 		var is_blocked := false
@@ -166,9 +170,17 @@ func calculate_piece_worth(piece: Piece, board: Board) -> float:
 			forward_pos += forward_dir
 			distance_from_end += 1
 		var position_multiplier := 0.02 if is_blocked else 0.3
-		var end_game_multiplier := 2.0 if only_king_left else 1.0
-		var position_bonus := maxf(0, (8 - distance_from_end) * position_multiplier * end_game_multiplier)
+		var end_game_multiplier := 0.4 if is_early_game else 2.0 if only_king_left else 0.8
+		var blocked_multiplier := 0.2 if is_blocked else 1.0
+		var position_bonus := maxf(0, (8 - distance_from_end) * position_multiplier * end_game_multiplier * blocked_multiplier)
 		worth += position_bonus
+	elif piece.type == Piece.Type.KNIGHT: # Incentivize knights and bishops to have more places to move
+		var available_moves := piece.get_available_moves(board)
+		# Note that this includes illegal moves, which is intended -- we just want there to be lots of possible squares for the piece to go to
+		worth += available_moves.size() * 0.1 - 0.2
+	elif piece.type == Piece.Type.BISHOP:
+		var available_moves := piece.get_available_moves(board)
+		worth += available_moves.size() * 0.08 - 0.3
 	
 	if only_king_left:
 		assert(enemy_pieces[0].type == Piece.Type.KING)
@@ -204,6 +216,44 @@ func calculate_king_mobility_penalty(board: Board, team: Team) -> float:
 		
 		return (8.0 - moveable_squares) * 0.08
 	return 0.0
+
+func _evaluate_defensive_move(move: Move, piece: Piece, board: Board, opposing_team: Team) -> float:
+	"""Evaluates the defensive value of a move based on piece safety"""
+	var strength := 0.0
+	var piece_worth := piece.get_worth()
+	
+	var current_pos_attacker_worth: float = 0
+	var current_pos_threatened := false
+	var new_pos_attacker_worth: float = 0
+	var new_pos_threatened := false
+	
+	if !board.is_square_under_attack(piece.pos, opposing_team):
+		return 0.0
+	# Check if current position is threatened by a less valuable piece
+	var attackers := board.get_pieces_attacking_square(piece.pos, opposing_team)
+	for attacker in attackers:
+		current_pos_attacker_worth = minf(current_pos_attacker_worth, attacker.get_worth())
+	
+	# Check if new position is threatened by a less valuable piece
+	var new_pos_attackers := board.get_pieces_attacking_square(move.to, opposing_team)
+	for attacker in new_pos_attackers:
+		new_pos_attacker_worth = minf(new_pos_attacker_worth, attacker.get_worth())
+
+	current_pos_threatened = current_pos_attacker_worth < piece.get_worth()
+	new_pos_threatened = new_pos_attacker_worth < piece.get_worth()
+
+	if current_pos_threatened and !new_pos_threatened:
+		# Moving from a threatened square to a safe square - this is defensive
+		# Higher value pieces get higher defensive priority
+		strength += (piece_worth - current_pos_attacker_worth) * 1.0
+	elif current_pos_threatened and new_pos_threatened:
+		# Moving from one threatened square to another - still defensive but less ideal
+		strength += (piece_worth - new_pos_attacker_worth) * 0.2
+	elif !current_pos_threatened and new_pos_threatened:
+		# Moving from a safe square to a threatened square - this is bad
+		strength -= (piece_worth - new_pos_attacker_worth) * 0.8
+	
+	return strength
 
 class Result extends RefCounted:
 	var evaluation: float

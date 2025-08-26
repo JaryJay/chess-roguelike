@@ -69,11 +69,10 @@ func get_available_moves(b: Board) -> Array[Move]:
 
 func is_attacking_square(p: Vector2i, b: Board) -> bool:
 	assert(type != Type.UNSET, "Type must be set")
-	assert(b.piece_map.has_piece(p), "There should be a piece that we're checking at %.v" % p)
-	assert(b.tile_map.has_tile(p), "There should be a tile at the target position %.v" % p)
-	assert(b.tile_map.has_tile(pos), "There should be a tile at the current piece position %.v" % pos)
-	assert(p != pos, "There should not be two pieces in the same position %.v" % pos)
-
+	assert(b.tile_map.has_tile(p), "There should be a tile at the target position")
+	assert(b.tile_map.has_tile(pos), "There should be a tile at the current piece position")
+	if p == pos:
+		return false
 	var rule := PieceRules.get_rule(type)
 	
 	if rule.tags.has("pawn"):
