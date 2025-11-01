@@ -132,11 +132,12 @@ func _select_piece_node(piece_node: PieceNode) -> void:
 		selected_piece_node.set_selected(false)
 	selected_piece_node = piece_node
 	if piece_node:
-		var available_moves := b.get_available_moves_from(piece_node.piece().pos)
-		var tiles_to_highlight: Array[Vector2i] = []
-		for move: Move in available_moves:
-			tiles_to_highlight.append(move.to)
-		tile_nodes.highlight_tiles(tiles_to_highlight)
+		if b.team_to_move == player_team:
+			var available_moves := b.get_available_moves_from(piece_node.piece().pos)
+			var tiles_to_highlight: Array[Vector2i] = []
+			for move: Move in available_moves:
+				tiles_to_highlight.append(move.to)
+			tile_nodes.highlight_tiles(tiles_to_highlight)
 		piece_node.set_selected(true)
 	else:
 		tile_nodes.highlight_tiles([])
@@ -151,7 +152,7 @@ func end_ai_turn() -> void:
 	if b.is_match_over():
 		_on_game_over(b.get_match_result())
 		return
-	
+
 	if ai_vs_ai_mode:
 		# Trigger next AI's move
 		if b.team_to_move == Team.PLAYER:
@@ -193,7 +194,7 @@ func _on_ai_thread_move_found(move: Move) -> void:
 #region utils
 
 func _can_select(piece_node: PieceNode) -> bool:
-	return b.team_to_move == player_team and piece_node.piece().team == player_team
+	return piece_node.piece().team == player_team
 
 func _can_capture(piece_node: PieceNode) -> bool:
 	var available_moves := b.get_available_moves_from(selected_piece_node.piece().pos)
@@ -217,7 +218,8 @@ func perform_move_action(move_action: MoveAction) -> void:
 	assert(state == BoardNodeState.INITIALIZED)
 	
 	var piece_node: PieceNode = piece_nodes.get_piece_node(move_action.piece_id)
-	
+	var prev_team_to_move := b.team_to_move
+
 	# Update backend board state
 	b = b.perform_move(Move.new(piece_node.piece().pos, move_action.to, move_action.info, move_action.promo_info))
 	
@@ -262,8 +264,17 @@ func perform_move_action(move_action: MoveAction) -> void:
 		if p != piece_node and !p.is_queued_for_deletion():
 			p.set_piece(b.piece_map.get_piece(p.piece().pos))
 
-	# Reset selection state
-	_select_piece_node(null)
+	# Reset selection state if the move just now was made by the player
+	if prev_team_to_move == player_team:
+		_select_piece_node(null)
+	else:
+		# Otherwise, show available moves for the player's next turn
+		if selected_piece_node:
+			var available_moves := b.get_available_moves_from(selected_piece_node.piece().pos)
+			var tiles_to_highlight: Array[Vector2i] = []
+			for move: Move in available_moves:
+				tiles_to_highlight.append(move.to)
+			tile_nodes.highlight_tiles(tiles_to_highlight)
 	input_state = InputState.NONE
 
 func start_ai_vs_ai() -> void:
