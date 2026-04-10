@@ -70,6 +70,14 @@ func init_randomly() -> void:
 	if ai_vs_ai_mode:
 		_trigger_ai_move()
 
+func _unhandled_input(event: InputEvent) -> void:
+	if state != BoardNodeState.INITIALIZED: return
+	if ai_vs_ai_mode: return
+	# Right-click cancels the current piece selection
+	if event.is_action_pressed("secondary") and selected_piece_node:
+		_select_piece_node(null)
+		get_viewport().set_input_as_handled()
+
 func _on_piece_node_selected(piece_node: PieceNode) -> void:
 	var tile_node: TileNode = tile_nodes.get_tile_node(piece_node.piece().pos)
 	tile_node.animate_flash(1.1)
@@ -277,9 +285,11 @@ func perform_move_action(move_action: MoveAction) -> void:
 	# Update last-move highlight
 	tile_nodes.show_last_move(move_from, move_action.to)
 	
-	# For each other piece node, set piece to be the new piece in the new board
+	# For each other piece node, set piece to be the new piece in the new board.
+	# Skip dying nodes: they were removed from the piece_map but are still in the scene
+	# tree during their death animation, so accessing their position would crash.
 	for p: PieceNode in piece_nodes.get_all_piece_nodes():
-		if p != piece_node and !p.is_queued_for_deletion():
+		if p != piece_node and !p.is_queued_for_deletion() and !p._is_dying:
 			p.set_piece(b.piece_map.get_piece(p.piece().pos))
 
 	# Update check indicator
