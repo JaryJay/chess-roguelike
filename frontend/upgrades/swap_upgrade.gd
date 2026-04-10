@@ -34,3 +34,11 @@ func apply(game_setup: GameSetup) -> void:
 	for type in add_types:
 		game_setup.piece_types.append(Piece.STRING_TO_TYPE[type])
 
+func preview_apply(piece_types: Array[Piece.Type]) -> Array[Piece.Type]:
+	var result := piece_types.duplicate()
+	for type in remove_types:
+		result.erase(Piece.STRING_TO_TYPE[type])
+	for type in add_types:
+		result.append(Piece.STRING_TO_TYPE[type])
+	return result
+

@@ -115,8 +115,18 @@ func set_selected(new_selected: bool) -> void:
 		particles.position = position + Vector2(0, 6)
 		get_tree().root.add_child(particles)
 
+var _is_dying: bool = false
+
 func calculate_target_position() -> Vector2:
 	return (Vector2(_piece.pos) - Vector2.ONE * Config.max_board_size * 0.5) * 16
+
+## Plays a death animation (shrink + fade out) then frees the node.
+func die() -> void:
+	_is_dying = true
+	var tw := create_tween().set_parallel().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+	tw.tween_property(self, "scale", Vector2.ZERO, 0.18)
+	tw.tween_property(self, "modulate:a", 0.0, 0.15)
+	tw.chain().tween_callback(queue_free)
 
 #endregion
 

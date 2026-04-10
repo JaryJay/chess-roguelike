@@ -51,6 +51,7 @@ static func load_config() -> void:
 			difficulty["default_depth"],
 			difficulty["enemy_credits"],
 			difficulty["enemy_credit_increment"],
+			difficulty.get("max_enemy_credits", 0),
 		))
 
 	loaded = true

@@ -140,3 +140,8 @@ func _on_difficulty_button_pressed(button: Button) -> void:
 	var i := button.get_index()
 	difficulty_idx = i
 	_set_difficulty(Config.difficulties[i])
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("open_settings"):
+		get_tree().change_scene_to_file("res://main.tscn")
+		get_viewport().set_input_as_handled()

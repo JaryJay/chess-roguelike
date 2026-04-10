@@ -45,11 +45,14 @@ func get_piece_node_by_pos(pos: Vector2i) -> PieceNode:
 			return piece_node
 	return null
 
-func free_piece_node(id: int) -> void:
+func free_piece_node(id: int, animated: bool = false) -> void:
 	assert(has_piece_node(id))
-	get_piece_node(id).queue_free()
+	var node := get_piece_node(id)
 	_piece_nodes.erase(id)
-	# We may want to spawn some particles here
+	if animated:
+		node.die()
+	else:
+		node.queue_free()
 
 func has_piece_node(id: int) -> bool:
 	return _piece_nodes.has(id)

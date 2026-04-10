@@ -116,7 +116,6 @@ static func populate_board(board: Board, credits: int, retries: int = 100) -> Bo
 		var num_pieces := pieces.size()
 		
 		if num_pieces >= new_board.tile_map.num_tiles():
-			print("There are more pieces than tiles, retrying")
 			continue
 		
 		# Place all pieces
@@ -173,7 +172,6 @@ static func populate_board_with_player_types(board: Board, player_types: Array[P
 		var num_pieces := pieces.size()
 		
 		if num_pieces >= new_board.tile_map.num_tiles():
-			print("There are more pieces than tiles, retrying")
 			continue
 		
 		# Place all pieces
