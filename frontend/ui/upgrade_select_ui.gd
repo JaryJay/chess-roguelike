@@ -15,8 +15,7 @@ func generate_upgrades(game_setup: GameSetup, num_upgrades: int = 3) -> void:
 	%PiecesPreview.set_piece_types(_current_piece_types)
 
 	# Show the enemy's next budget
-	if is_instance_valid(enemy_budget_label):
-		enemy_budget_label.text = "Next enemy budget: %d credits" % game_setup.enemy_credits
+	enemy_budget_label.text = "Next enemy budget: %d credits" % game_setup.enemy_credits
 
 	for child: Node in upgrades_container.get_children():
 		child.queue_free()

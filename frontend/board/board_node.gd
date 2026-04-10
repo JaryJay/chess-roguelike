@@ -289,7 +289,7 @@ func perform_move_action(move_action: MoveAction) -> void:
 	# Skip dying nodes: they were removed from the piece_map but are still in the scene
 	# tree during their death animation, so accessing their position would crash.
 	for p: PieceNode in piece_nodes.get_all_piece_nodes():
-		if p != piece_node and !p.is_queued_for_deletion() and !p._is_dying:
+		if p != piece_node and !p.is_queued_for_deletion() and !p.is_dying():
 			p.set_piece(b.piece_map.get_piece(p.piece().pos))
 
 	# Update check indicator

@@ -117,6 +117,9 @@ func set_selected(new_selected: bool) -> void:
 
 var _is_dying: bool = false
 
+func is_dying() -> bool:
+	return _is_dying
+
 func calculate_target_position() -> Vector2:
 	return (Vector2(_piece.pos) - Vector2.ONE * Config.max_board_size * 0.5) * 16
 
