@@ -61,3 +61,21 @@ func apply(game_setup: GameSetup) -> void:
 		game_setup.piece_types.erase(Piece.STRING_TO_TYPE[type])
 	for type in chosen_possibility.add_types:
 		game_setup.piece_types.append(Piece.STRING_TO_TYPE[type])
+
+func preview_apply(piece_types: Array[Piece.Type]) -> Array[Piece.Type]:
+	# Show the best-case outcome so the player can see the maximum potential gain
+	var best_possibility: GamblePossibility = null
+	var best_net_gain := -INF
+	for possibility in possibilities:
+		var net_gain := possibility.add_types.size() - possibility.remove_types.size()
+		if net_gain > best_net_gain:
+			best_net_gain = net_gain
+			best_possibility = possibility
+	if best_possibility == null:
+		return piece_types.duplicate()
+	var result := piece_types.duplicate()
+	for type in best_possibility.remove_types:
+		result.erase(Piece.STRING_TO_TYPE[type])
+	for type in best_possibility.add_types:
+		result.append(Piece.STRING_TO_TYPE[type])
+	return result

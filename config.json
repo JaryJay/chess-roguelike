@@ -64,7 +64,8 @@
 			"eval_randomness": 0.9,
 			"default_depth": 2,
 			"enemy_credits": 800,
-			"enemy_credit_increment": 100
+			"enemy_credit_increment": 100,
+			"max_enemy_credits": 1400
 		},
 		{
 			"name": "standard",
@@ -73,7 +74,8 @@
 			"eval_randomness": 0.5,
 			"default_depth": 3,
 			"enemy_credits": 1400,
-			"enemy_credit_increment": 150
+			"enemy_credit_increment": 150,
+			"max_enemy_credits": 2200
 		},
 		{
 			"name": "master",
@@ -82,7 +84,8 @@
 			"eval_randomness": 0.2,
 			"default_depth": 4,
 			"enemy_credits": 1500,
-			"enemy_credit_increment": 175
+			"enemy_credit_increment": 175,
+			"max_enemy_credits": 2800
 		},
 		{
 			"name": "grandmaster",
@@ -91,7 +94,8 @@
 			"eval_randomness": 0.0,
 			"default_depth": 4,
 			"enemy_credits": 1700,
-			"enemy_credit_increment": 170
+			"enemy_credit_increment": 170,
+			"max_enemy_credits": 3500
 		}
 	]
 }

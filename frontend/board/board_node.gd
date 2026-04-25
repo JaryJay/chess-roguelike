@@ -1,6 +1,8 @@
 class_name BoardNode extends Node2D
 
 signal game_over(game_result: Match.Result)
+signal thinking_changed(is_thinking: bool)
+signal sound_event(event_name: String)
 
 enum BoardNodeState {
 	NOT_INITIALIZED,
@@ -24,6 +26,7 @@ var state: BoardNodeState = BoardNodeState.NOT_INITIALIZED
 var input_state: InputState = InputState.NONE
 var selected_piece_node: PieceNode = null
 var temp_move_action: MoveAction = null
+var _check_king_tile: Vector2i = Vector2i(-1, -1)
 
 func init_with_game_setup(game_setup: GameSetup) -> void:
 	assert(Config.loaded, "Config not loaded!")
@@ -66,6 +69,14 @@ func init_randomly() -> void:
 	# Trigger AI's first move
 	if ai_vs_ai_mode:
 		_trigger_ai_move()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if state != BoardNodeState.INITIALIZED: return
+	if ai_vs_ai_mode: return
+	# Right-click cancels the current piece selection
+	if event.is_action_pressed("secondary") and selected_piece_node:
+		_select_piece_node(null)
+		get_viewport().set_input_as_handled()
 
 func _on_piece_node_selected(piece_node: PieceNode) -> void:
 	var tile_node: TileNode = tile_nodes.get_tile_node(piece_node.piece().pos)
@@ -146,6 +157,7 @@ func end_player_turn() -> void:
 	if b.is_match_over():
 		_on_game_over(b.get_match_result())
 		return
+	thinking_changed.emit(true)
 	ai_thread2.process_board(b)
 
 func end_ai_turn() -> void:
@@ -162,6 +174,10 @@ func end_ai_turn() -> void:
 
 func _on_game_over(game_result: Match.Result) -> void:
 	game_over.emit(game_result)
+	if game_result == Match.Result.WIN:
+		sound_event.emit("win")
+	elif game_result == Match.Result.LOSE:
+		sound_event.emit("lose")
 	if game_result == Match.Result.WIN or game_result == Match.Result.LOSE:
 		var defeated_team: Team = b.team_to_move
 		var defeated_king_node: PieceNode = piece_nodes.get_king_node(defeated_team)
@@ -180,6 +196,7 @@ func _on_game_over(game_result: Match.Result) -> void:
 
 
 func _on_ai_thread_move_found(move: Move) -> void:
+	thinking_changed.emit(false)
 	# Create move action
 	var from := move.from
 	var to := move.to
@@ -219,6 +236,7 @@ func perform_move_action(move_action: MoveAction) -> void:
 	
 	var piece_node: PieceNode = piece_nodes.get_piece_node(move_action.piece_id)
 	var prev_team_to_move := b.team_to_move
+	var move_from := piece_node.piece().pos
 
 	# Update backend board state
 	b = b.perform_move(Move.new(piece_node.piece().pos, move_action.to, move_action.info, move_action.promo_info))
@@ -231,9 +249,13 @@ func perform_move_action(move_action: MoveAction) -> void:
 		var capture_particles: Node2D = preload("res://frontend/vfx/capture_particles.tscn").instantiate()
 		add_child(capture_particles)
 		capture_particles.position = captured_piece_node.position + Vector2(0, 5)
-		piece_nodes.free_piece_node(move_action.captured_piece_id)
+		piece_nodes.free_piece_node(move_action.captured_piece_id, true)
+		sound_event.emit("capture")
 	elif move_action.is_check():
 		GameCamera.get_instance().shake(0.2, 2.0)
+		sound_event.emit("check")
+	else:
+		sound_event.emit("move")
 	
 	# Handle promotions
 	if move_action.is_promotion():
@@ -249,6 +271,7 @@ func perform_move_action(move_action: MoveAction) -> void:
 		piece_node.position = old_piece_position
 
 		piece_node.move_to(tile_nodes.get_tile_node(move_action.to).position, true)
+		sound_event.emit("promotion")
 	else:
 		# Update piece position in the UI
 		piece_node.move_to(tile_nodes.get_tile_node(move_action.to).position)
@@ -259,10 +282,18 @@ func perform_move_action(move_action: MoveAction) -> void:
 	var tile_node: TileNode = tile_nodes.get_tile_node(move_action.to)
 	tile_node.animate_flash(1.2)
 	
-	# For each other piece node, set piece to be the new piece in the new board
+	# Update last-move highlight
+	tile_nodes.show_last_move(move_from, move_action.to)
+	
+	# For each other piece node, set piece to be the new piece in the new board.
+	# Skip dying nodes: they were removed from the piece_map but are still in the scene
+	# tree during their death animation, so accessing their position would crash.
 	for p: PieceNode in piece_nodes.get_all_piece_nodes():
-		if p != piece_node and !p.is_queued_for_deletion():
+		if p != piece_node and !p.is_queued_for_deletion() and !p.is_dying():
 			p.set_piece(b.piece_map.get_piece(p.piece().pos))
+
+	# Update check indicator
+	_update_check_indicator()
 
 	# Reset selection state if the move just now was made by the player
 	if prev_team_to_move == player_team:
@@ -276,6 +307,24 @@ func perform_move_action(move_action: MoveAction) -> void:
 				tiles_to_highlight.append(move.to)
 			tile_nodes.highlight_tiles(tiles_to_highlight)
 	input_state = InputState.NONE
+
+## Shows or clears the pulsing red indicator on the player king's tile when in check.
+func _update_check_indicator() -> void:
+	var is_in_check := b.is_team_in_check(player_team)
+	var king_node := piece_nodes.get_king_node(player_team)
+	var king_pos := king_node.piece().pos
+
+	if is_in_check:
+		if _check_king_tile != king_pos:
+			# Clear old tile if king moved
+			if _check_king_tile != Vector2i(-1, -1) and tile_nodes.has_tile_node(_check_king_tile):
+				tile_nodes.get_tile_node(_check_king_tile).set_check_flashing(false)
+			_check_king_tile = king_pos
+		tile_nodes.get_tile_node(king_pos).set_check_flashing(true)
+	else:
+		if _check_king_tile != Vector2i(-1, -1) and tile_nodes.has_tile_node(_check_king_tile):
+			tile_nodes.get_tile_node(_check_king_tile).set_check_flashing(false)
+		_check_king_tile = Vector2i(-1, -1)
 
 func start_ai_vs_ai() -> void:
 	ai_vs_ai_mode = true
@@ -299,6 +348,7 @@ func _reset_board_state() -> void:
 		input_state = InputState.NONE
 		selected_piece_node = null
 		temp_move_action = null
+		_check_king_tile = Vector2i(-1, -1)
 
 func _create_board_ui() -> void:
 	# Create UI elements

@@ -7,6 +7,7 @@ const tile_node_scene := preload("res://frontend/tile/tile_node.tscn")
 var _tile_nodes: Array[Array]
 var _cached_tile_count := 0
 var _highlighted_tiles: Array[Vector2i] = []
+var _last_move_tiles: Array[Vector2i] = []
 
 func get_all_tile_nodes() -> Array[TileNode]:
 	var all_tile_nodes: Array[TileNode] = []
@@ -53,6 +54,21 @@ func highlight_tiles(tiles: Array[Vector2i]) -> void:
 	for tile_pos: Vector2i in tiles:
 		get_tile_node(tile_pos).set_show_dot(true)
 	_highlighted_tiles = tiles
+
+## Highlights the from and to tiles of the most recent move with a subtle tint.
+func show_last_move(from: Vector2i, to: Vector2i) -> void:
+	clear_last_move()
+	_last_move_tiles = [from, to]
+	for tile_pos in _last_move_tiles:
+		if has_tile_node(tile_pos):
+			get_tile_node(tile_pos).set_last_move_highlight(true)
+
+## Removes the last-move highlight from all previously highlighted tiles.
+func clear_last_move() -> void:
+	for tile_pos in _last_move_tiles:
+		if has_tile_node(tile_pos):
+			get_tile_node(tile_pos).set_last_move_highlight(false)
+	_last_move_tiles = []
 
 func get_tile_node(coord: Vector2i) -> TileNode:
 	return _tile_nodes[coord.y][coord.x]

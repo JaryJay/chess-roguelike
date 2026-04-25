@@ -12,3 +12,8 @@ func is_applicable(_game_setup: GameSetup) -> bool:
 
 func apply(_game_setup: GameSetup) -> void:
 	assert(false, "Not implemented")
+
+## Returns what piece_types would look like after applying this upgrade.
+## Does NOT modify game_setup.
+func preview_apply(piece_types: Array[Piece.Type]) -> Array[Piece.Type]:
+	return piece_types.duplicate()

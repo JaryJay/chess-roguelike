@@ -14,8 +14,6 @@ static func generate_board_with_tiles(min_tiles: int, retries: int = 10) -> Boar
 		if normalized_positions.size() >= min_tiles:
 			board.tile_map.set_tiles(normalized_positions)
 			return board
-			
-		print("only generated %d tiles, retrying" % normalized_positions.size())
 	
 	push_error("Failed to generate board with enough tiles after %d attempts" % retries)
 	return board
@@ -54,8 +52,6 @@ static func prune_positions(positions: Array[Vector2i]) -> Array[Vector2i]:
 				break
 		if good_tile:
 			pruned_positions.append(tile_pos)
-		else:
-			print("pruned position %v" % tile_pos)
 	
 	return pruned_positions
 
