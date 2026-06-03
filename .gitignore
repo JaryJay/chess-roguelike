@@ -48,3 +48,6 @@ __pycache__/
 /ios/chess-roguelike-ios/Images.xcassets
 /ios/chess-roguelike-ios.xcarchive
 /ios
+
+# Fennara local AI guidance
+.fennara/
