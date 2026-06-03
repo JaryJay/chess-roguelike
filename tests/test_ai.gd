@@ -25,6 +25,10 @@ func run_tests() -> void:
 	test_obvious_recapture()
 	test_react_to_forced_checkmate()
 	test_lots_of_pieces()
+	test_en_passant_capture()
+	test_en_passant_enemy_side()
+	test_en_passant_only_immediately()
+	test_en_passant_no_double_push()
 	
 	get_tree().quit()
 
@@ -218,6 +222,121 @@ PPRN..P
 	# Basically we just want to make sure the AI doesn't sacrifice random pieces for no reason
 	assert(!move.is_capture(), "There are no safe pieces to capture")
 	print("Test lots of pieces passed")
+
+func _find_move(moves: Array[Move], to: Vector2i) -> Move:
+	for move: Move in moves:
+		if move.to == to:
+			return move
+	return null
+
+# Player pawn captures an enemy pawn that just advanced two squares.
+func test_en_passant_capture() -> void:
+	var b := create_board_from_grid("""
+.......k
+...p....
+........
+....P...
+........
+........
+........
+K.......
+""")
+	b.team_to_move = Team.ENEMY_AI
+
+	# Enemy pawn double-pushes to land beside the player pawn.
+	b = b.perform_move(Move.new(Vector2i(3,1), Vector2i(3,3)))
+	assert(b.team_to_move == Team.PLAYER)
+
+	var moves := b.get_available_moves_from(Vector2i(4,3))
+	var ep := _find_move(moves, Vector2i(3,2))
+	assert(ep != null, "En passant move to (3,2) should be available")
+	assert(ep.is_en_passant(), "Move should be flagged en passant")
+	assert(ep.is_capture(), "En passant should also be a capture")
+
+	b = b.perform_move(ep)
+	assert(b.piece_map.has_piece(Vector2i(3,2)), "Player pawn should land on (3,2)")
+	assert(b.piece_map.get_piece(Vector2i(3,2)).team == Team.PLAYER)
+	assert(!b.piece_map.has_piece(Vector2i(3,3)), "Captured enemy pawn should be removed from (3,3)")
+	assert(!b.piece_map.has_piece(Vector2i(4,3)), "Capturing pawn should have left (4,3)")
+	print("En passant capture passed")
+
+# The AI/enemy side can also capture en passant.
+func test_en_passant_enemy_side() -> void:
+	var b := create_board_from_grid("""
+.......k
+........
+........
+........
+...p....
+........
+....P...
+K.......
+""")
+	b.team_to_move = Team.PLAYER
+
+	# Player pawn double-pushes to land beside the enemy pawn.
+	b = b.perform_move(Move.new(Vector2i(4,6), Vector2i(4,4)))
+	assert(b.team_to_move == Team.ENEMY_AI)
+
+	var moves := b.get_available_moves_from(Vector2i(3,4))
+	var ep := _find_move(moves, Vector2i(4,5))
+	assert(ep != null, "Enemy en passant move to (4,5) should be available")
+	assert(ep.is_en_passant(), "Move should be flagged en passant")
+
+	b = b.perform_move(ep)
+	assert(b.piece_map.has_piece(Vector2i(4,5)), "Enemy pawn should land on (4,5)")
+	assert(b.piece_map.get_piece(Vector2i(4,5)).team == Team.ENEMY_AI)
+	assert(!b.piece_map.has_piece(Vector2i(4,4)), "Captured player pawn should be removed from (4,4)")
+	print("En passant enemy side passed")
+
+# En passant is only legal on the move immediately after the double push.
+func test_en_passant_only_immediately() -> void:
+	var b := create_board_from_grid("""
+.......k
+...p....
+........
+....P...
+........
+........
+........
+K.......
+""")
+	b.team_to_move = Team.ENEMY_AI
+
+	# Enemy double-pushes beside the player pawn.
+	b = b.perform_move(Move.new(Vector2i(3,1), Vector2i(3,3)))
+	# Player makes an unrelated move (king shuffle) instead of capturing.
+	b = b.perform_move(Move.new(Vector2i(0,7), Vector2i(0,6)))
+	# Enemy makes an unrelated move.
+	b = b.perform_move(Move.new(Vector2i(7,0), Vector2i(7,1)))
+	assert(b.team_to_move == Team.PLAYER)
+
+	var moves := b.get_available_moves_from(Vector2i(4,3))
+	var ep := _find_move(moves, Vector2i(3,2))
+	assert(ep == null, "En passant should no longer be available after intervening moves")
+	print("En passant only-immediately passed")
+
+# A pawn that arrived via single steps cannot be captured en passant.
+func test_en_passant_no_double_push() -> void:
+	var b := create_board_from_grid("""
+.......k
+........
+........
+...pP...
+........
+........
+........
+K.......
+""")
+	# Enemy pawn is already adjacent; the last move was unrelated, not a double push.
+	b.team_to_move = Team.ENEMY_AI
+	b = b.perform_move(Move.new(Vector2i(7,0), Vector2i(7,1)))
+	assert(b.team_to_move == Team.PLAYER)
+
+	var moves := b.get_available_moves_from(Vector2i(4,3))
+	var ep := _find_move(moves, Vector2i(3,2))
+	assert(ep == null, "En passant must not be available without a fresh double push")
+	print("En passant no-double-push passed")
 
 func _create_ai() -> AbstractAI:
 	return ABSearchAIV5.new(true)

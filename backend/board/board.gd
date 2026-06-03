@@ -77,7 +77,12 @@ func perform_move(move: Move, allow_illegal: bool = false) -> Board:
 	assert(piece_map.has_piece(move.from), "No piece at %s" % move.from)
 	var piece_to_move := piece_map.get_piece(move.from)
 	assert(piece_to_move.team == current_team_to_move, "You can't move someone else's piece")
-	if move.is_capture():
+	if move.is_en_passant():
+		# The captured pawn sits beside the destination, not on it.
+		var ep_captured_pos := Vector2i(move.to.x, move.from.y)
+		assert(!piece_map.has_piece(move.to), "En passant lands on an empty square")
+		assert(piece_map.has_piece(ep_captured_pos), "There must be a pawn to capture en passant")
+	elif move.is_capture():
 		assert(piece_map.has_piece(move.to), "There must be a piece being captured")
 	else:
 		assert(!piece_map.has_piece(move.to), "There must not be a piece at the destination if it's not a capture")
@@ -94,7 +99,12 @@ func perform_move(move: Move, allow_illegal: bool = false) -> Board:
 		next_board.previous_boards.pop_back()
 	
 	next_board.piece_map.remove_piece(piece_to_move.pos)
-	if move.is_capture():
+	if move.is_en_passant():
+		var ep_captured_pos := Vector2i(move.to.x, move.from.y)
+		var captured_piece := piece_map.get_piece(ep_captured_pos)
+		assert(captured_piece.team.is_hostile_to(current_team_to_move), "Cannot capture friendly pieces")
+		next_board.piece_map.remove_piece(ep_captured_pos)
+	elif move.is_capture():
 		var captured_piece := piece_map.get_piece(move.to)
 		assert(captured_piece.team.is_hostile_to(current_team_to_move), "Cannot capture friendly pieces")
 		next_board.piece_map.remove_piece(move.to)

@@ -22,6 +22,9 @@ func is_check() -> bool:
 func is_capture() -> bool:
 	return info & Move.CAPTURE != 0
 
+func is_en_passant() -> bool:
+	return info & Move.EN_PASSANT != 0
+
 func is_castle() -> bool:
 	assert(
 		!(info & Move.CASTLE_LEFT != 0 and info & Move.CASTLE_RIGHT != 0),

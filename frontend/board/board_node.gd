@@ -100,10 +100,18 @@ func _on_tile_node_selected(tile_node: TileNode) -> void:
 		assert(selected_piece_node.piece().team == player_team)
 		if _can_move_to(tile_node):
 			var move_action: MoveAction
+			var target_move := _get_available_move_to(tile_node.pos())
 			if b.tile_map.is_promotion_tile(tile_node.pos(), player_team) and selected_piece_node.piece().type == Piece.Type.PAWN:
 				temp_move_action = MoveAction.new(selected_piece_node.id(), tile_node.pos(), 0, Piece.Type.UNSET)
 				input_state = InputState.CHOOSING_PROMOTION
 				promotion_ui.show()
+			elif target_move != null and target_move.is_en_passant():
+				# The captured pawn sits beside the (empty) landing square.
+				var captured_pos := Vector2i(tile_node.pos().x, selected_piece_node.piece().pos.y)
+				var captured_piece_id := piece_nodes.get_piece_node_by_pos(captured_pos).id()
+				move_action = MoveAction.new(selected_piece_node.id(), tile_node.pos(), target_move.info, Piece.Type.UNSET, captured_piece_id)
+				perform_move_action(move_action)
+				end_player_turn()
 			else:
 				move_action = MoveAction.new(selected_piece_node.id(), tile_node.pos())
 				perform_move_action(move_action)
@@ -186,7 +194,11 @@ func _on_ai_thread_move_found(move: Move) -> void:
 	var piece_id := piece_nodes.get_piece_node_by_pos(from).id()
 	var captured_piece_id := 0
 	if move.is_capture():
-		captured_piece_id = piece_nodes.get_piece_node_by_pos(to).id()
+		var captured_pos := to
+		if move.is_en_passant():
+			# The captured pawn is beside the landing square.
+			captured_pos = Vector2i(to.x, from.y)
+		captured_piece_id = piece_nodes.get_piece_node_by_pos(captured_pos).id()
 	var move_action: MoveAction = MoveAction.new(piece_id, to, move.info, move.promo_info, captured_piece_id)
 	perform_move_action(move_action)
 	end_ai_turn()
@@ -210,6 +222,13 @@ func _can_move_to(tile_node: TileNode) -> bool:
 		if move.to == tile_node.pos():
 			return true
 	return false
+
+func _get_available_move_to(target: Vector2i) -> Move:
+	var available_moves := b.get_available_moves_from(selected_piece_node.piece().pos)
+	for move: Move in available_moves:
+		if move.to == target:
+			return move
+	return null
 
 #endregion
 

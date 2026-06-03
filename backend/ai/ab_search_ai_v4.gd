@@ -171,7 +171,11 @@ func estimate_move_strength(move: Move, board: Board) -> float:
 	# Capture estimation
 	start_time = Time.get_ticks_msec()
 	if move.is_capture():
-		var captured_piece := board.piece_map.get_piece(move.to)
+		# En passant captures the pawn beside the (empty) landing square.
+		var captured_pos := move.to
+		if move.is_en_passant():
+			captured_pos = Vector2i(move.to.x, move.from.y)
+		var captured_piece := board.piece_map.get_piece(captured_pos)
 		strength += 2.0 + 2.0 * calculate_piece_worth(captured_piece, board)
 	if not _root_timing.is_empty():
 		_root_timing["estimate_capture_time"] += Time.get_ticks_msec() - start_time

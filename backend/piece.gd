@@ -121,7 +121,53 @@ func _pawn_get_additional_moves(b: Board) -> Array[Move]:
 		else:
 			moves_including_promotion.append(move)
 	
+	# En passant is appended after promotion handling: it captures onto an empty
+	# square that is never a promotion tile in standard play.
+	moves_including_promotion.append_array(_pawn_get_en_passant_moves(b))
+	
 	return moves_including_promotion
+
+## En passant: if an adjacent enemy pawn just advanced two squares on the
+## immediately preceding move, this pawn may capture it as if it had moved one.
+func _pawn_get_en_passant_moves(b: Board) -> Array[Move]:
+	var moves: Array[Move] = []
+	if b.previous_boards.is_empty():
+		return moves
+	
+	var prev := b.previous_boards[0]
+	var facing_dir := _get_pawn_facing_direction()
+	
+	for side: Vector2i in PAWN_SIDES:
+		var adjacent := pos + side
+		# There must be a hostile pawn directly beside us right now.
+		if not b.piece_map.has_piece(adjacent):
+			continue
+		var neighbor := b.piece_map.get_piece(adjacent)
+		if neighbor.type != Piece.Type.PAWN or not neighbor.team.is_hostile_to(team):
+			continue
+		
+		# That pawn must have reached `adjacent` via a two-square push on the last
+		# move: it started two ranks ahead of us (in our facing direction) and the
+		# square beside us was empty before.
+		var double_push_start := adjacent + facing_dir * 2
+		if prev.piece_map.has_piece(adjacent):
+			continue
+		if not prev.piece_map.has_piece(double_push_start):
+			continue
+		var prev_piece := prev.piece_map.get_piece(double_push_start)
+		if prev_piece.type != Piece.Type.PAWN or not prev_piece.team.is_hostile_to(team):
+			continue
+		
+		# Land on the square the enemy pawn skipped over.
+		var capture_square := pos + side + facing_dir
+		if not b.tile_map.has_tile(capture_square):
+			continue
+		if b.piece_map.has_piece(capture_square):
+			continue
+		
+		moves.append(Move.new(pos, capture_square, Move.CAPTURE | Move.EN_PASSANT))
+	
+	return moves
 
 func _pawn_promotion_types() -> Array[Piece.Type]:
 	return [Piece.Type.QUEEN, Piece.Type.ROOK, Piece.Type.BISHOP, Piece.Type.KNIGHT]

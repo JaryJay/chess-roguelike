@@ -4,6 +4,7 @@ const CHECK := 2**1
 const CAPTURE := 2**2
 const CASTLE_LEFT := 2**3
 const CASTLE_RIGHT := 2**4
+const EN_PASSANT := 2**5
 
 var from: Vector2i
 var to: Vector2i
@@ -22,6 +23,11 @@ func is_check() -> bool:
 
 func is_capture() -> bool:
 	return info & CAPTURE != 0
+
+## An en passant capture lands on an empty square; the captured pawn sits beside
+## the destination (same file as `to`, same rank as `from`).
+func is_en_passant() -> bool:
+	return info & EN_PASSANT != 0
 
 func is_castle() -> bool:
 	assert(
@@ -43,6 +49,8 @@ func _to_string() -> String:
 		info_strings.append("CHECK")
 	if is_capture():
 		info_strings.append("CAPTURE")
+	if is_en_passant():
+		info_strings.append("EN_PASSANT")
 	if is_castle():
 		info_strings.append("CASTLE")
 	if is_promotion():
