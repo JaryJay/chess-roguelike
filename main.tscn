@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c5f1dsko5aivp"]
+[gd_scene format=3 uid="uid://c5f1dsko5aivp"]
 
 [ext_resource type="Script" uid="uid://bltechx2mha0j" path="res://main.gd" id="1_fdhfs"]
 [ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="1_y06v8"]
@@ -118,54 +118,52 @@ font_size = 96
 [sub_resource type="LabelSettings" id="LabelSettings_wndoa"]
 font_size = 28
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" unique_id=1915084909]
 script = ExtResource("1_fdhfs")
 
-[node name="DecorLayer" type="CanvasLayer" parent="."]
+[node name="DecorLayer" type="CanvasLayer" parent="." unique_id=837011602]
 layer = -1
 
-[node name="Pivot" type="Node2D" parent="DecorLayer"]
+[node name="Pivot" type="Node2D" parent="DecorLayer" unique_id=88152506]
 
-[node name="Square" type="Polygon2D" parent="DecorLayer/Pivot"]
+[node name="Square" type="Polygon2D" parent="DecorLayer/Pivot" unique_id=536748729]
 position = Vector2(174, 1191)
 scale = Vector2(39, 39)
 color = Color(0.184314, 0.2, 0.313726, 0.670588)
 antialiased = true
 polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
 
-[node name="Square2" type="Polygon2D" parent="DecorLayer/Pivot"]
+[node name="Square2" type="Polygon2D" parent="DecorLayer/Pivot" unique_id=992908337]
 position = Vector2(515, 1320)
 scale = Vector2(39, 39)
 color = Color(0.780392, 0.772549, 0.764706, 0.670588)
 antialiased = true
 polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
 
-[node name="Pivot2" type="Node2D" parent="DecorLayer"]
+[node name="Pivot2" type="Node2D" parent="DecorLayer" unique_id=1540116654]
 position = Vector2(1651, -565)
 
-[node name="Square" type="Polygon2D" parent="DecorLayer/Pivot2"]
+[node name="Square" type="Polygon2D" parent="DecorLayer/Pivot2" unique_id=436578024]
 position = Vector2(68, 392)
 scale = Vector2(39, 39)
 color = Color(0.184314, 0.2, 0.313726, 0.670588)
 antialiased = true
 polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
 
-[node name="Square2" type="Polygon2D" parent="DecorLayer/Pivot2"]
+[node name="Square2" type="Polygon2D" parent="DecorLayer/Pivot2" unique_id=1499897021]
 position = Vector2(-248, 299)
 scale = Vector2(39, 39)
 color = Color(0.780392, 0.772549, 0.764706, 0.670588)
 antialiased = true
 polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="DecorLayer"]
-libraries = {
-&"": SubResource("AnimationLibrary_h2yge")
-}
-autoplay = "mm_large_square_anim"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="DecorLayer" unique_id=1533476869]
+libraries/ = SubResource("AnimationLibrary_h2yge")
+autoplay = &"mm_large_square_anim"
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=1692020044]
 
-[node name="Control" type="Control" parent="UI"]
+[node name="Control" type="Control" parent="UI" unique_id=998973927]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -173,9 +171,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Title" type="Label" parent="UI/Control"]
+[node name="Title" type="Label" parent="UI/Control" unique_id=501141465]
 custom_minimum_size = Vector2(100, 48)
-layout_mode = 2
+layout_mode = 0
 offset_left = 142.0
 offset_top = 110.0
 offset_right = 1306.0
@@ -184,7 +182,7 @@ text = "Untitled Chess Roguelike"
 label_settings = SubResource("LabelSettings_wu52y")
 autowrap_mode = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Control" unique_id=64099389]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.447
@@ -197,20 +195,20 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
 
-[node name="NewGameButton" type="Button" parent="UI/Control/VBoxContainer"]
+[node name="NewGameButton" type="Button" parent="UI/Control/VBoxContainer" unique_id=490614322]
 layout_mode = 2
 text = "New Game"
 
-[node name="ClassicGameButton" type="Button" parent="UI/Control/VBoxContainer"]
+[node name="ClassicGameButton" type="Button" parent="UI/Control/VBoxContainer" unique_id=1942902669]
 layout_mode = 2
 text = "Classic Chess"
 
-[node name="AchievementsButton" type="Button" parent="UI/Control/VBoxContainer"]
+[node name="AchievementsButton" type="Button" parent="UI/Control/VBoxContainer" unique_id=81082935]
 layout_mode = 2
 disabled = true
 text = "Coming Soon"
 
-[node name="VersionLabel" type="Label" parent="UI/Control"]
+[node name="VersionLabel" type="Label" parent="UI/Control" unique_id=344280916]
 custom_minimum_size = Vector2(100, 48)
 layout_mode = 1
 anchors_preset = -1
@@ -226,7 +224,7 @@ label_settings = SubResource("LabelSettings_wndoa")
 vertical_alignment = 2
 autowrap_mode = 3
 
-[node name="CreatedByLabel" type="Label" parent="UI/Control"]
+[node name="CreatedByLabel" type="Label" parent="UI/Control" unique_id=1134706434]
 custom_minimum_size = Vector2(100, 48)
 layout_mode = 1
 anchors_preset = -1
@@ -246,23 +244,23 @@ horizontal_alignment = 2
 vertical_alignment = 2
 autowrap_mode = 3
 
-[node name="BG" type="Node2D" parent="."]
+[node name="BG" type="Node2D" parent="." unique_id=351326736]
 
-[node name="PawnSprite" type="Sprite2D" parent="BG"]
+[node name="PawnSprite" type="Sprite2D" parent="BG" unique_id=264545172]
 position = Vector2(1191, 570)
 scale = Vector2(23, 23)
 texture = ExtResource("1_y06v8")
 region_enabled = true
 region_rect = Rect2(48, 40, 13, 16)
 
-[node name="KingSprite" type="Sprite2D" parent="BG"]
+[node name="KingSprite" type="Sprite2D" parent="BG" unique_id=1400261431]
 position = Vector2(1554, 477)
 scale = Vector2(23, 23)
 texture = ExtResource("1_y06v8")
 region_enabled = true
 region_rect = Rect2(92, 80, 13, 24)
 
-[node name="Camera2D" type="Camera2D" parent="BG"]
+[node name="Camera2D" type="Camera2D" parent="BG" unique_id=1118894938]
 position = Vector2(960, 540)
 
 [connection signal="pressed" from="UI/Control/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]

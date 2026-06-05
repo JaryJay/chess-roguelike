@@ -39,7 +39,6 @@ class Piece:
     def is_attacking_square(self, target_pos: Vector2i, board) -> bool:
         """Returns whether this piece is attacking the given square"""
         assert self.type != PieceType.UNSET, "Type must be set"
-        assert board.piece_map.has_piece(target_pos), f"Must be a piece at {target_pos}"
         assert board.tile_map.has_tile(target_pos), f"Must be a tile at {target_pos}"
         assert board.tile_map.has_tile(self.pos), f"Must be a tile at {self.pos}"
         assert target_pos != self.pos, f"Cannot attack own square {self.pos}"
@@ -79,8 +78,66 @@ class Piece:
     
     def _king_get_additional_moves(self, board) -> List['Move']:
         """Returns additional moves specific to kings (e.g. castling)"""
-        # TODO: Implement castling
-        return []
+        moves: List[Move] = []
+
+        # A king that has already moved has lost all castling rights
+        if bool(self.flags & PieceFlags.MOVED):
+            return moves
+
+        # A king cannot castle while it is in check
+        if board.is_team_in_check(self.team):
+            return moves
+
+        enemy_team = Team.PLAYER if self.team == Team.ENEMY_AI else Team.ENEMY_AI
+        for direction, flag in ((Vector2i.LEFT, MoveFlags.CASTLE_LEFT),
+                                (Vector2i.RIGHT, MoveFlags.CASTLE_RIGHT)):
+            castle_move = self._try_get_castle_move(board, direction, flag, enemy_team)
+            if castle_move is not None:
+                moves.append(castle_move)
+
+        return moves
+
+    def _try_get_castle_move(self, board, direction: Vector2i, flag: 'MoveFlags', enemy_team: Team) -> Optional['Move']:
+        """Returns a castling move in the given direction, or None if it is not legal.
+
+        The king moves two squares towards a friendly, un-moved rook that shares
+        its row. All tiles between the king and rook must exist and be empty, and
+        the king may neither pass through nor land on an attacked square.
+        """
+        # Scan outwards from the king for the first piece in this direction
+        scan_pos = self.pos + direction
+        distance = 1
+        while True:
+            if not board.tile_map.has_tile(scan_pos):
+                return None
+            if board.piece_map.has_piece(scan_pos):
+                piece = board.piece_map.get_piece(scan_pos)
+                if (piece.team == self.team and piece.type == PieceType.ROOK
+                        and not bool(piece.flags & PieceFlags.MOVED)):
+                    break
+                # The first piece encountered is not a castle-able rook
+                return None
+            scan_pos = scan_pos + direction
+            distance += 1
+
+        # The rook must be far enough away for the king to move two squares
+        if distance < 2:
+            return None
+
+        one_step = self.pos + direction
+        two_step = self.pos + direction * 2
+
+        # The king's path must consist of real tiles
+        if not board.tile_map.has_tile(one_step) or not board.tile_map.has_tile(two_step):
+            return None
+
+        # The king may not pass through or land on a square attacked by the enemy
+        if board.is_square_under_attack(one_step, enemy_team):
+            return None
+        if board.is_square_under_attack(two_step, enemy_team):
+            return None
+
+        return Move(self.pos, two_step, flag)
     
     def _pawn_get_additional_moves(self, board) -> List['Move']:
         """Returns additional moves specific to pawns"""
