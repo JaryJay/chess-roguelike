@@ -270,11 +270,15 @@ func perform_move_action(move_action: MoveAction) -> void:
 	else:
 		# Otherwise, show available moves for the player's next turn
 		if selected_piece_node:
-			var available_moves := b.get_available_moves_from(selected_piece_node.piece().pos)
-			var tiles_to_highlight: Array[Vector2i] = []
-			for move: Move in available_moves:
-				tiles_to_highlight.append(move.to)
-			tile_nodes.highlight_tiles(tiles_to_highlight)
+			if selected_piece_node.piece() != b.piece_map.get_piece(selected_piece_node.piece().pos):
+				# If the selected piece is no longer on the board
+				selected_piece_node = null
+			else: # Selected piece is still on the board
+				var available_moves := b.get_available_moves_from(selected_piece_node.piece().pos)
+				var tiles_to_highlight: Array[Vector2i] = []
+				for move: Move in available_moves:
+					tiles_to_highlight.append(move.to)
+				tile_nodes.highlight_tiles(tiles_to_highlight)
 	input_state = InputState.NONE
 
 func start_ai_vs_ai() -> void:
