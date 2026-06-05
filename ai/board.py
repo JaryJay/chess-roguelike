@@ -251,31 +251,37 @@ class Board:
         piece_to_move = self.piece_map.get_piece(move.from_pos)
         assert piece_to_move.team == current_team_to_move, "Cannot move opponent's piece"
         
-        if move.is_capture():
-            assert self.piece_map.has_piece(move.to_pos), "Must be a piece to capture"
-            captured_piece = self.piece_map.get_piece(move.to_pos)
-            assert captured_piece.team.is_hostile_to(current_team_to_move), "Cannot capture friendly pieces"
-        else:
-            assert not self.piece_map.has_piece(move.to_pos), "Destination must be empty for non-capture moves"
+        if not move.is_castle():
+            if move.is_capture():
+                assert self.piece_map.has_piece(move.to_pos), "Must be a piece to capture"
+                captured_piece = self.piece_map.get_piece(move.to_pos)
+                assert captured_piece.team.is_hostile_to(current_team_to_move), "Cannot capture friendly pieces"
+            else:
+                assert not self.piece_map.has_piece(move.to_pos), "Destination must be empty for non-capture moves"
         
         next_board = self.duplicate()
         next_board.team_to_move = Team.PLAYER if current_team_to_move == Team.ENEMY_AI else Team.ENEMY_AI
         next_board.turn_number = self.turn_number + 1
         
-        next_board.piece_map.remove_piece(piece_to_move.pos)
-        if move.is_capture():
-            next_board.piece_map.remove_piece(move.to_pos)
-            
-        if move.is_promotion():
-            promotion_type = move.get_promotion_type()
-            new_piece = Piece(promotion_type, current_team_to_move, move.to_pos)
-            next_board.piece_map.put_piece(move.to_pos, new_piece)
+        if move.is_castle():
+            self._apply_castle_move(next_board, move, piece_to_move)
         else:
-            new_piece = piece_to_move.duplicate()
-            new_piece.pos = move.to_pos
-            if piece_to_move.type == PieceType.PAWN:
-                new_piece.flags |= PieceFlags.MOVED
-            next_board.piece_map.put_piece(move.to_pos, new_piece)
+            next_board.piece_map.remove_piece(piece_to_move.pos)
+            if move.is_capture():
+                next_board.piece_map.remove_piece(move.to_pos)
+                
+            if move.is_promotion():
+                promotion_type = move.get_promotion_type()
+                new_piece = Piece(promotion_type, current_team_to_move, move.to_pos)
+                next_board.piece_map.put_piece(move.to_pos, new_piece)
+            else:
+                new_piece = piece_to_move.duplicate()
+                new_piece.pos = move.to_pos
+                # Track movement so castling rights can be revoked once a king or
+                # rook (or pawn, for its double-step) has moved
+                if piece_to_move.type in (PieceType.PAWN, PieceType.KING, PieceType.ROOK):
+                    new_piece.flags |= PieceFlags.MOVED
+                next_board.piece_map.put_piece(move.to_pos, new_piece)
         
         if not allow_illegal:
             assert not next_board.is_team_in_check(current_team_to_move), "Move cannot put own team in check"
@@ -289,6 +295,42 @@ class Board:
             next_board._is_threefold_repetition = True
         
         return next_board
+    
+    def _apply_castle_move(self, next_board: 'Board', move: Move, king_piece: Piece) -> None:
+        """Moves both the king and its rook for a castling move"""
+        direction = Vector2i.RIGHT if move.to_pos.x > move.from_pos.x else Vector2i.LEFT
+        
+        # Locate the rook the king is castling with
+        rook_pos = move.from_pos + direction
+        while not self.piece_map.has_piece(rook_pos):
+            rook_pos = rook_pos + direction
+        rook = self.piece_map.get_piece(rook_pos)
+        assert rook.type == PieceType.ROOK and rook.team == king_piece.team, "Castling target must be a friendly rook"
+        
+        next_board.piece_map.remove_piece(move.from_pos)
+        next_board.piece_map.remove_piece(rook_pos)
+        
+        new_king = king_piece.duplicate()
+        new_king.pos = move.to_pos
+        new_king.flags |= PieceFlags.MOVED
+        next_board.piece_map.put_piece(new_king.pos, new_king)
+        
+        # The rook lands on the square the king moved across
+        new_rook = rook.duplicate()
+        new_rook.pos = move.from_pos + direction
+        new_rook.flags |= PieceFlags.MOVED
+        next_board.piece_map.put_piece(new_rook.pos, new_rook)
+    
+    def is_square_under_attack(self, pos: Vector2i, attacking_team: Team) -> bool:
+        """Returns whether the given square is attacked by any piece of the attacking team"""
+        for piece in self.piece_map.get_all_pieces():
+            if piece.team != attacking_team:
+                continue
+            if piece.pos == pos:
+                continue
+            if piece.is_attacking_square(pos, self):
+                return True
+        return False
     
     def is_team_in_check(self, team: Team) -> bool:
         """Returns whether the given team's king is in check"""

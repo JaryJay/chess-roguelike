@@ -74,6 +74,13 @@ func _on_piece_node_selected(piece_node: PieceNode) -> void:
 		
 	if b.team_to_move == player_team and selected_piece_node:
 		assert(selected_piece_node.piece().team == player_team)
+		# Castling where the rook sits on the king's destination square
+		var castle_move := _get_castle_move_to(piece_node.piece().pos)
+		if castle_move != null:
+			var castle_action := MoveAction.new(selected_piece_node.id(), castle_move.to, castle_move.info)
+			perform_move_action(castle_action)
+			end_player_turn()
+			return
 		if _can_capture(piece_node):
 			var move_action: MoveAction
 			if b.tile_map.is_promotion_tile(piece_node.piece().pos, player_team) and selected_piece_node.piece().type == Piece.Type.PAWN:
@@ -105,7 +112,10 @@ func _on_tile_node_selected(tile_node: TileNode) -> void:
 				input_state = InputState.CHOOSING_PROMOTION
 				promotion_ui.show()
 			else:
-				move_action = MoveAction.new(selected_piece_node.id(), tile_node.pos())
+				# Preserve move flags (e.g. castling) from the matching legal move
+				var chosen_move := _get_available_move_to(tile_node.pos())
+				var move_info: int = chosen_move.info if chosen_move else 0
+				move_action = MoveAction.new(selected_piece_node.id(), tile_node.pos(), move_info)
 				perform_move_action(move_action)
 				end_player_turn()
 			return
@@ -211,6 +221,21 @@ func _can_move_to(tile_node: TileNode) -> bool:
 			return true
 	return false
 
+func _get_available_move_to(pos: Vector2i) -> Move:
+	var available_moves := b.get_available_moves_from(selected_piece_node.piece().pos)
+	for move: Move in available_moves:
+		if move.to == pos:
+			return move
+	return null
+
+func _get_castle_move_to(pos: Vector2i) -> Move:
+	if not selected_piece_node:
+		return null
+	for move: Move in b.get_available_moves_from(selected_piece_node.piece().pos):
+		if move.is_castle() and move.to == pos:
+			return move
+	return null
+
 #endregion
 
 func perform_move_action(move_action: MoveAction) -> void:
@@ -219,6 +244,20 @@ func perform_move_action(move_action: MoveAction) -> void:
 	
 	var piece_node: PieceNode = piece_nodes.get_piece_node(move_action.piece_id)
 	var prev_team_to_move := b.team_to_move
+
+	# For castling, capture the rook's node and destination before the board
+	# state changes (the rook's original square becomes empty afterwards)
+	var castle_rook_node: PieceNode = null
+	var castle_rook_to := Vector2i.ZERO
+	if move_action.is_castle():
+		var king_from := piece_node.piece().pos
+		var castle_dir := Vector2i.RIGHT if move_action.to.x > king_from.x else Vector2i.LEFT
+		var rook_from := king_from + castle_dir
+		while b.tile_map.has_tile(rook_from) and not b.piece_map.has_piece(rook_from):
+			rook_from += castle_dir
+		assert(b.piece_map.has_piece(rook_from), "Castling rook not found")
+		castle_rook_node = piece_nodes.get_piece_node_by_pos(rook_from)
+		castle_rook_to = king_from + castle_dir
 
 	# Update backend board state
 	b = b.perform_move(Move.new(piece_node.piece().pos, move_action.to, move_action.info, move_action.promo_info))
@@ -254,6 +293,14 @@ func perform_move_action(move_action: MoveAction) -> void:
 		piece_node.move_to(tile_nodes.get_tile_node(move_action.to).position)
 	
 	piece_node.set_piece(b.piece_map.get_piece(move_action.to))
+
+	# Move the rook for castling. This must happen before the generic update
+	# loop below, which would otherwise look up the rook at its now-empty
+	# original square.
+	if move_action.is_castle():
+		assert(castle_rook_node)
+		castle_rook_node.move_to(tile_nodes.get_tile_node(castle_rook_to).position)
+		castle_rook_node.set_piece(b.piece_map.get_piece(castle_rook_to))
 	
 	# Animate target tile color
 	var tile_node: TileNode = tile_nodes.get_tile_node(move_action.to)

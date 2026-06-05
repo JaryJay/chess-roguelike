@@ -77,10 +77,11 @@ func perform_move(move: Move, allow_illegal: bool = false) -> Board:
 	assert(piece_map.has_piece(move.from), "No piece at %s" % move.from)
 	var piece_to_move := piece_map.get_piece(move.from)
 	assert(piece_to_move.team == current_team_to_move, "You can't move someone else's piece")
-	if move.is_capture():
-		assert(piece_map.has_piece(move.to), "There must be a piece being captured")
-	else:
-		assert(!piece_map.has_piece(move.to), "There must not be a piece at the destination if it's not a capture")
+	if not move.is_castle():
+		if move.is_capture():
+			assert(piece_map.has_piece(move.to), "There must be a piece being captured")
+		else:
+			assert(!piece_map.has_piece(move.to), "There must not be a piece at the destination if it's not a capture")
 	
 	var next_board := duplicate()
 	next_board._match_result = Match.Result.UNCOMPUTED
@@ -93,21 +94,26 @@ func perform_move(move: Move, allow_illegal: bool = false) -> Board:
 	if next_board.previous_boards.size() > 5:
 		next_board.previous_boards.pop_back()
 	
-	next_board.piece_map.remove_piece(piece_to_move.pos)
-	if move.is_capture():
-		var captured_piece := piece_map.get_piece(move.to)
-		assert(captured_piece.team.is_hostile_to(current_team_to_move), "Cannot capture friendly pieces")
-		next_board.piece_map.remove_piece(move.to)
-	if move.is_promotion():
-		var promo_type: Piece.Type = move.get_promotion_type()
-		var new_piece: Piece = Piece.new(promo_type, current_team_to_move, move.to, 0)
-		next_board.piece_map.put_piece(move.to, new_piece)
+	if move.is_castle():
+		_apply_castle_move(next_board, move, piece_to_move)
 	else:
-		var new_piece := piece_to_move.duplicate()
-		new_piece.pos = move.to
-		if piece_to_move.type == Piece.Type.PAWN:
-			new_piece.info = new_piece.info | Piece.MOVED
-		next_board.piece_map.put_piece(move.to, new_piece)
+		next_board.piece_map.remove_piece(piece_to_move.pos)
+		if move.is_capture():
+			var captured_piece := piece_map.get_piece(move.to)
+			assert(captured_piece.team.is_hostile_to(current_team_to_move), "Cannot capture friendly pieces")
+			next_board.piece_map.remove_piece(move.to)
+		if move.is_promotion():
+			var promo_type: Piece.Type = move.get_promotion_type()
+			var new_piece: Piece = Piece.new(promo_type, current_team_to_move, move.to, 0)
+			next_board.piece_map.put_piece(move.to, new_piece)
+		else:
+			var new_piece := piece_to_move.duplicate()
+			new_piece.pos = move.to
+			# Track movement so castling rights can be revoked once a king or
+			# rook (or pawn, for its double-step) has moved
+			if piece_to_move.type == Piece.Type.PAWN or piece_to_move.type == Piece.Type.KING or piece_to_move.type == Piece.Type.ROOK:
+				new_piece.info = new_piece.info | Piece.MOVED
+			next_board.piece_map.put_piece(move.to, new_piece)
 	
 	# If the move is a capture, promotion, or pawn move, then the board
 	# is changed "permanently" so we don't have to store all the previous
@@ -122,6 +128,33 @@ func perform_move(move: Move, allow_illegal: bool = false) -> Board:
 		assert(!next_board.is_team_in_check(current_team_to_move), "A move cannot put your own team in check")
 	
 	return next_board
+
+## Moves both the king and its rook for a castling move
+func _apply_castle_move(next_board: Board, move: Move, king: Piece) -> void:
+	var castle_dir := Vector2i.RIGHT if move.to.x > move.from.x else Vector2i.LEFT
+
+	# Locate the rook the king is castling with
+	var rook_pos := move.from + castle_dir
+	while tile_map.has_tile(rook_pos) and not piece_map.has_piece(rook_pos):
+		rook_pos += castle_dir
+	assert(piece_map.has_piece(rook_pos), "Castling rook not found")
+	var rook := piece_map.get_piece(rook_pos)
+	assert(
+		rook.type == Piece.Type.ROOK and rook.team == king.team,
+		"Castling target must be a friendly rook"
+	)
+
+	next_board.piece_map.remove_piece(move.from)
+	next_board.piece_map.remove_piece(rook_pos)
+
+	var new_king := king.duplicate()
+	new_king.info = new_king.info | Piece.MOVED
+	next_board.piece_map.put_piece(move.to, new_king)
+
+	# The rook lands on the square the king moved across
+	var new_rook := rook.duplicate()
+	new_rook.info = new_rook.info | Piece.MOVED
+	next_board.piece_map.put_piece(move.from + castle_dir, new_rook)
 
 ## Whether the king on that team is in check
 ## In a valid board state, is_team_in_check(team_to_move) should always be false
