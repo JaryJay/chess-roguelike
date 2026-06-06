@@ -88,8 +88,63 @@ func is_attacking_square(p: Vector2i, b: Board) -> bool:
 
 const BOARD_LENGTH_UPPER_BOUND: int = 20
 
-func _king_get_additional_moves(_b: Board) -> Array[Move]:
-	return []
+func _king_get_additional_moves(b: Board) -> Array[Move]:
+	var moves: Array[Move] = []
+
+	# A king that has already moved has lost all castling rights
+	if info & MOVED != 0:
+		return moves
+
+	# A king cannot castle while it is in check
+	if b.is_team_in_check(team):
+		return moves
+
+	var enemy_team: Team = Team.ENEMY_AI if team.is_player() else Team.PLAYER
+	for castle: Array in [[Vector2i.LEFT, Move.CASTLE_LEFT], [Vector2i.RIGHT, Move.CASTLE_RIGHT]]:
+		var castle_move := _try_get_castle_move(b, castle[0], castle[1], enemy_team)
+		if castle_move != null:
+			moves.append(castle_move)
+
+	return moves
+
+## Returns a castling move in the given direction, or null if it isn't legal.
+## The king moves two squares towards a friendly, un-moved rook on its row. All
+## tiles between them must exist and be empty, and the king may neither pass
+## through nor land on an attacked square.
+func _try_get_castle_move(b: Board, dir: Vector2i, flag: int, enemy_team: Team) -> Move:
+	# Scan outwards from the king for the first piece in this direction
+	var scan_pos := pos + dir
+	var distance := 1
+	while true:
+		if not b.tile_map.has_tile(scan_pos):
+			return null
+		if b.piece_map.has_piece(scan_pos):
+			var piece := b.piece_map.get_piece(scan_pos)
+			if piece.team == team and piece.type == Piece.Type.ROOK and piece.info & MOVED == 0:
+				break
+			# The first piece encountered is not a castle-able rook
+			return null
+		scan_pos += dir
+		distance += 1
+
+	# The rook must be far enough away for the king to move two squares
+	if distance < 2:
+		return null
+
+	var one_step := pos + dir
+	var two_step := pos + dir * 2
+
+	# The king's path must consist of real tiles
+	if not b.tile_map.has_tile(one_step) or not b.tile_map.has_tile(two_step):
+		return null
+
+	# The king may not pass through or land on a square attacked by the enemy
+	if b.is_square_under_attack(one_step, enemy_team):
+		return null
+	if b.is_square_under_attack(two_step, enemy_team):
+		return null
+
+	return Move.new(pos, two_step, flag)
 
 const DIAGONALS_PLAYER := [Vector2i(1, -1), Vector2i(1, -1)]
 const DIAGONALS_ENEMY := [Vector2i(1, 1), Vector2i(1, 1)]
