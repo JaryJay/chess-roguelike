@@ -12,6 +12,14 @@ size = Vector2(16, 16)
 [node name="PieceNode" type="Node2D" groups=["piece_nodes"]]
 script = ExtResource("1_flxqp")
 
+[node name="VisualPivot" type="Node2D" parent="."]
+
+[node name="PieceSprite2D" type="Sprite2D" parent="VisualPivot"]
+editor_description = "This is the node that piece sprites will replace."
+position = Vector2(0, -5)
+script = ExtResource("2_2n7nr")
+metadata/_custom_type_script = "uid://fw7gwivhmbco"
+
 [node name="Area2D" type="Area2D" parent="."]
 collision_mask = 0
 
@@ -21,12 +29,6 @@ debug_color = Color(0, 0.6, 0.701961, 0.211765)
 
 [node name="Button" type="TouchScreenButton" parent="."]
 shape = SubResource("RectangleShape2D_q5l1u")
-
-[node name="PieceSprite2D" type="Sprite2D" parent="."]
-editor_description = "This is the node that piece sprites will replace."
-position = Vector2(0, -5)
-script = ExtResource("2_2n7nr")
-metadata/_custom_type_script = "uid://fw7gwivhmbco"
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

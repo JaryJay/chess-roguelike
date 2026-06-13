@@ -4,6 +4,7 @@ class_name Game extends Node2D
 @onready var game_over_label: Label = $GameOverLayer/Rect/H/Label
 @onready var game_over_rect: Control = $GameOverLayer/Rect
 @onready var settings_rect: Control = $SettingsLayer/Rect
+@onready var premoving_checkbox: CheckButton = $SettingsLayer/Rect/H/PremovingCheckBox
 @onready var upgrade_select_ui: UpgradeSelectUI = $UpgradeSelectUI
 
 var game_setup: GameSetup
@@ -13,6 +14,7 @@ var wins_this_run: int = 0
 
 func init_with_game_setup(_game_setup: GameSetup) -> void:
 	self.game_setup = _game_setup
+	premoving_checkbox.button_pressed = Settings.premoving_enabled
 	board.init_with_game_setup(_game_setup)
 
 func init_randomly() -> void:
@@ -109,3 +111,8 @@ func _on_settings_button_pressed() -> void:
 
 func _on_back_button_pressed() -> void:
 	_close_settings()
+
+func _on_premoving_checkbox_toggled(enabled: bool) -> void:
+	Settings.save_premoving_enabled(enabled)
+	if not enabled:
+		board.clear_premoves()

@@ -3,6 +3,9 @@ class_name TileNode extends Node2D
 signal selected
 
 var _pos: Vector2i
+var _base_square_color: Color
+var _is_drag_hovered: bool = false
+var _is_premove_highlighted: bool = false
 var is_hovered: bool = false
 var is_pressed: bool = false
 var is_selected: bool = false
@@ -15,9 +18,10 @@ var is_selected: bool = false
 func init(new_pos: Vector2i) -> void:
 	_pos = new_pos
 	if (_pos.x + _pos.y) % 2 == 0:
-		square.color = Color("c7c5c3")
+		_base_square_color = Color("c7c5c3")
 	else:
-		square.color = Color("2f3350")
+		_base_square_color = Color("2f3350")
+	square.color = _base_square_color
 	name = "Tile_%v" % _pos
 	$Label.text = "%s,%s" % [_pos.x, _pos.y]
 	position = (Vector2(_pos) - Vector2.ONE * Config.max_board_size * 0.5) * 16
@@ -65,3 +69,19 @@ func set_selected(new_selected: bool) -> void:
 
 func set_show_dot(new_val: bool) -> void:
 	dot.visible = new_val
+
+func set_show_premove(new_val: bool) -> void:
+	_is_premove_highlighted = new_val
+	_apply_square_color()
+
+func set_show_drag_hover(new_val: bool) -> void:
+	_is_drag_hovered = new_val
+	_apply_square_color()
+
+func _apply_square_color() -> void:
+	if _is_drag_hovered:
+		square.color = _base_square_color.lerp(Color(0.9, 0.85, 0.4), 0.45)
+	elif _is_premove_highlighted:
+		square.color = _base_square_color.lerp(Color(0.4, 0.6, 0.9), 0.35)
+	else:
+		square.color = _base_square_color

@@ -14,7 +14,16 @@ texture_margin_right = 20.0
 texture_margin_bottom = 20.0
 modulate_color = Color(0.462291, 0.462291, 0.462291, 0.784314)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rd8sf"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_urbn3"]
+load_path = "res://.godot/imported/panel-transparent-center-009.png-111575f8205292ff7cbdcc25ad2fb6b6.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ftthr"]
+texture = SubResource("CompressedTexture2D_urbn3")
+texture_margin_left = 20.0
+texture_margin_top = 20.0
+texture_margin_right = 20.0
+texture_margin_bottom = 20.0
+modulate_color = Color(0.860369, 0.860369, 0.860369, 1)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_femyt"]
 load_path = "res://.godot/imported/panel-transparent-center-009.png-111575f8205292ff7cbdcc25ad2fb6b6.ctex"
@@ -43,6 +52,28 @@ texture_margin_right = 20.0
 texture_margin_bottom = 20.0
 modulate_color = Color(0.899258, 0.899258, 0.899258, 1)
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hcw1s"]
+load_path = "res://.godot/imported/panel-transparent-center-009.png-111575f8205292ff7cbdcc25ad2fb6b6.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vq2v7"]
+texture = SubResource("CompressedTexture2D_hcw1s")
+texture_margin_left = 20.0
+texture_margin_top = 20.0
+texture_margin_right = 20.0
+texture_margin_bottom = 20.0
+modulate_color = Color(0.860369, 0.860369, 0.860369, 1)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xgvba"]
+load_path = "res://.godot/imported/panel-transparent-center-009.png-111575f8205292ff7cbdcc25ad2fb6b6.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b8mxr"]
+texture = SubResource("CompressedTexture2D_xgvba")
+texture_margin_left = 20.0
+texture_margin_top = 20.0
+texture_margin_right = 20.0
+texture_margin_bottom = 20.0
+modulate_color = Color(0.860369, 0.860369, 0.860369, 1)
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_urbn3"]
 texture = ExtResource("2_urbn3")
 texture_margin_left = 25.0
@@ -53,9 +84,11 @@ texture_margin_bottom = 25.0
 [resource]
 Button/font_sizes/font_size = 36
 Button/styles/disabled = SubResource("StyleBoxTexture_3f1aj")
-Button/styles/focus = SubResource("StyleBoxEmpty_rd8sf")
+Button/styles/focus = SubResource("StyleBoxTexture_ftthr")
 Button/styles/hover = SubResource("StyleBoxTexture_t0h1v")
 Button/styles/normal = SubResource("StyleBoxTexture_27tw2")
 Button/styles/pressed = SubResource("StyleBoxTexture_dxptr")
+CheckButton/styles/hover = SubResource("StyleBoxTexture_vq2v7")
+CheckButton/styles/hover_pressed = SubResource("StyleBoxTexture_b8mxr")
 Label/font_sizes/font_size = 36
 PanelContainer/styles/panel = SubResource("StyleBoxTexture_urbn3")

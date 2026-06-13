@@ -2,7 +2,8 @@ class_name PieceNode extends Node2D
 
 signal selected
 
-@onready var piece_sprite_2d: PieceSprite2D = $PieceSprite2D
+@onready var visual_pivot: Node2D = $VisualPivot
+@onready var piece_sprite_2d: PieceSprite2D = $VisualPivot/PieceSprite2D
 
 var _initialized := false
 var _id: int
@@ -11,6 +12,10 @@ var _piece: Piece
 var is_hovered: bool = false
 var is_selected: bool = false
 var _is_moving: bool = false
+var _is_dragging: bool = false
+var _drag_z_index: int = 0
+var _saved_scale: Vector2 = Vector2.ONE
+var _feedback_tween: Tween = null
 
 func _ready() -> void:
 	init_team_sprites()
@@ -26,7 +31,11 @@ func set_piece(new_piece: Piece) -> void:
 	_piece = new_piece
 
 func move_to(target_position: Vector2, is_promotion: bool = false) -> void:
+	if _is_dragging:
+		end_drag(false)
 	_is_moving = true
+	_stop_feedback_tween()
+	reset_visual_pivot()
 
 	if is_promotion:
 		var promotion_particles: Node2D = preload("res://frontend/vfx/promotion_particles.tscn").instantiate()
@@ -89,34 +98,83 @@ func _on_area_2d_mouse_exited() -> void:
 	if Settings.INPUT_MODE != "mouse_and_keyboard": return
 	set_hovered(false)
 
+func _stop_feedback_tween() -> void:
+	if _feedback_tween:
+		_feedback_tween.kill()
+		_feedback_tween = null
+
+func reset_visual_pivot() -> void:
+	_stop_feedback_tween()
+	visual_pivot.position = Vector2.ZERO
+	visual_pivot.rotation = 0.0
+	if not _is_dragging:
+		visual_pivot.scale = Vector2.ONE
+
 func set_hovered(new_hovered: bool) -> void:
 	is_hovered = new_hovered
-	if is_hovered and !_is_moving:
-		var tw := create_tween()
-		tw.tween_property(self, "position", Vector2(0, -1), 0.05).as_relative().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
-	elif !is_hovered and !_is_moving:
-		var tw := create_tween()
-		tw.tween_property(self, "position", Vector2(0, 1), 0.05).as_relative().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
+	if is_hovered and !_is_moving and !_is_dragging:
+		_stop_feedback_tween()
+		_feedback_tween = create_tween()
+		_feedback_tween.tween_property(visual_pivot, "position", Vector2(0, -1), 0.05).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
+	elif !is_hovered and !_is_moving and !_is_dragging:
+		_stop_feedback_tween()
+		_feedback_tween = create_tween()
+		_feedback_tween.tween_property(visual_pivot, "position", Vector2.ZERO, 0.05).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
 
 func set_selected(new_selected: bool) -> void:
 	is_selected = new_selected
-	if is_selected and !_is_moving:
-		var tw := create_tween().set_parallel().set_trans(Tween.TRANS_QUAD)
-		tw.set_ease(Tween.EASE_OUT)
-		tw.tween_property(self, "position", Vector2(0, -2), 0.05).as_relative()
-		tw.tween_property(self, "rotation", randf_range(-0.05, 0.05), 0.05)
-		tw.tween_property(self, "scale", Vector2.ONE * 1.1, 0.05)
-		tw.set_ease(Tween.EASE_IN)
-		tw.chain().tween_property(self, "position", calculate_target_position(), 0.05)
-		tw.tween_property(self, "rotation", 0.0, 0.05)
-		tw.tween_property(self, "scale", Vector2.ONE, 0.05)
+	if is_selected and !_is_moving and !_is_dragging:
+		_stop_feedback_tween()
+		_feedback_tween = create_tween().set_parallel().set_trans(Tween.TRANS_QUAD)
+		_feedback_tween.set_ease(Tween.EASE_OUT)
+		_feedback_tween.tween_property(visual_pivot, "position", Vector2(0, -2), 0.05)
+		_feedback_tween.tween_property(visual_pivot, "rotation", randf_range(-0.05, 0.05), 0.05)
+		_feedback_tween.tween_property(visual_pivot, "scale", Vector2.ONE * 1.1, 0.05)
+		_feedback_tween.set_ease(Tween.EASE_IN)
+		_feedback_tween.chain().tween_property(visual_pivot, "position", Vector2.ZERO, 0.05)
+		_feedback_tween.tween_property(visual_pivot, "rotation", 0.0, 0.05)
+		_feedback_tween.tween_property(visual_pivot, "scale", Vector2.ONE, 0.05)
 
 		var particles: OneShotParticles = load("res://frontend/vfx/select_particles.tscn").instantiate()
 		particles.position = position + Vector2(0, 6)
 		get_tree().root.add_child(particles)
+	elif !new_selected and !_is_moving and !_is_dragging:
+		reset_visual_pivot()
 
 func calculate_target_position() -> Vector2:
 	return (Vector2(_piece.pos) - Vector2.ONE * Config.max_board_size * 0.5) * 16
+
+func is_moving() -> bool:
+	return _is_moving
+
+func is_dragging() -> bool:
+	return _is_dragging
+
+func begin_drag() -> void:
+	_is_dragging = true
+	_stop_feedback_tween()
+	reset_visual_pivot()
+	_drag_z_index = z_index
+	z_index = 100
+	_saved_scale = visual_pivot.scale
+	visual_pivot.scale = Vector2.ONE * 1.15
+
+func update_drag_position(local_pos: Vector2) -> void:
+	position = local_pos
+
+func end_drag(restore: bool) -> void:
+	_is_dragging = false
+	z_index = _drag_z_index
+	visual_pivot.scale = _saved_scale
+	if restore:
+		position = calculate_target_position()
+
+func snap_to_position(world_position: Vector2) -> void:
+	if _is_dragging:
+		end_drag(false)
+	_stop_feedback_tween()
+	reset_visual_pivot()
+	position = world_position
 
 #endregion
 
