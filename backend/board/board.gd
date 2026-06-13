@@ -98,28 +98,20 @@ func perform_move(move: Move, allow_illegal: bool = false) -> Board:
 	if next_board.previous_boards.size() > 5:
 		next_board.previous_boards.pop_back()
 	
-	next_board.piece_map.remove_piece(piece_to_move.pos)
-	if move.is_en_passant():
-		var ep_captured_pos := Vector2i(move.to.x, move.from.y)
-		var captured_piece := piece_map.get_piece(ep_captured_pos)
-		assert(captured_piece.team.is_hostile_to(current_team_to_move), "Cannot capture friendly pieces")
-		next_board.piece_map.remove_piece(ep_captured_pos)
-	elif move.is_capture():
-		var captured_piece := piece_map.get_piece(move.to)
-		assert(captured_piece.team.is_hostile_to(current_team_to_move), "Cannot capture friendly pieces")
-		next_board.piece_map.remove_piece(move.to)
-	elif move.is_castle():
+	if move.is_castle():
 		_apply_castle_move(next_board, move, piece_to_move)
-	if move.is_promotion():
-		var promo_type: Piece.Type = move.get_promotion_type()
-		var new_piece: Piece = Piece.new(promo_type, current_team_to_move, move.to, 0)
-		next_board.piece_map.put_piece(move.to, new_piece)
 	else:
-		next_board.piece_map.remove_piece(piece_to_move.pos)
-		if move.is_capture():
+		if move.is_en_passant():
+			var ep_captured_pos := Vector2i(move.to.x, move.from.y)
+			var captured_piece := piece_map.get_piece(ep_captured_pos)
+			assert(captured_piece.team.is_hostile_to(current_team_to_move), "Cannot capture friendly pieces")
+			next_board.piece_map.remove_piece(ep_captured_pos)
+		elif move.is_capture():
 			var captured_piece := piece_map.get_piece(move.to)
 			assert(captured_piece.team.is_hostile_to(current_team_to_move), "Cannot capture friendly pieces")
 			next_board.piece_map.remove_piece(move.to)
+		
+		next_board.piece_map.remove_piece(piece_to_move.pos)
 		if move.is_promotion():
 			var promo_type: Piece.Type = move.get_promotion_type()
 			var new_piece: Piece = Piece.new(promo_type, current_team_to_move, move.to, 0)
