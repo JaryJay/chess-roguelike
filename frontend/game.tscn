@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bb0qxkgwbx5xc"]
+[gd_scene format=3 uid="uid://bb0qxkgwbx5xc"]
 
 [ext_resource type="Script" uid="uid://bmw6lvpdpokau" path="res://frontend/game.gd" id="1_qfs6o"]
 [ext_resource type="PackedScene" uid="uid://b0v2ttp4dudf4" path="res://frontend/board/board_node.tscn" id="2_b7sum"]
@@ -23,13 +23,13 @@ background_color = Color(0.337754, 0.288089, 0.552513, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_pfcdr"]
 font_size = 80
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" unique_id=1758435718]
 script = ExtResource("1_qfs6o")
 
-[node name="DecorLayer" type="CanvasLayer" parent="."]
+[node name="DecorLayer" type="CanvasLayer" parent="." unique_id=106059161]
 layer = -1
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="DecorLayer"]
+[node name="GPUParticles2D" type="GPUParticles2D" parent="DecorLayer" unique_id=1815685001]
 position = Vector2(-99, 202)
 amount = 14
 texture = SubResource("GradientTexture2D_pnr3g")
@@ -39,17 +39,17 @@ explosiveness = 0.11
 randomness = 0.06
 process_material = ExtResource("2_uh1ml")
 
-[node name="BoardNode" parent="." instance=ExtResource("2_b7sum")]
+[node name="BoardNode" parent="." unique_id=898326372 instance=ExtResource("2_b7sum")]
 
-[node name="GameCamera" parent="." instance=ExtResource("3_bh0d3")]
+[node name="GameCamera" parent="." unique_id=1808011394 instance=ExtResource("3_bh0d3")]
 position = Vector2(0, -9)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1570730886]
 environment = SubResource("Environment_xnp5u")
 
-[node name="UILayer" type="CanvasLayer" parent="."]
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=1637510617]
 
-[node name="SettingsButton" type="Button" parent="UILayer"]
+[node name="SettingsButton" type="Button" parent="UILayer" unique_id=938474639]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -64,9 +64,9 @@ grow_vertical = 0
 size_flags_vertical = 4
 text = "Settings"
 
-[node name="GameOverLayer" type="CanvasLayer" parent="."]
+[node name="GameOverLayer" type="CanvasLayer" parent="." unique_id=1184263621]
 
-[node name="Rect" type="NinePatchRect" parent="GameOverLayer"]
+[node name="Rect" type="NinePatchRect" parent="GameOverLayer" unique_id=827843656]
 visible = false
 self_modulate = Color(0, 0, 0, 0.647059)
 anchors_preset = 15
@@ -85,7 +85,7 @@ patch_margin_top = 24
 patch_margin_right = 24
 patch_margin_bottom = 24
 
-[node name="H" type="VBoxContainer" parent="GameOverLayer/Rect"]
+[node name="H" type="VBoxContainer" parent="GameOverLayer/Rect" unique_id=20965666]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -99,21 +99,21 @@ mouse_filter = 0
 theme_override_constants/separation = 80
 alignment = 1
 
-[node name="Label" type="Label" parent="GameOverLayer/Rect/H"]
+[node name="Label" type="Label" parent="GameOverLayer/Rect/H" unique_id=813790035]
 layout_mode = 2
 text = "You win!"
 label_settings = SubResource("LabelSettings_pfcdr")
 horizontal_alignment = 1
 
-[node name="ContinueButton" type="Button" parent="GameOverLayer/Rect/H"]
+[node name="ContinueButton" type="Button" parent="GameOverLayer/Rect/H" unique_id=1047019418]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 text = "Continue"
 
-[node name="SettingsLayer" type="CanvasLayer" parent="."]
+[node name="SettingsLayer" type="CanvasLayer" parent="." unique_id=1144448722]
 
-[node name="Rect" type="NinePatchRect" parent="SettingsLayer"]
+[node name="Rect" type="NinePatchRect" parent="SettingsLayer" unique_id=811705401]
 visible = false
 self_modulate = Color(0, 0, 0, 0.647059)
 anchors_preset = 15
@@ -132,7 +132,7 @@ patch_margin_top = 24
 patch_margin_right = 24
 patch_margin_bottom = 24
 
-[node name="H" type="VBoxContainer" parent="SettingsLayer/Rect"]
+[node name="H" type="VBoxContainer" parent="SettingsLayer/Rect" unique_id=1386442102]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -146,33 +146,40 @@ mouse_filter = 0
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="Label" type="Label" parent="SettingsLayer/Rect/H"]
+[node name="Label" type="Label" parent="SettingsLayer/Rect/H" unique_id=1568091327]
 layout_mode = 2
 text = "Settings"
 label_settings = SubResource("LabelSettings_pfcdr")
 horizontal_alignment = 1
 
-[node name="BackButton" type="Button" parent="SettingsLayer/Rect/H"]
+[node name="PremovingCheckBox" type="CheckButton" parent="SettingsLayer/Rect/H" unique_id=1728682171]
+layout_mode = 2
+button_pressed = true
+text = "Premoving"
+alignment = 1
+
+[node name="BackButton" type="Button" parent="SettingsLayer/Rect/H" unique_id=1831025985]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Back to Game"
 
-[node name="ConcedeButton" type="Button" parent="SettingsLayer/Rect/H"]
+[node name="ConcedeButton" type="Button" parent="SettingsLayer/Rect/H" unique_id=354845512]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Concede"
 
-[node name="QuitButton" type="Button" parent="SettingsLayer/Rect/H"]
+[node name="QuitButton" type="Button" parent="SettingsLayer/Rect/H" unique_id=1810733980]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Quit"
 
-[node name="UpgradeSelectUI" parent="." instance=ExtResource("4_g2u0c")]
+[node name="UpgradeSelectUI" parent="." unique_id=1729618778 instance=ExtResource("4_g2u0c")]
 visible = false
 
 [connection signal="game_over" from="BoardNode" to="." method="_on_board_node_game_over"]
 [connection signal="pressed" from="UILayer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="GameOverLayer/Rect/H/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="toggled" from="SettingsLayer/Rect/H/PremovingCheckBox" to="." method="_on_premoving_checkbox_toggled"]
 [connection signal="pressed" from="SettingsLayer/Rect/H/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="SettingsLayer/Rect/H/ConcedeButton" to="." method="_on_concede_button_pressed"]
 [connection signal="pressed" from="SettingsLayer/Rect/H/QuitButton" to="." method="_on_quit_button_pressed"]

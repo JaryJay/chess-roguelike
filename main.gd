@@ -6,6 +6,7 @@ func _ready() -> void:
 	var version: String = ProjectSettings.get_setting("application/config/version")
 	version_label.text = "v%s" % version
 	Config.load_config()
+	Settings.load_user_settings()
 	PieceRules.load_pieces()
 	Upgrades.load_upgrades()
 
