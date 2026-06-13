@@ -61,8 +61,12 @@ func _on_continue_button_pressed() -> void:
 	match saved_game_result:
 		Match.Result.WIN:
 			game_setup.enemy_credits += game_setup.difficulty.enemy_credit_increment
-			upgrade_select_ui.show()
-			upgrade_select_ui.generate_upgrades(game_setup)
+			# In classic chess, directly go to the next game
+			if game_setup.classic_mode:
+				recreate_board()
+			else:
+				upgrade_select_ui.show()
+				upgrade_select_ui.generate_upgrades(game_setup)
 		Match.Result.LOSE:
 			get_tree().change_scene_to_file("res://frontend/ui/game_creation.tscn")
 			queue_free()
