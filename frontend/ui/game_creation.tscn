@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://c133hj4l1vgu6"]
+[gd_scene format=3 uid="uid://c133hj4l1vgu6"]
 
 [ext_resource type="Script" uid="uid://nh2ecbxygfji" path="res://frontend/ui/game_creation.gd" id="1_hbw6a"]
 [ext_resource type="PackedScene" uid="uid://bxr14c6j6qojj" path="res://frontend/ui/pieces_preview.tscn" id="2_0lynk"]
@@ -289,102 +289,95 @@ _data = {
 [sub_resource type="LabelSettings" id="LabelSettings_0lynk"]
 font_size = 48
 
-[sub_resource type="LabelSettings" id="LabelSettings_vjqtv"]
-font_size = 20
-
-[sub_resource type="LabelSettings" id="LabelSettings_rkkwd"]
-
-[node name="GameCreation" type="Node2D"]
+[node name="GameCreation" type="Node2D" unique_id=2087573262]
 script = ExtResource("1_hbw6a")
 
-[node name="DecorLayer" type="CanvasLayer" parent="."]
+[node name="DecorLayer" type="CanvasLayer" parent="." unique_id=1394281337]
 layer = -1
 
-[node name="Pivot" type="Node2D" parent="DecorLayer"]
+[node name="Pivot" type="Node2D" parent="DecorLayer" unique_id=692066570]
 
-[node name="Square" type="Polygon2D" parent="DecorLayer/Pivot"]
+[node name="Square" type="Polygon2D" parent="DecorLayer/Pivot" unique_id=1313383436]
 position = Vector2(-49, 1399)
 scale = Vector2(39, 39)
 color = Color(0.184314, 0.2, 0.313726, 0.670588)
 antialiased = true
 polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
 
-[node name="Square2" type="Polygon2D" parent="DecorLayer/Pivot"]
+[node name="Square2" type="Polygon2D" parent="DecorLayer/Pivot" unique_id=1033164502]
 position = Vector2(-307, 1109)
 scale = Vector2(39, 39)
 color = Color(0.780392, 0.772549, 0.764706, 0.670588)
 antialiased = true
 polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
 
-[node name="Square3" type="Polygon2D" parent="DecorLayer/Pivot"]
+[node name="Square3" type="Polygon2D" parent="DecorLayer/Pivot" unique_id=1573612063]
 position = Vector2(1458, 1272)
 scale = Vector2(39, 39)
 color = Color(0.780392, 0.772549, 0.764706, 0.670588)
 antialiased = true
 polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
 
-[node name="Pivot2" type="Node2D" parent="DecorLayer"]
+[node name="Pivot2" type="Node2D" parent="DecorLayer" unique_id=1023026434]
 position = Vector2(1651, -565)
 
-[node name="Square" type="Polygon2D" parent="DecorLayer/Pivot2"]
+[node name="Square" type="Polygon2D" parent="DecorLayer/Pivot2" unique_id=80667106]
 position = Vector2(211, 198)
 scale = Vector2(39, 39)
 color = Color(0.184314, 0.2, 0.313726, 0.670588)
 antialiased = true
 polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
 
-[node name="Square2" type="Polygon2D" parent="DecorLayer/Pivot2"]
+[node name="Square2" type="Polygon2D" parent="DecorLayer/Pivot2" unique_id=689364665]
 position = Vector2(588, 430)
 scale = Vector2(39, 39)
 color = Color(0.780392, 0.772549, 0.764706, 0.670588)
 antialiased = true
 polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
 
-[node name="Square3" type="Polygon2D" parent="DecorLayer/Pivot2"]
+[node name="Square3" type="Polygon2D" parent="DecorLayer/Pivot2" unique_id=1201235647]
 position = Vector2(-1743, 337)
 scale = Vector2(39, 39)
 color = Color(0.184314, 0.2, 0.313726, 0.670588)
 antialiased = true
 polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
 
-[node name="Moving" type="Node2D" parent="DecorLayer"]
+[node name="Moving" type="Node2D" parent="DecorLayer" unique_id=402967151]
 
-[node name="Rect1" type="Polygon2D" parent="DecorLayer/Moving"]
+[node name="Rect1" type="Polygon2D" parent="DecorLayer/Moving" unique_id=1141681902]
 position = Vector2(2218, 91)
 scale = Vector2(16.38, 5.93)
 color = Color(0.780392, 0.772549, 0.764706, 0.670588)
 antialiased = true
 polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
 
-[node name="SmallRect1" type="Polygon2D" parent="DecorLayer/Moving"]
+[node name="SmallRect1" type="Polygon2D" parent="DecorLayer/Moving" unique_id=1737416420]
 position = Vector2(1430, 210)
 scale = Vector2(13.23, 1.195)
 color = Color(0.184314, 0.2, 0.313726, 0.670588)
 antialiased = true
 polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
 
-[node name="Rect2" type="Polygon2D" parent="DecorLayer/Moving"]
+[node name="Rect2" type="Polygon2D" parent="DecorLayer/Moving" unique_id=317281208]
 position = Vector2(-297, 796)
 scale = Vector2(16.38, 6)
 color = Color(0.184314, 0.2, 0.313726, 0.670588)
 antialiased = true
 polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
 
-[node name="SmallRect2" type="Polygon2D" parent="DecorLayer/Moving"]
+[node name="SmallRect2" type="Polygon2D" parent="DecorLayer/Moving" unique_id=1731699500]
 position = Vector2(376, 696)
 scale = Vector2(13.23, 1.195)
 color = Color(0.780392, 0.772549, 0.764706, 0.670588)
 antialiased = true
 polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="DecorLayer/Moving"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="DecorLayer/Moving" unique_id=399478412]
 root_node = NodePath("../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vjqtv")
-}
-autoplay = "square_anim"
+libraries/ = SubResource("AnimationLibrary_vjqtv")
+autoplay = &"square_anim"
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="DecorLayer"]
+[node name="GPUParticles2D" type="GPUParticles2D" parent="DecorLayer" unique_id=389263815]
 position = Vector2(-99, 202)
 amount = 14
 texture = SubResource("GradientTexture2D_rkkwd")
@@ -394,15 +387,13 @@ explosiveness = 0.11
 randomness = 0.06
 process_material = ExtResource("2_rkkwd")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="DecorLayer"]
-libraries = {
-&"game_creation": SubResource("AnimationLibrary_i1ldd")
-}
-autoplay = "game_creation/large_square_anim"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="DecorLayer" unique_id=1618319481]
+libraries/game_creation = SubResource("AnimationLibrary_i1ldd")
+autoplay = &"game_creation/large_square_anim"
 
-[node name="UILayer" type="CanvasLayer" parent="."]
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=520968134]
 
-[node name="Control" type="Control" parent="UILayer"]
+[node name="Control" type="Control" parent="UILayer" unique_id=1747473218]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -410,7 +401,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="VBoxContainer" parent="UILayer/Control"]
+[node name="HBoxContainer" type="VBoxContainer" parent="UILayer/Control" unique_id=1599420318]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -424,14 +415,14 @@ offset_bottom = 56.0
 grow_horizontal = 2
 theme_override_constants/separation = 10
 
-[node name="FactionNameLabel" type="Label" parent="UILayer/Control/HBoxContainer"]
+[node name="FactionNameLabel" type="Label" parent="UILayer/Control/HBoxContainer" unique_id=1896624727]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Monarchy"
 label_settings = SubResource("LabelSettings_0lynk")
 horizontal_alignment = 1
 
-[node name="FlavourTextLabel" type="RichTextLabel" parent="UILayer/Control/HBoxContainer"]
+[node name="FlavourTextLabel" type="RichTextLabel" parent="UILayer/Control/HBoxContainer" unique_id=1200050587]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -441,115 +432,96 @@ bbcode_enabled = true
 text = "[i]Flavour text[/i]"
 horizontal_alignment = 1
 
-[node name="Buttons" type="Control" parent="UILayer/Control"]
+[node name="FactionSwipeArea" type="Control" parent="UILayer/Control" unique_id=198700501]
 layout_mode = 1
-anchor_left = 0.29
-anchor_top = 0.4
-anchor_right = 0.71
-anchor_bottom = 0.4
-offset_top = -49.0
-offset_bottom = 49.0
+anchor_top = 0.215
+anchor_right = 1.0
+anchor_bottom = 0.63900006
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LeftButton" type="Button" parent="UILayer/Control/Buttons"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -53.0
-offset_right = 101.0
-offset_bottom = 53.0
-grow_vertical = 2
-size_flags_vertical = 0
-focus_neighbor_right = NodePath("../RightButton")
-text = "<"
-
-[node name="RightButton" type="Button" parent="UILayer/Control/Buttons"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -101.4
-offset_top = -53.0
-offset_right = -0.399963
-offset_bottom = 53.0
-grow_horizontal = 0
-grow_vertical = 2
-size_flags_vertical = 0
-focus_neighbor_left = NodePath("../LeftButton")
-text = ">"
-
-[node name="Divs" type="HBoxContainer" parent="UILayer/Control"]
+[node name="FactionIndicator" type="HBoxContainer" parent="UILayer/Control" unique_id=1578421132]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.15
-anchor_top = 0.65
-anchor_right = 0.85
+anchor_left = 0.5
+anchor_top = 0.62
+anchor_right = 0.5
+anchor_bottom = 0.62
+offset_left = -206.0
+offset_top = -8.0
+offset_right = 206.0
+offset_bottom = 8.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Divs" type="HBoxContainer" parent="UILayer/Control" unique_id=1078161490]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.65000004
+anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -6.1035156e-05
+offset_right = -20.0
 offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="Left" type="PanelContainer" parent="UILayer/Control/Divs"]
+[node name="Left" type="PanelContainer" parent="UILayer/Control/Divs" unique_id=1121920156]
 self_modulate = Color(0.529412, 0.529412, 0.529412, 1)
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="H" type="VBoxContainer" parent="UILayer/Control/Divs/Left"]
+[node name="H" type="VBoxContainer" parent="UILayer/Control/Divs/Left" unique_id=1110118389]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 16
 
-[node name="DifficultyTitleLabel" type="Label" parent="UILayer/Control/Divs/Left/H"]
-layout_mode = 2
-text = "Difficulty"
-
-[node name="DifficultiesContainer" type="HBoxContainer" parent="UILayer/Control/Divs/Left/H"]
-unique_name_in_owner = true
-editor_description = "The difficulties shown here are temporary. At runtime, they are replaced with instances of the scenes under frontend/ui/difficulties -- this way, modders can create their own difficulties and have them show up in this menu"
-custom_minimum_size = Vector2(0, 79)
-layout_mode = 2
-
-[node name="NoviceButton" parent="UILayer/Control/Divs/Left/H/DifficultiesContainer" instance=ExtResource("3_j2lke")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="StandardButton" parent="UILayer/Control/Divs/Left/H/DifficultiesContainer" instance=ExtResource("4_i1ldd")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="DifficultyNameLabel" type="Label" parent="UILayer/Control/Divs/Left/H"]
+[node name="DifficultyNameLabel" type="Label" parent="UILayer/Control/Divs/Left/H" unique_id=2066712397]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Difficulty name"
-label_settings = SubResource("LabelSettings_vjqtv")
 
-[node name="DifficultyDescriptionLabel" type="Label" parent="UILayer/Control/Divs/Left/H"]
+[node name="DifficultiesContainer" type="HBoxContainer" parent="UILayer/Control/Divs/Left/H" unique_id=960440914]
+unique_name_in_owner = true
+editor_description = "The difficulties shown here are temporary. At runtime, they are replaced with instances of the scenes under frontend/ui/difficulties -- this way, modders can create their own difficulties and have them show up in this menu"
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+
+[node name="NoviceButton" parent="UILayer/Control/Divs/Left/H/DifficultiesContainer" unique_id=2070086013 instance=ExtResource("3_j2lke")]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Difficulty description"
-label_settings = SubResource("LabelSettings_rkkwd")
 
-[node name="Main" type="PanelContainer" parent="UILayer/Control/Divs"]
+[node name="StandardButton" parent="UILayer/Control/Divs/Left/H/DifficultiesContainer" unique_id=1105444440 instance=ExtResource("4_i1ldd")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DifficultyDescriptionLabel" type="Label" parent="UILayer/Control/Divs/Left/H" unique_id=846579320]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Difficulty description"
+
+[node name="Main" type="PanelContainer" parent="UILayer/Control/Divs" unique_id=1067127070]
 self_modulate = Color(0.529412, 0.529412, 0.529412, 1)
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 
-[node name="H" type="VBoxContainer" parent="UILayer/Control/Divs/Main"]
+[node name="H" type="VBoxContainer" parent="UILayer/Control/Divs/Main" unique_id=269932857]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UILayer/Control/Divs/Main/H"]
+[node name="Label" type="Label" parent="UILayer/Control/Divs/Main/H" unique_id=14493812]
 layout_mode = 2
 text = "Starting Army"
 
-[node name="MarginContainer" type="MarginContainer" parent="UILayer/Control/Divs/Main/H"]
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/Control/Divs/Main/H" unique_id=1707886241]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 20
@@ -557,45 +529,44 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="PiecesPreview" parent="UILayer/Control/Divs/Main/H/MarginContainer" instance=ExtResource("2_0lynk")]
+[node name="PiecesPreview" parent="UILayer/Control/Divs/Main/H/MarginContainer" unique_id=1953755755 instance=ExtResource("2_0lynk")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 67)
 layout_mode = 2
 
-[node name="StartButton" type="Button" parent="UILayer/Control"]
+[node name="StartButton" type="Button" parent="UILayer/Control" unique_id=1912141094]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -236.0
-offset_top = -90.0
-offset_right = -20.0
-offset_bottom = -20.0
+offset_left = -260.0
+offset_top = -134.0
+offset_right = -44.0
+offset_bottom = -44.0
 grow_horizontal = 0
 grow_vertical = 0
 size_flags_vertical = 0
 text = "Start Game"
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=828659913]
 position = Vector2(960, 540)
 
-[node name="FactionSlider" type="Node2D" parent="."]
+[node name="FactionSlider" type="Node2D" parent="." unique_id=1626486629]
 editor_description = "The factions shown here are temporary. At runtime, they are replaced with instances of the scenes under frontend/ui/factions -- this way, modders can create their own factions and have them show up in this menu"
 position = Vector2(960, 608)
 
-[node name="Monarchy" parent="FactionSlider" instance=ExtResource("3_0lynk")]
+[node name="Monarchy" parent="FactionSlider" unique_id=1366296173 instance=ExtResource("3_0lynk")]
 
-[node name="Sharpshooters" parent="FactionSlider" instance=ExtResource("4_rkkwd")]
+[node name="Sharpshooters" parent="FactionSlider" unique_id=1378402919 instance=ExtResource("4_rkkwd")]
 position = Vector2(650, 0)
 
-[node name="Military" parent="FactionSlider" instance=ExtResource("5_vjqtv")]
+[node name="Military" parent="FactionSlider" unique_id=929520649 instance=ExtResource("5_vjqtv")]
 position = Vector2(1300, 0)
 
-[node name="TheSquad" parent="FactionSlider" instance=ExtResource("6_0lynk")]
+[node name="TheSquad" parent="FactionSlider" unique_id=941091165 instance=ExtResource("6_0lynk")]
 position = Vector2(1950, 0)
 
-[connection signal="pressed" from="UILayer/Control/Buttons/LeftButton" to="." method="_on_left_button_pressed"]
-[connection signal="pressed" from="UILayer/Control/Buttons/RightButton" to="." method="_on_right_button_pressed"]
+[connection signal="gui_input" from="UILayer/Control/FactionSwipeArea" to="." method="_on_faction_swipe_area_gui_input"]
 [connection signal="pressed" from="UILayer/Control/StartButton" to="." method="_on_start_button_pressed"]

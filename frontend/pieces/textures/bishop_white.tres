@@ -1,4 +1,4 @@
-[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://f8pp8df8kycc"]
+[gd_resource type="AtlasTexture" format=3 uid="uid://f8pp8df8kycc"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nxsl0"]
 load_path = "res://.godot/imported/pieces_sprite_sheet.png-b320056e40fecbe295f2b805f7ade72e.ctex"
