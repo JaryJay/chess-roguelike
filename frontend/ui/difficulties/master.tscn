@@ -1,17 +1,11 @@
 [gd_scene format=3 uid="uid://7jrxluc4psvs"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_vjqtv"]
-load_path = "res://.godot/imported/pieces_sprite_sheet.png-b320056e40fecbe295f2b805f7ade72e.ctex"
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_j2lke"]
-atlas = SubResource("CompressedTexture2D_vjqtv")
-region = Rect2(77, 39, 13, 17)
-margin = Rect2(0, 2, 0, 3)
+[ext_resource type="Texture2D" uid="uid://mg8d3jvu6pgq" path="res://frontend/pieces/textures/king_black.tres" id="1_cwxn3"]
 
 [node name="master" type="Button" unique_id=1779040376]
 custom_minimum_size = Vector2(128, 128)
 size_flags_vertical = 3
 toggle_mode = true
-icon = SubResource("AtlasTexture_j2lke")
+icon = ExtResource("1_cwxn3")
 icon_alignment = 1
 expand_icon = true

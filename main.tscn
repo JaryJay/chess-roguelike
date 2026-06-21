@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://c5f1dsko5aivp"]
 
 [ext_resource type="Script" uid="uid://bltechx2mha0j" path="res://main.gd" id="1_fdhfs"]
-[ext_resource type="Texture2D" uid="uid://c0acfhkxqh76w" path="res://assets/pieces_sprite_sheet.png" id="1_y06v8"]
+[ext_resource type="Texture2D" uid="uid://bc2cteqvfplr3" path="res://frontend/pieces/textures/knight_black.tres" id="2_h2yge"]
+[ext_resource type="Texture2D" uid="uid://c3lglntwkebc8" path="res://frontend/pieces/textures/king_white.tres" id="3_1bvp3"]
 
 [sub_resource type="Animation" id="Animation_h2yge"]
 length = 0.001
@@ -247,17 +248,15 @@ autowrap_mode = 3
 [node name="BG" type="Node2D" parent="." unique_id=351326736]
 
 [node name="PawnSprite" type="Sprite2D" parent="BG" unique_id=264545172]
-position = Vector2(1191, 570)
-scale = Vector2(23, 23)
-texture = ExtResource("1_y06v8")
-region_enabled = true
+position = Vector2(1086, 530.00006)
+scale = Vector2(5, 5)
+texture = ExtResource("2_h2yge")
 region_rect = Rect2(48, 40, 13, 16)
 
 [node name="KingSprite" type="Sprite2D" parent="BG" unique_id=1400261431]
 position = Vector2(1554, 477)
-scale = Vector2(23, 23)
-texture = ExtResource("1_y06v8")
-region_enabled = true
+scale = Vector2(6, 6)
+texture = ExtResource("3_1bvp3")
 region_rect = Rect2(92, 80, 13, 24)
 
 [node name="Camera2D" type="Camera2D" parent="BG" unique_id=1118894938]

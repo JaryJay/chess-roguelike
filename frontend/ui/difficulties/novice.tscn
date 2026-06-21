@@ -1,17 +1,11 @@
 [gd_scene format=3 uid="uid://0nftfbdusm7g"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0lynk"]
-load_path = "res://.godot/imported/pieces_sprite_sheet.png-b320056e40fecbe295f2b805f7ade72e.ctex"
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rkkwd"]
-atlas = SubResource("CompressedTexture2D_0lynk")
-region = Rect2(48, 40, 13, 16)
-margin = Rect2(2, 4, 4, 6)
+[ext_resource type="Texture2D" uid="uid://bufq7we1o72xp" path="res://frontend/pieces/textures/pawn_black.tres" id="1_buiyw"]
 
 [node name="novice" type="Button" unique_id=841491731]
 custom_minimum_size = Vector2(128, 128)
 size_flags_vertical = 3
 toggle_mode = true
-icon = SubResource("AtlasTexture_rkkwd")
+icon = ExtResource("1_buiyw")
 icon_alignment = 1
 expand_icon = true

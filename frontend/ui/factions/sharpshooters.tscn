@@ -1,23 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://ccs0qt78cjm6l"]
+[gd_scene format=3 uid="uid://ccs0qt78cjm6l"]
 
 [ext_resource type="Texture2D" uid="uid://iehu274lcwh5" path="res://frontend/pieces/textures/rook_white.tres" id="1_34fr3"]
 [ext_resource type="Script" uid="uid://fw7gwivhmbco" path="res://frontend/pieces/piece_sprite_2d.gd" id="2_ya3mv"]
 [ext_resource type="Texture2D" uid="uid://f8pp8df8kycc" path="res://frontend/pieces/textures/bishop_white.tres" id="3_33bw6"]
 
-[node name="Sharpshooters" type="Node2D"]
+[node name="Sharpshooters" type="Node2D" unique_id=1340211073]
 
-[node name="Rook" type="Sprite2D" parent="."]
+[node name="Rook" type="Sprite2D" parent="." unique_id=469255827]
 self_modulate = Color(0.588235, 0.588235, 0.588235, 1)
 position = Vector2(-72, -208)
-scale = Vector2(16, 16)
+scale = Vector2(3, 3)
 texture = ExtResource("1_34fr3")
 script = ExtResource("2_ya3mv")
 white_texture = ExtResource("1_34fr3")
 metadata/_custom_type_script = "uid://fw7gwivhmbco"
 
-[node name="Bishop" type="Sprite2D" parent="."]
+[node name="Bishop" type="Sprite2D" parent="." unique_id=467500002]
 position = Vector2(88, -192)
-scale = Vector2(16, 16)
+scale = Vector2(3, 3)
 texture = ExtResource("3_33bw6")
 script = ExtResource("2_ya3mv")
 white_texture = ExtResource("3_33bw6")

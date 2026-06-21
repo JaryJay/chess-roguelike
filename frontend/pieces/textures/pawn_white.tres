@@ -5,5 +5,5 @@ load_path = "res://.godot/imported/pieces_sprite_sheet.png-b320056e40fecbe295f2b
 
 [resource]
 atlas = SubResource("CompressedTexture2D_h10bg")
-region = Rect2(48, 40, 13, 16)
-margin = Rect2(3, 8, 6, 8)
+region = Rect2(352, 71, 70, 102)
+margin = Rect2(0, 53, 0, 53)
