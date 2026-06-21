@@ -51,3 +51,4 @@ __pycache__/
 
 # Fennara local AI guidance
 .fennara/
+android/.build_version
