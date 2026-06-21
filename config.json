@@ -36,6 +36,7 @@
 				"knight",
 				"knight",
 				"knight",
+				"knight",
 				"pawn",
 				"pawn"
 			]
@@ -45,6 +46,7 @@
 			"display_name": "The Squad",
 			"description": "It's bring your kids to work day.",
 			"piece_types": [
+				"pawn",
 				"pawn",
 				"pawn",
 				"pawn",
@@ -91,7 +93,7 @@
 			"eval_randomness": 0.0,
 			"default_depth": 4,
 			"enemy_credits": 1700,
-			"enemy_credit_increment": 170
+			"enemy_credit_increment": 180
 		}
 	]
 }
