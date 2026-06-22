@@ -45,9 +45,10 @@ func _on_board_node_game_over(game_result: Match.Result) -> void:
 	elif game_result == Match.Result.DRAW_THREEFOLD_REPETITION:
 		game_over_label.text = "Draw! Threefold repetition"
 	
-	game_over_rect.show()
 	game_over_rect.modulate.a = 0.0
 	var tw := create_tween()
+	tw.tween_interval(0.05)
+	tw.tween_callback(game_over_rect.show)
 	tw.tween_interval(0.4)
 	tw.tween_property(game_over_rect, "modulate:a", 1.0, 0.5).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
 
